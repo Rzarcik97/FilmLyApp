@@ -1,4 +1,4 @@
-# FILMLY WEB TEST PLAN
+# FILMLY WEB TEST PLAN (version 1)
 
 ## 1. Product analysis
 
