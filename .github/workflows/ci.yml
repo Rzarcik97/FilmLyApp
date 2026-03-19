@@ -23,7 +23,7 @@ jobs:
       # BACKEND
       - name: Build backend
         working-directory: backend
-        run: mvn --batch-mode clean verify -DskipTests
+        run: mvn --batch-mode clean verify
 
 #      # NODE
 #      - name: Set up Node
