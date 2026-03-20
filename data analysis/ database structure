@@ -117,4 +117,4 @@ Tracks users’ favorite genres with ratings.
 | id       | INT         | PK    | Primary key                  |
 | user_id  | INT         | FK    | References users(id)         |
 | genre_id | INT         | FK    | References genres(id)        |
-| rating   | DECIMAL(2,1)|       | User’s rating for genre      |
+| rating   | INT         |       | User’s rating for genre      |
