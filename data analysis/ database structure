@@ -9,6 +9,7 @@ Stores registered user info.
 | Column        | Data Type      | PK/FK | Description                |
 |---------------|----------------|-------|----------------------------|
 | id            | INT            | PK    | Primary key                |
+| username      | VARCHAR(50)    |       | User’s nickname            |
 | first_name    | VARCHAR(50)    |       | User’s first name          |
 | last_name     | VARCHAR(50)    |       | User’s last name           |
 | email         | VARCHAR(100)   |       | User email                 |
@@ -91,7 +92,6 @@ Stores user reviews for content.
 | user_id      | INT       | FK    | References users(id)      |
 | review_text  | TEXT      |       | Text of review            |
 | created_at   | TIMESTAMP |       | Creation timestamp        |
-| updated_at   | TIMESTAMP |       | Last update timestamp     |
 
 ---
 
@@ -117,4 +117,4 @@ Tracks users’ favorite genres with ratings.
 | id       | INT         | PK    | Primary key                  |
 | user_id  | INT         | FK    | References users(id)         |
 | genre_id | INT         | FK    | References genres(id)        |
-| rating   | INT         |       | User’s rating for genre      |
+| rating   |DECIMAL(2,1) |       | User’s rating for genre      |
