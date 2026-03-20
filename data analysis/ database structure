@@ -103,7 +103,7 @@ Stores user ratings for content.
 | id         | INT         | PK    | Primary key                 |
 | content_id | INT         | FK    | References content(id)      |
 | user_id    | INT         | FK    | References users(id)        |
-| rating     | INT|        |       | Rating value given by a user|
+| rating     | DECIMAL(2,1)|       | Rating value given by a user|
 | created_at | TIMESTAMP   |       | When rating was created     |
 
   
