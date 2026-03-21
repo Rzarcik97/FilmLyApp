@@ -2,12 +2,11 @@ package filmly.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import lombok.Getter;
@@ -23,8 +22,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Getter
 @Setter
 @NoArgsConstructor
-@SQLDelete(sql = "UPDATE users SET is_deleted = true WHERE id=?")
-@SQLRestriction(value = "is_deleted=false")
+@SQLDelete(sql = "UPDATE users SET deleted_at = CURRENT_TIMESTAMP WHERE id=?")
+@SQLRestriction(value = "deleted_at IS NULL")
 @Table(name = "users")
 public class User implements UserDetails {
     @Id
@@ -40,16 +39,19 @@ public class User implements UserDetails {
     private String firstName;
     @Column(nullable = false)
     private String lastName;
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Role role;
-    @Column(nullable = false)
-    private boolean isDeleted = false;
-
-    public enum Role {
-        ADMIN,
-        USER
-    }
+    private String avatarUrl;
+    // @Enumerated(EnumType.STRING)
+    //  for later use
+    //    @Column(nullable = false)
+    //    private Role role;
+    @Column
+    private LocalDateTime deletedAt;
+    //
+    //    public enum Role {
+    //        ADMIN,
+    //        USER
+    //    }
 
     @Override
     public String getUsername() {
@@ -67,26 +69,26 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
+        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return !isDeleted;
+        return deletedAt == null;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return !isDeleted;
+        return deletedAt == null;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return !isDeleted;
+        return deletedAt == null;
     }
 
     @Override
     public boolean isEnabled() {
-        return !isDeleted;
+        return deletedAt == null;
     }
 }

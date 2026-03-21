@@ -35,7 +35,7 @@ public class ContentRating {
     @Column(nullable = false)
     @Min(1)
     @Max(10)
-    private Integer rating;
+    private Float rating;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
