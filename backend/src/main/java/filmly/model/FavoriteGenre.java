@@ -40,5 +40,5 @@ public class FavoriteGenre {
     @Column(nullable = false)
     @Min(1)
     @Max(10)
-    private Integer rating;
+    private Float rating;
 }

@@ -6,6 +6,6 @@ public record ContentRatingResponseDto(
         Long contentRatingId,
         Long contentId,
         Long userId,
-        Double rating,
+        Float rating,
         LocalDateTime createdAt
 ) {}
