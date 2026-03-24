@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import search_icon from '../../../public/icons/search.png';
+import { Search } from 'lucide-react';
 
 export const SearchBar = () => {
   const [query, setQuery] = useState('');
 
-  const handleInputChange = (event) => {
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value);
     console.log('Searching for:', event.target.value);
   };
@@ -19,7 +19,7 @@ export const SearchBar = () => {
         onChange={handleInputChange}
       />
       <button className="flex justify-center items-center bg-none cursor-pointer">
-        <img src={search_icon} alt="Search" className="w-6 h-6" />
+        <Search size={24} />
       </button>
     </div>
   )
