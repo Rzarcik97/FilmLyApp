@@ -1,6 +1,6 @@
-import logo from '../../../public/icons/logo.png';
-import { SearchBar } from '../SearchBar/SearchBar.js';
+import logo from '../../public/icons/logo.png';
 import { Bell, Clapperboard, UserRound, Earth } from 'lucide-react';
+import { SearchBar } from './SearchBar';
 
 interface NavItemsProps {
   icon: React.ReactNode;
