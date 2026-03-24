@@ -1,5 +1,6 @@
 package filmly.config;
 
+import org.mapstruct.CollectionMappingStrategy;
 import org.mapstruct.InjectionStrategy;
 import org.mapstruct.NullValueCheckStrategy;
 
@@ -7,7 +8,8 @@ import org.mapstruct.NullValueCheckStrategy;
         componentModel = "spring",
         injectionStrategy = InjectionStrategy.CONSTRUCTOR,
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS,
-        implementationPackage = "filmly.mapper.impl"
+        implementationPackage = "filmly.mapper.impl",
+        collectionMappingStrategy = CollectionMappingStrategy.ACCESSOR_ONLY
 )
 public class MapperConfig {
 }
