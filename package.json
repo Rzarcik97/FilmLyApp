@@ -1,0 +1,7 @@
+{
+  "name": "filmly-app",
+  "private": true,
+  "workspaces": [
+    "frontend"
+  ]
+}

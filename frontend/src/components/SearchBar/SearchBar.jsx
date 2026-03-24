@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import search_icon from '../../../public/icons/search.png';
-import './SearchBar.scss';
 
 export const SearchBar = () => {
   const [query, setQuery] = useState('');
@@ -11,16 +10,16 @@ export const SearchBar = () => {
   };
 
   return (
-    <div className="search-container">
+    <div className="flex justify-between items-center px-2 rounded-lg bg-white w-[536px] h-10">
       <input
         type="text" 
-        className="search-container__input"
+        className="py-3 w-full border-none bg-transparent focus:outline-none"
         placeholder="Search for movies, TV series, actors..."
         value={query}
         onChange={handleInputChange}
       />
-      <button className="search-container__button">
-        <img src={search_icon} alt="Search" className="search-container__button__img" />
+      <button className="flex justify-center items-center bg-none cursor-pointer">
+        <img src={search_icon} alt="Search" className="w-6 h-6" />
       </button>
     </div>
   )
