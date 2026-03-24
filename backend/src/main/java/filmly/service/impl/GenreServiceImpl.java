@@ -2,6 +2,7 @@ package filmly.service.impl;
 
 import filmly.dto.genre.GenreDto;
 import filmly.dto.tmdb.TmdbGenreResponse;
+import filmly.exception.EntityNotFoundException;
 import filmly.mapper.GenreMapper;
 import filmly.model.Genre;
 import filmly.repository.GenreRepository;
@@ -22,8 +23,8 @@ public class GenreServiceImpl implements GenreService {
 
     @Override
     public GenreDto getGenreById(Long id) {
-        // TODO: handle not found
-        return genreMapper.toDto(genreRepository.findById(id).orElseThrow());
+        return genreMapper.toDto(genreRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Genre",id)));
     }
 
     @Override
