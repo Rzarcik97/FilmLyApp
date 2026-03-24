@@ -1,7 +1,7 @@
 package filmly.controller;
 
 import filmly.dto.content.MovieDto;
-import filmly.service.ContentService;
+import filmly.service.TmdbContentService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,24 +16,21 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class MoviesController {
 
-    private final ContentService contentService;
+    private final TmdbContentService tmdbContentService;
 
     @GetMapping("/popular")
-    public ResponseEntity<List<MovieDto>> getPopularMovies() {
-        // TODO: implement
-        return ResponseEntity.ok().build();
+    public List<MovieDto> getPopularMovies() {
+        return tmdbContentService.findPopular();
     }
 
     @GetMapping("/trending")
-    public ResponseEntity<List<MovieDto>> getTrendingMovies() {
-        // TODO: implement
-        return ResponseEntity.ok().build();
+    public List<MovieDto> getTrendingMovies() {
+        return tmdbContentService.findTrending();
     }
 
     @GetMapping("/recent")
-    public ResponseEntity<List<MovieDto>> getRecentMovies() {
-        // TODO: implement
-        return ResponseEntity.ok().build();
+    public List<MovieDto> getRecentMovies() {
+        return tmdbContentService.findRecent();
     }
 
     @GetMapping("/{id}")
