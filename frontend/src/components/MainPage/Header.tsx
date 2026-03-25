@@ -1,4 +1,4 @@
-import logo from '../../public/icons/logo.png';
+import logo from '../../../public/icons/logo.png';
 import { Bell, Clapperboard, UserRound, Earth } from 'lucide-react';
 import { SearchBar } from './SearchBar';
 

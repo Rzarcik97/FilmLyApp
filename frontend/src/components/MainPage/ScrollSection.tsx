@@ -1,4 +1,4 @@
-import type { Movie } from '../types'
+import type { Movie } from '../../types'
 import { MovieCard } from './MovieCard';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
@@ -29,7 +29,7 @@ export const ScrollSection = ({ title, items }: ScrollSectionProps) => {
         <button className="text-[#626262] cursor-pointer">
           <ChevronRight size={24} />
         </button>
-      </div>      
+      </div>
     </section>
   )
 }
