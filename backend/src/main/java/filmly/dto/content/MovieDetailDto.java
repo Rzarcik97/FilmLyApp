@@ -14,8 +14,8 @@ public record MovieDetailDto(
         Double popularity,
         @JsonProperty("vote_average") Double voteAverage,
         @JsonProperty("vote_count") Integer voteCount,
+        String trailerKey,
         @JsonProperty("poster_path") String posterPath,
         @JsonProperty("backdrop_path") String backdropPath,
-        List<GenreDto> genres,
-        List<CastDto> cast
+        List<GenreDto> genres
 ) {}

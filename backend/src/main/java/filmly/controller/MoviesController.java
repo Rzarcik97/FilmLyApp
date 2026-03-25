@@ -1,5 +1,6 @@
 package filmly.controller;
 
+import filmly.dto.content.CastDto;
 import filmly.dto.content.MovieDetailDto;
 import filmly.dto.content.MovieDto;
 import filmly.service.TmdbContentService;
@@ -39,18 +40,22 @@ public class MoviesController {
         return movieService.findById(id);
     }
 
+    @GetMapping("/{id}/cast")
+    public List<CastDto> getMovieCast(@PathVariable Long id) {
+        return movieService.findCast(id);
+    }
+
+    @GetMapping("/{id}/recommendations")
+    public List<MovieDto> getMovieRecommendations(@PathVariable Long id) {
+        return movieService.findSimilar(id);
+    }
+
     @GetMapping("/search")
     public ResponseEntity<List<MovieDto>> searchMovies(
             @RequestParam(required = false) String title,
             @RequestParam(required = false) String productionDate,
             @RequestParam(required = false) Double rating
     ) {
-        // TODO: implement
-        return ResponseEntity.ok().build();
-    }
-
-    @GetMapping("/genres")
-    public ResponseEntity<List<String>> getGenres() {
         // TODO: implement
         return ResponseEntity.ok().build();
     }
