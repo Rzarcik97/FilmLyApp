@@ -1,5 +1,7 @@
 package filmly.controller;
 
+import filmly.dto.content.CastDto;
+import filmly.dto.content.MovieDetailDto;
 import filmly.dto.content.MovieDto;
 import filmly.service.TmdbContentService;
 import java.util.List;
@@ -16,27 +18,36 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class MoviesController {
 
-    private final TmdbContentService tmdbContentService;
+    private final TmdbContentService<MovieDto,MovieDetailDto> movieService;
 
     @GetMapping("/popular")
     public List<MovieDto> getPopularMovies() {
-        return tmdbContentService.findPopular();
+        return movieService.findPopular();
     }
 
     @GetMapping("/trending")
     public List<MovieDto> getTrendingMovies() {
-        return tmdbContentService.findTrending();
+        return movieService.findTrending();
     }
 
     @GetMapping("/recent")
     public List<MovieDto> getRecentMovies() {
-        return tmdbContentService.findRecent();
+        return movieService.findRecent();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MovieDto> getMovieById(@PathVariable Long id) {
-        // TODO: implement
-        return ResponseEntity.ok().build();
+    public MovieDetailDto getMovieById(@PathVariable Long id) {
+        return movieService.findById(id);
+    }
+
+    @GetMapping("/{id}/cast")
+    public List<CastDto> getMovieCast(@PathVariable Long id) {
+        return movieService.findCast(id);
+    }
+
+    @GetMapping("/{id}/similar")
+    public List<MovieDto> getMovieSimilar(@PathVariable Long id) {
+        return movieService.findSimilar(id);
     }
 
     @GetMapping("/search")
@@ -45,12 +56,6 @@ public class MoviesController {
             @RequestParam(required = false) String productionDate,
             @RequestParam(required = false) Double rating
     ) {
-        // TODO: implement
-        return ResponseEntity.ok().build();
-    }
-
-    @GetMapping("/genres")
-    public ResponseEntity<List<String>> getGenres() {
         // TODO: implement
         return ResponseEntity.ok().build();
     }
