@@ -1,5 +1,6 @@
 package filmly.controller;
 
+import filmly.dto.content.MovieDetailDto;
 import filmly.dto.content.MovieDto;
 import filmly.service.TmdbContentService;
 import java.util.List;
@@ -16,27 +17,26 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class MoviesController {
 
-    private final TmdbContentService tmdbContentService;
+    private final TmdbContentService<MovieDto,MovieDetailDto> movieService;
 
     @GetMapping("/popular")
     public List<MovieDto> getPopularMovies() {
-        return tmdbContentService.findPopular();
+        return movieService.findPopular();
     }
 
     @GetMapping("/trending")
     public List<MovieDto> getTrendingMovies() {
-        return tmdbContentService.findTrending();
+        return movieService.findTrending();
     }
 
     @GetMapping("/recent")
     public List<MovieDto> getRecentMovies() {
-        return tmdbContentService.findRecent();
+        return movieService.findRecent();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<MovieDto> getMovieById(@PathVariable Long id) {
-        // TODO: implement
-        return ResponseEntity.ok().build();
+    public MovieDetailDto getMovieById(@PathVariable Long id) {
+        return movieService.findById(id);
     }
 
     @GetMapping("/search")
