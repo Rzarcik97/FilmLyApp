@@ -45,8 +45,8 @@ public class MoviesController {
         return movieService.findCast(id);
     }
 
-    @GetMapping("/{id}/recommendations")
-    public List<MovieDto> getMovieRecommendations(@PathVariable Long id) {
+    @GetMapping("/{id}/similar")
+    public List<MovieDto> getMovieSimilar(@PathVariable Long id) {
         return movieService.findSimilar(id);
     }
 
