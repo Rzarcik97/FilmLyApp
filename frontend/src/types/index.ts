@@ -5,3 +5,8 @@ export interface Movie {
   ratingRT: number;
   poster_path?: string;
 }
+
+export interface Actor {
+  id: number;
+  name: string;
+}
