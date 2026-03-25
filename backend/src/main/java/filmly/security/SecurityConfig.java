@@ -24,7 +24,9 @@ public class SecurityConfig {
                                 "/auth/register",
                                 "/auth/login")
                         .permitAll()
-                        .requestMatchers("/movies/**")
+                        .requestMatchers(
+                                "/movies/**",
+                                "/genres/**")
                         .permitAll()
                         .anyRequest().authenticated()
                 );
