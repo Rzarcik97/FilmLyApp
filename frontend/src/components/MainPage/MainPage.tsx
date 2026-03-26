@@ -1,4 +1,4 @@
-import type { Actor, Movie } from '../types';
+import type { Actor, Movie } from '../../types';
 import { AboutUs } from './AboutUs';
 import { ScrollActors } from './ScrollActors';
 import { ScrollSection } from './ScrollSection';
@@ -11,16 +11,16 @@ const mockMovies: Movie[] = [
 ];
 
 const mockActors: Actor[] = [
-  {id: 1, name: "Zendaya"},
-  {id: 2, name: "Tom Holland"},
-  {id: 3, name: "Emma Stone"},
-  {id: 4, name: "Matt Damon"},
-  {id: 5, name: "Jonah Hill"},
+  { id: 1, name: "Zendaya" },
+  { id: 2, name: "Tom Holland" },
+  { id: 3, name: "Emma Stone" },
+  { id: 4, name: "Matt Damon" },
+  { id: 5, name: "Jonah Hill" },
 ]
 
 export const MainPage = () => {
   return (
-    <main className="bg-[#ededed]">
+    <main className="bg-light-background">
       <AboutUs />
       <ScrollSection title="Trending now" items={mockMovies} />
       <WhatShouldIWatch />

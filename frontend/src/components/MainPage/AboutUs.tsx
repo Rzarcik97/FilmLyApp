@@ -1,9 +1,9 @@
 import { Play, VolumeX, ChevronRight, Image as ImageIcon } from 'lucide-react';
-import empty_img from '../../public/icons/empty-img.png';
+import empty_img from '../../../public/icons/empty-img.png';
 
 export const AboutUs = () => {
   return (
-    <main className="bg-[#D9D9D9] px-12 h-[553px]" >
+    <main className="bg-primary-background px-12 h-[553px]" >
       <div className="pt-[26px] flex justify-end gap-[21px]">
         <button className="text-white bg-none border-none cursor-pointer w-6 h-6 flex justify-center items-center">
           <Play size={24} />

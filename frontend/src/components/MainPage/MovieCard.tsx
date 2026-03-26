@@ -1,14 +1,14 @@
-import type { Movie } from '../types';
+import type { Movie } from '../../types';
 import { Link } from 'react-router-dom';
-import imdb from '../../public/icons/imdb.png';
-import rt from '../../public/icons/rot-tom.png';
-import empty_img from '../../public/icons/empty-img.png';
+import imdb from '../../../public/icons/imdb.png';
+import { UserStar } from 'lucide-react';
+import empty_img from '../../../public/icons/empty-img.png';
 
 export const MovieCard = ({ movie }: { movie: Movie }) => {
   return (
     <div className="w-[200px] h-[400px] flex flex-col shrink-0">
       {/* <Link to={`/movie/${movie.id}`}> */}
-      <div className="bg-[#D9D9D9] h-[328px] flex-1 flex justify-center items-center">
+      <div className="bg-primary-background h-[328px] flex-1 flex justify-center items-center">
         {/* <img src={movie.poster_path} alt="Item Main Image" /> */}
         <img
           src={empty_img}
@@ -24,7 +24,8 @@ export const MovieCard = ({ movie }: { movie: Movie }) => {
           </div>
           <div className="flex gap-[7px] items-center">
             <p className="text-[16px]">85%</p>
-            <img src={rt} alt="Rotten Tomatoes Rating" className="w-6 h-6" />
+            <UserStar size={22} />
+            {/* <img src={rt} alt="Rotten Tomatoes Rating" className="w-6 h-6" /> */}
           </div>
         </div>
         {/* <p>{movie.title}</p> */}

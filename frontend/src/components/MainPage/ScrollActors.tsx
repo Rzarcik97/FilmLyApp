@@ -1,4 +1,4 @@
-import type { Actor } from '../types'
+import type { Actor } from '../../types'
 import { ActorCard } from './ActorCard';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
@@ -9,7 +9,7 @@ interface ScrollActorsProps {
 
 export const ScrollActors = ({ title, items }: ScrollActorsProps) => {
   return (
-    <section className="py-10 px-12 pb-[318px]">
+    <section className="py-10 px-12 pb-[122px]">
       <div className="flex justify-between items-center pb-2">
         <h2 className="text-[48px] fw-bold">{title}</h2>
         <button className="cursor-pointer text-[20px]">
