@@ -1,13 +1,19 @@
 package filmly.dto.content;
 
 import filmly.dto.genre.GenreDto;
-import java.time.LocalDateTime;
+import filmly.model.Content;
 import java.util.List;
 
-public record ContentDto(
-        Long contentId,
-        String externalId,
-        String type,
-        LocalDateTime createdAt,
-        List<GenreDto> genres
-) {}
+public interface ContentDto {
+
+    Long contentId();
+
+    String title();
+
+    String posterPath();
+
+    List<GenreDto> genres();
+
+    Content.ContentType type();
+}
+

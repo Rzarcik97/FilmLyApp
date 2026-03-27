@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -48,16 +47,6 @@ public class MoviesController {
     @GetMapping("/{id}/similar")
     public List<MovieDto> getMovieSimilar(@PathVariable Long id) {
         return movieService.findSimilar(id);
-    }
-
-    @GetMapping("/search")
-    public ResponseEntity<List<MovieDto>> searchMovies(
-            @RequestParam(required = false) String title,
-            @RequestParam(required = false) String productionDate,
-            @RequestParam(required = false) Double rating
-    ) {
-        // TODO: implement
-        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/recommendation")
