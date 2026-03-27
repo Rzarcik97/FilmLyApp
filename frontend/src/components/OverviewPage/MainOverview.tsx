@@ -1,25 +1,38 @@
 import { ChevronLeft, Play, VolumeX, UserStar } from 'lucide-react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import empty_img from '../../../public/icons/empty-img.png';
 import imdb from '../../../public/icons/imdb_black.png';
 
 export const MainOverview = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+
   const { id } = useParams();
 
-  const genres = ["Drama Mystery", "Thriller", "Crime", "Dark Crime"];
+  const genres = ["Drama Mystery", "Thriller", "Crime", "Dark Crime"]; // this will be replaced with the data from DB, I kept it here for now just for my visual understanding how to style it
+
+  const navigateBack = () => {
+    if (location.state?.from) {
+      navigate(location.state.from);
+    } else {
+      window.location.href = "/";
+    }
+  };
 
   return (
     <div className="bg-primary-background p-10 min-h-screen">
       <div className="flex justify-between items-center">
         <button
           className="flex justify-center items-center cursor-pointer"
-          onClick={() => navigate(-1)}
+          onClick={(e) => {
+            e.preventDefault();
+            navigateBack();
+          }}
         >
-          <span className="text-whitish-text-color">
+          <span className="text-foreground-light">
             <ChevronLeft size={32} />
           </span>
-          <p className="text-[24px] text-whitish-text-color">Back</p>
+          <p className="text-[24px] text-foreground-light">Back</p>
         </button>
 
         <span className="text-white flex justify-center items-center gap-5">
@@ -48,8 +61,8 @@ export const MainOverview = () => {
           <div className="flex flex-wrap justify-center items-center gap-2 pb-[21px]">
             {genres.map((genre, index) => (
               <span
-                key={index}
-                className="px-[10px] py-[2.5px] pb-[5px] text-greyish-text-color text-[16px] text-opacity-80 border border-greyish-text-color rounded-[32px]"
+                key={index} // this will also be replaced with the actual movie id from the DB
+                className="px-[10px] py-[2.5px] pb-[5px] text-foreground-grey text-[16px] text-opacity-80 border border-foreground-grey rounded-[32px]"
               >
                 {genre}
               </span>
