@@ -1,4 +1,3 @@
-import type { Actor, Movie } from '../../types';
 import { mockActors, mockMovies } from '../../utils/mockData';
 import { ScrollActors } from '../MainPage/ScrollActors';
 import { ScrollSection } from '../MainPage/ScrollSection';
