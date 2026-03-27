@@ -4,6 +4,7 @@ import { MainPage } from './components/MainPage/MainPage';
 import './styles/App.css';
 import { OverviewPage } from './components/OverviewPage/OverviewPage';
 import { useEffect } from 'react';
+import { BrowsePage } from './components/BrowsePage/BrowsePage';
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -29,6 +30,7 @@ function App() {
         <Routes>
           <Route path="/" element={<MainPage />} />
           <Route path="/movie/:id" element={<OverviewPage />} />
+          <Route path="/test-browse" element={<BrowsePage />} />
         </Routes>
 
       </div>

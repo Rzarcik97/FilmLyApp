@@ -10,3 +10,10 @@ export interface Actor {
   id: number;
   name: string;
 }
+
+export interface RangeState {
+  min: number;
+  max: number;
+}
+
+export type BrowseGenres = string[];

@@ -21,7 +21,7 @@ export const MovieCard = ({ movie }: { movie: Movie }) => {
             className="w-27 h-27"
           />
         </div>
-        <div className="p-2 bg-[#5E5E5E] h-18 shrink-0">
+        <div className="p-2 bg-dark-background h-18 shrink-0">
           <div className="flex items-center justify-between text-white">
             <div className="flex gap-[7px] items-center">
               <p className="text-[16px]">7.6</p>

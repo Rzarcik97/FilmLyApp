@@ -1,4 +1,4 @@
-import type { Actor, Movie } from '../types';
+import type { Actor, BrowseGenres, Movie } from '../types';
 
 export const mockMovies: Movie[] = [
   { id: 1, title: "Inception", poster_path: "", ratingIMDB: 8.8, ratingRT: 87 },
@@ -13,3 +13,5 @@ export const mockActors: Actor[] = [
   { id: 4, name: "Matt Damon" },
   { id: 5, name: "Jonah Hill" },
 ];
+
+export const mockBrowseGenres: BrowseGenres = ['Movies', 'TV Series', 'TV Shows', 'Cartoons', 'Anime', 'Documentaries', 'Mini Series', 'Docuseries', 'Short Film', 'Reality Show', 'Talk Show', 'Game Show', 'Feel-Good', 'Laugh Out Loud', 'Heartfelt Stories', 'Spooky Nights', 'For Kids', 'Mind-Bending'];
