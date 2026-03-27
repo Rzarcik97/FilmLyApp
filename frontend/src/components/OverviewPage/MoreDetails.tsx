@@ -9,9 +9,9 @@ export const MoreDetails = () => {
             <Popcorn size={24} />
             <span className="text-black text-[13px]">Watchlist</span>
           </button>
-          <button className="text-whitish-text-color bg-dark-button cursor-pointer w-38 h-14 flex justify-center items-center gap-0.5">
+          <button className="text-foreground-light bg-dark-button cursor-pointer w-38 h-14 flex justify-center items-center gap-0.5">
             <Check size={24} />
-            <span className="text-whitish-text-color text-[13px]">Seen it</span>
+            <span className="text-foreground-light text-[13px]">Seen it</span>
           </button>
         </div>
 
@@ -33,13 +33,13 @@ export const MoreDetails = () => {
           turns to manufacturing and selling methamphetamine with a former student
           to secure his family's future.</p>
         <div className="flex justify-start items-center gap-1 text-[16px] font-bold pb-8">
-          <p className="text-light-text-color">CREATOR:</p>
+          <p className="text-foreground-light-2">CREATOR:</p>
           <span className="text-black">Vince Gilligan</span>
         </div>
         <div className="flex justify-start items-center gap-1 text-[16px] font-bold">
-          <p className="text-light-text-color">PRODUCTION COUNTRY:</p>
+          <p className="text-foreground-light-2">PRODUCTION COUNTRY:</p>
           <span className="text-black">United States</span>
-        </div>        
+        </div>
       </div>
     </div>
   )
