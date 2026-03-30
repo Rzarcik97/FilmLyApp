@@ -1,8 +1,8 @@
 package filmly.service.impl;
 
 import filmly.dto.content.CastDto;
+import filmly.dto.content.ContentDto;
 import filmly.dto.content.MovieDetailDto;
-import filmly.dto.content.MovieDto;
 import filmly.dto.tmdb.TmdbCreditsResponse;
 import filmly.dto.tmdb.TmdbMovieDetailResponse;
 import filmly.dto.tmdb.TmdbMovieResponse;
@@ -17,24 +17,24 @@ import org.springframework.web.client.RestClient;
 
 @Service
 @RequiredArgsConstructor
-public class MovieServiceImpl implements TmdbContentService<MovieDto, MovieDetailDto> {
+public class MovieServiceImpl implements TmdbContentService<ContentDto, MovieDetailDto> {
 
     private final RestClient restClient;
 
     private final MovieMapper movieMapper;
 
     @Override
-    public List<MovieDto> findPopular() {
+    public List<ContentDto> findPopular() {
         return fetch("/movie/popular");
     }
 
     @Override
-    public List<MovieDto> findTrending() {
+    public List<ContentDto> findTrending() {
         return fetch("/trending/movie/day");
     }
 
     @Override
-    public List<MovieDto> findRecent() {
+    public List<ContentDto> findRecent() {
         return fetch("/movie/now_playing");
     }
 
@@ -56,7 +56,7 @@ public class MovieServiceImpl implements TmdbContentService<MovieDto, MovieDetai
     }
 
     @Override
-    public List<MovieDto> findSimilar(Long id) {
+    public List<ContentDto> findSimilar(Long id) {
         TmdbMovieResponse response = restClient.get()
                 .uri("/movie/{id}/recommendations", id)
                 .retrieve()
@@ -73,7 +73,7 @@ public class MovieServiceImpl implements TmdbContentService<MovieDto, MovieDetai
     }
 
     @Override
-    public List<MovieDto> findRecommendations(Long userId) {
+    public List<ContentDto> findRecommendations(Long userId) {
 
         return List.of();
     }
@@ -90,7 +90,7 @@ public class MovieServiceImpl implements TmdbContentService<MovieDto, MovieDetai
         return movieMapper.toDetailDto(response);
     }
 
-    private List<MovieDto> fetch(String uri) {
+    private List<ContentDto> fetch(String uri) {
         TmdbMovieResponse response = restClient.get()
                 .uri(uri)
                 .retrieve()

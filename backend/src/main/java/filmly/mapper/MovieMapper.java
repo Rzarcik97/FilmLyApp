@@ -1,8 +1,8 @@
 package filmly.mapper;
 
 import filmly.config.MapperConfig;
+import filmly.dto.content.ContentDto;
 import filmly.dto.content.MovieDetailDto;
-import filmly.dto.content.MovieDto;
 import filmly.dto.genre.GenreDto;
 import filmly.dto.tmdb.TmdbContentResult;
 import filmly.dto.tmdb.TmdbMovieDetailResponse;
@@ -24,15 +24,13 @@ public abstract class MovieMapper {
 
     @Mapping(target = "type", constant = "MOVIE")
     @Mapping(source = "id", target = "contentId")
-    @Mapping(source = "posterPath", target = "posterPath")
     @Mapping(source = "genreIds", target = "genres")
-    public abstract MovieDto toDto(TmdbMovieResult result);
+    public abstract ContentDto toDto(TmdbMovieResult result);
 
     @Mapping(target = "type", constant = "MOVIE")
     @Mapping(source = "id", target = "contentId")
-    @Mapping(source = "posterPath", target = "posterPath")
     @Mapping(source = "genreIds", target = "genres")
-    public abstract MovieDto fromContentResult(TmdbContentResult result);
+    public abstract ContentDto fromContentResult(TmdbContentResult result);
 
     @Mapping(source = "videos", target = "trailerKey")
     public abstract MovieDetailDto toDetailDto(TmdbMovieDetailResponse response);

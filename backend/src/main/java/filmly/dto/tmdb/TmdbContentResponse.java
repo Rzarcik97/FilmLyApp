@@ -8,5 +8,4 @@ public record TmdbContentResponse(
         List<TmdbContentResult> results,
         @JsonProperty("total_pages") int totalPages,
         @JsonProperty("total_results") int totalResults) {
-
 }

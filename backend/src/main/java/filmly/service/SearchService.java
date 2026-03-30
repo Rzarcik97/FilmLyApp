@@ -1,18 +1,12 @@
 package filmly.service;
 
 import filmly.dto.content.ContentDto;
+import filmly.dto.search.DiscoverRequest;
+import filmly.dto.search.PagedResponse;
 import filmly.model.Content;
-import java.util.List;
 
 public interface SearchService {
-    List<ContentDto> search(String title, Content.ContentType type);
+    PagedResponse<ContentDto> search(String title, Content.ContentType type, Integer page);
 
-    List<ContentDto> discover(Double ratingMin,
-                              Double ratingMax,
-                              String dateFrom,
-                              String dateTo,
-                              List<Long> genreIds,
-                              String type,
-                              String sortBy,
-                              Integer page);
+    PagedResponse<ContentDto> discover(DiscoverRequest request);
 }

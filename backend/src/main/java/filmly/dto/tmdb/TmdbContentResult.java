@@ -10,6 +10,7 @@ public record TmdbContentResult(
         @JsonProperty("poster_path") String posterPath,
         @JsonProperty("genre_ids") List<Long> genreIds,
         @JsonProperty("vote_average") Double voteAverage,
+        @JsonProperty("vote_count") int voteCount,
         @JsonProperty("release_date") String releaseDate,
         @JsonProperty("first_air_date") String firstAirDate,
         String overview,
