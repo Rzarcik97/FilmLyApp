@@ -6,4 +6,9 @@ export enum FilterSection {
   Year = 'Year',
   Cast = 'Cast',
   Rating = 'Rating'
+};
+
+export enum StepEnum {
+  Email = 'email',
+  Password = 'password'
 }

@@ -15,6 +15,15 @@
   --color-input-border: #9A9A9A;
   --color-input-border-2: #6C6C6C;
   --color-input-range: #C4C4C4;
+  --color-signup-text: #686868;
+  --color-signup-text-2: #9B9BA2;
+  --color-signup-text-3: #D0D0D0;
+  --color-signup-text-4: #6E6E6E;
+  --color-signup-primary-background: #515152;
+  --color-signup-line: #33333A;
+  --color-signup-border: #8F8F99;
+  --color-signup-button-disabled: #7F7F7F;
+  --color-password-text-1: #F0F0F2;
 }
 
 body, html {
