@@ -32,7 +32,9 @@ export const Header = () => {
       <nav className="flex justify-center items-center gap-6">
         <NavItem icon={<Bell size={32} />} text="Reminder" alt="Reminder icon" />
         <NavItem icon={<Popcorn size={32} />} text="Watchlist" alt="Watchlist icon" />
-        <NavItem icon={<UserRound size={32} />} text="Sign in" alt="Sign-in icon" />
+        <Link to="/sign-up" className="">
+          <NavItem icon={<UserRound size={32} />} text="Sign in" alt="Sign-in icon" />
+        </Link>
         <NavItem icon={<Earth size={32} />} text="EN" alt="Language icon" />
       </nav>
     </header>
