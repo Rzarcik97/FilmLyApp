@@ -3,7 +3,11 @@ import { Header } from './components/MainPage/Header';
 import { MainPage } from './components/MainPage/MainPage';
 import './styles/App.css';
 import { OverviewPage } from './components/OverviewPage/OverviewPage';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { BrowsePage } from './components/BrowsePage/BrowsePage';
+import { SignUp } from './components/SignUp/SignUp';
+import { CreatePassword } from './components/SignUp/CreatePassword';
+import { StepEnum } from './types/enums';
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -20,15 +24,33 @@ const ScrollToTop = () => {
 };
 
 function App() {
+  const [isAuthOpen, setIsAuthOpen] = useState(false);
+  const [step, setStep] = useState(StepEnum.Email);
+  const [userData, setUserData] = useState({ email: '', password: '' });
+
+  const handleAuthOpen = () => {
+    setStep(StepEnum.Email);
+    setIsAuthOpen(true);
+  };
+
+  const handleNext = (email: string) => {
+    setUserData(prev => ({ ...prev, email }));
+    setStep(StepEnum.Password);
+  };
+
   return (
     <BrowserRouter>
-      <div className="app-container">
+      <div className="app-container relative">
         <ScrollToTop />
 
         <Header />
+
         <Routes>
           <Route path="/" element={<MainPage />} />
+          <Route path="/sign-up" element={<SignUp />} />
+          <Route path="/sign-up/password" element={<CreatePassword />} />
           <Route path="/movie/:id" element={<OverviewPage />} />
+          <Route path="/test-browse" element={<BrowsePage />} />
         </Routes>
 
       </div>

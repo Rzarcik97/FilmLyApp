@@ -3,11 +3,27 @@
 @theme {
   --color-primary-background: #D9D9D9;
   --color-light-background: #ededed;
+  --color-dark-background: #5E5E5E;
   --color-foreground-light: #FAFAFA;
   --color-foreground-grey: #565656;
   --color-dark-button: #7D7D7D;
   --color-light-border: #C1C1C1;
+  --color-light-border-2: #DDDDDD;
   --color-foreground-light-2: #6B6B6B;
+  --color-toggle-button: #747474;
+  --color-check-button: #817D7D;
+  --color-input-border: #9A9A9A;
+  --color-input-border-2: #6C6C6C;
+  --color-input-range: #C4C4C4;
+  --color-signup-text: #686868;
+  --color-signup-text-2: #9B9BA2;
+  --color-signup-text-3: #D0D0D0;
+  --color-signup-text-4: #6E6E6E;
+  --color-signup-primary-background: #515152;
+  --color-signup-line: #33333A;
+  --color-signup-border: #8F8F99;
+  --color-signup-button-disabled: #7F7F7F;
+  --color-password-text-1: #F0F0F2;
 }
 
 body, html {
