@@ -6,7 +6,6 @@ import filmly.dto.content.MovieDetailDto;
 import filmly.dto.genre.GenreDto;
 import filmly.dto.tmdb.TmdbContentResult;
 import filmly.dto.tmdb.TmdbMovieDetailResponse;
-import filmly.dto.tmdb.TmdbMovieResult;
 import filmly.dto.tmdb.TmdbVideoResult;
 import filmly.dto.tmdb.TmdbVideosResponse;
 import filmly.service.GenreService;
@@ -25,7 +24,7 @@ public abstract class MovieMapper {
     @Mapping(target = "type", constant = "MOVIE")
     @Mapping(source = "id", target = "contentId")
     @Mapping(source = "genreIds", target = "genres")
-    public abstract ContentDto toDto(TmdbMovieResult result);
+    public abstract ContentDto toDto(TmdbContentResult result);
 
     @Mapping(target = "type", constant = "MOVIE")
     @Mapping(source = "id", target = "contentId")

@@ -13,11 +13,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/user/rating")
 public class RatingController {
+
+    @Deprecated
     @GetMapping("/{contentType}")
     public ResponseEntity<?> getRatings(@PathVariable String contentType) {
         return ResponseEntity.ok().build();
     }
 
+    @Deprecated
     @PostMapping("/{contentType}/{id}")
     public ResponseEntity<?> addRating(@PathVariable String contentType,
                                        @PathVariable Long id,
@@ -25,12 +28,14 @@ public class RatingController {
         return ResponseEntity.status(201).build();
     }
 
+    @Deprecated
     @DeleteMapping("/{contentType}/{id}")
     public ResponseEntity<?> removeRating(@PathVariable String contentType,
                                           @PathVariable Long id) {
         return ResponseEntity.noContent().build();
     }
 
+    @Deprecated
     @PatchMapping("/{contentType}/{id}")
     public ResponseEntity<?> updateRating(@PathVariable String contentType,
                                           @PathVariable Long id,

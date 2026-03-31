@@ -49,6 +49,7 @@ public class MoviesController {
         return movieService.findSimilar(id);
     }
 
+    @Deprecated
     @GetMapping("/recommendation")
     public ResponseEntity<List<ContentDto>> getRecommendations() {
         // TODO: implement

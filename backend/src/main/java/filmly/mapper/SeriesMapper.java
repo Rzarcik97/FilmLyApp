@@ -2,8 +2,12 @@ package filmly.mapper;
 
 import filmly.config.MapperConfig;
 import filmly.dto.content.ContentDto;
+import filmly.dto.content.SeriesDetailDto;
 import filmly.dto.genre.GenreDto;
 import filmly.dto.tmdb.TmdbContentResult;
+import filmly.dto.tmdb.TmdbSeriesDetailResponse;
+import filmly.dto.tmdb.TmdbVideoResult;
+import filmly.dto.tmdb.TmdbVideosResponse;
 import filmly.service.GenreService;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,10 +22,35 @@ public abstract class SeriesMapper {
 
     @Mapping(target = "type", constant = "SERIES")
     @Mapping(source = "id", target = "contentId")
+    @Mapping(source = "genreIds", target = "genres")
+    @Mapping(source = "name", target = "title")
+    @Mapping(source = "firstAirDate", target = "releaseDate")
+    public abstract ContentDto toDto(TmdbContentResult result);
+
+    @Mapping(target = "type", constant = "SERIES")
+    @Mapping(source = "id", target = "contentId")
     @Mapping(source = "name", target = "title")
     @Mapping(source = "genreIds", target = "genres")
     @Mapping(source = "firstAirDate", target = "releaseDate")
     public abstract ContentDto fromContentResult(TmdbContentResult result);
+
+    @Mapping(source = "name", target = "title")
+    @Mapping(source = "firstAirDate",target = "releaseDate")
+    @Mapping(source = "videos", target = "trailerKey")
+    public abstract SeriesDetailDto toDetailDto(TmdbSeriesDetailResponse response);
+
+    protected String extractTrailerKey(TmdbVideosResponse videos) {
+        if (videos == null || videos.results() == null) {
+            return null;
+        }
+        return videos.results().stream()
+                .filter(v -> "YouTube".equals(v.site())
+                        && "Trailer".equals(v.type())
+                        && v.official())
+                .map(TmdbVideoResult::key)
+                .findFirst()
+                .orElse(null);
+    }
 
     protected List<GenreDto> longListToGenreDtoList(List<Long> genreIds) {
         if (genreIds == null) {
