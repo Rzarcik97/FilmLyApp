@@ -2,12 +2,12 @@ package filmly.service.impl;
 
 import filmly.dto.content.CastDto;
 import filmly.dto.content.ContentDto;
-import filmly.dto.content.MovieDetailDto;
+import filmly.dto.content.SeriesDetailDto;
 import filmly.dto.tmdb.TmdbContentResponse;
 import filmly.dto.tmdb.TmdbCreditsResponse;
-import filmly.dto.tmdb.TmdbMovieDetailResponse;
+import filmly.dto.tmdb.TmdbSeriesDetailResponse;
 import filmly.exception.EntityNotFoundException;
-import filmly.mapper.MovieMapper;
+import filmly.mapper.SeriesMapper;
 import filmly.service.TmdbContentService;
 import java.util.Comparator;
 import java.util.List;
@@ -17,36 +17,36 @@ import org.springframework.web.client.RestClient;
 
 @Service
 @RequiredArgsConstructor
-public class MovieServiceImpl implements TmdbContentService<ContentDto, MovieDetailDto> {
+public class SeriesServiceImpl implements TmdbContentService<ContentDto, SeriesDetailDto> {
 
     private final RestClient restClient;
 
-    private final MovieMapper movieMapper;
+    private final SeriesMapper seriesMapper;
 
     @Override
     public List<ContentDto> findPopular() {
-        return fetch("/movie/popular");
+        return fetch("/tv/popular");
     }
 
     @Override
     public List<ContentDto> findTrending() {
-        return fetch("/trending/movie/day");
+        return fetch("/trending/tv/day");
     }
 
     @Override
     public List<ContentDto> findRecent() {
-        return fetch("/movie/now_playing");
+        return fetch("/tv/on_the_air");
     }
 
     @Override
     public List<CastDto> findCast(Long id) {
         TmdbCreditsResponse response = restClient.get()
-                .uri("/movie/{id}/credits", id)
+                .uri("/tv/{id}/credits", id)
                 .retrieve()
                 .body(TmdbCreditsResponse.class);
 
         if (response == null || response.cast() == null) {
-            throw new EntityNotFoundException("Movie", id);
+            throw new EntityNotFoundException("Series", id);
         }
 
         return response.cast().stream()
@@ -58,17 +58,17 @@ public class MovieServiceImpl implements TmdbContentService<ContentDto, MovieDet
     @Override
     public List<ContentDto> findSimilar(Long id) {
         TmdbContentResponse response = restClient.get()
-                .uri("/movie/{id}/similar", id)
+                .uri("/tv/{id}/recommendations", id)
                 .retrieve()
                 .body(TmdbContentResponse.class);
 
         if (response == null || response.results() == null) {
-            throw new EntityNotFoundException("Movie", id);
+            throw new EntityNotFoundException("Series", id);
         }
 
         return response.results().stream()
                 .limit(10)
-                .map(movieMapper::toDto)
+                .map(seriesMapper::toDto)
                 .toList();
     }
 
@@ -79,15 +79,15 @@ public class MovieServiceImpl implements TmdbContentService<ContentDto, MovieDet
     }
 
     @Override
-    public MovieDetailDto findById(Long id) {
-        TmdbMovieDetailResponse response = restClient.get()
-                .uri("/movie/{id}?append_to_response=videos", id)
+    public SeriesDetailDto findById(Long id) {
+        TmdbSeriesDetailResponse response = restClient.get()
+                .uri("/tv/{id}?append_to_response=videos", id)
                 .retrieve()
-                .body(TmdbMovieDetailResponse.class);
+                .body(TmdbSeriesDetailResponse.class);
         if (response == null) {
-            throw new EntityNotFoundException("Movie", id);
+            throw new EntityNotFoundException("Series", id);
         }
-        return movieMapper.toDetailDto(response);
+        return seriesMapper.toDetailDto(response);
     }
 
     private List<ContentDto> fetch(String uri) {
@@ -101,7 +101,7 @@ public class MovieServiceImpl implements TmdbContentService<ContentDto, MovieDet
         }
 
         return response.results().stream()
-                .map(movieMapper::toDto)
+                .map(seriesMapper::toDto)
                 .toList();
     }
 }

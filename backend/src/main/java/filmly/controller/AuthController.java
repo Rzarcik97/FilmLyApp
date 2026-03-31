@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthController {
 
+    @Deprecated
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody Object registerRequest) {
         // TODO: replace Object with RegisterRequest DTO
@@ -19,6 +20,7 @@ public class AuthController {
         return ResponseEntity.status(201).build();
     }
 
+    @Deprecated
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody Object loginRequest) {
         // TODO: replace Object with LoginRequest DTO
@@ -26,6 +28,7 @@ public class AuthController {
         return ResponseEntity.ok().build();
     }
 
+    @Deprecated
     @PostMapping("/logout")
     public ResponseEntity<?> logout() {
         // TODO: resolve current user from SecurityContext

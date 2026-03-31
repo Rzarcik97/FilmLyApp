@@ -14,12 +14,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class UserController {
 
+    @Deprecated
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateUser(@PathVariable Long id,
                                         @RequestBody Object updateRequest) {
         return ResponseEntity.ok().build();
     }
 
+    @Deprecated
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
         return ResponseEntity.noContent().build();

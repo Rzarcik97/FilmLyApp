@@ -1,11 +1,14 @@
 package filmly.controller;
 
+import filmly.dto.content.ContentDto;
+import filmly.dto.content.SeriesDetailDto;
+import filmly.service.TmdbContentService;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -13,45 +16,29 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class SeriesController {
 
+    private final TmdbContentService<ContentDto, SeriesDetailDto> seriesService;
+
     @GetMapping("/popular")
-    public ResponseEntity<?> getPopularSeries() {
-        // TODO: implement
-        return ResponseEntity.ok().build();
+    public List<ContentDto> getPopularSeries() {
+        return seriesService.findPopular();
     }
 
     @GetMapping("/trending")
-    public ResponseEntity<?> getTrendingSeries() {
-        // TODO: implement
-        return ResponseEntity.ok().build();
+    public List<ContentDto> getTrendingSeries() {
+        return seriesService.findTrending();
     }
 
     @GetMapping("/recent")
-    public ResponseEntity<?> getRecentSeries() {
-        // TODO: implement
-        return ResponseEntity.ok().build();
+    public List<ContentDto> getRecentSeries() {
+        return seriesService.findRecent();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getSeriesById(@PathVariable Long id) {
-        // TODO: implement
-        return ResponseEntity.ok().build();
+    public SeriesDetailDto getSeriesById(@PathVariable Long id) {
+        return seriesService.findById(id);
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<?> searchSeries(
-            @RequestParam(required = false) String title,
-            @RequestParam(required = false) String productionDateFrom,
-            @RequestParam(required = false) String productionDateTo,
-            @RequestParam(required = false) Double ratingMin,
-            @RequestParam(required = false) Double ratingMax,
-            @RequestParam(required = false) String genre,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "20") int size
-    ) {
-        // TODO: implement
-        return ResponseEntity.ok().build();
-    }
-
+    @Deprecated
     @GetMapping("/recommendation")
     public ResponseEntity<?> getRecommendations() {
         // TODO: resolve current user from SecurityContext

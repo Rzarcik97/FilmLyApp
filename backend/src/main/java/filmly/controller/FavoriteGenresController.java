@@ -13,21 +13,26 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/user/favorite-genres")
 public class FavoriteGenresController {
+
+    @Deprecated
     @GetMapping
     public ResponseEntity<?> getFavoriteGenres() {
         return ResponseEntity.ok().build();
     }
 
+    @Deprecated
     @PostMapping("/{genreName}")
     public ResponseEntity<?> addFavoriteGenre(@PathVariable String genreName) {
         return ResponseEntity.status(201).build();
     }
 
+    @Deprecated
     @DeleteMapping("/{genreName}")
     public ResponseEntity<?> removeFavoriteGenre(@PathVariable String genreName) {
         return ResponseEntity.noContent().build();
     }
 
+    @Deprecated
     @PatchMapping("/{genreName}")
     public ResponseEntity<?> updateFavoriteGenre(@PathVariable String genreName,
                                                  @RequestBody Object updateRequest) {

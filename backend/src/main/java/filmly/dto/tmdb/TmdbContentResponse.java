@@ -3,9 +3,9 @@ package filmly.dto.tmdb;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-public record TmdbMovieResponse(
+public record TmdbContentResponse(
         int page,
-        List<TmdbMovieResult> results,
+        List<TmdbContentResult> results,
         @JsonProperty("total_pages") int totalPages,
-        @JsonProperty("total_results") int totalResults
-) {}
+        @JsonProperty("total_results") int totalResults) {
+}
