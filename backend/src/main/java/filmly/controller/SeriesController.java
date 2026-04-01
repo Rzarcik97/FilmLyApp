@@ -1,5 +1,6 @@
 package filmly.controller;
 
+import filmly.dto.content.CastDto;
 import filmly.dto.content.ContentDto;
 import filmly.dto.content.SeriesDetailDto;
 import filmly.service.TmdbContentService;
@@ -31,6 +32,16 @@ public class SeriesController {
     @GetMapping("/recent")
     public List<ContentDto> getRecentSeries() {
         return seriesService.findRecent();
+    }
+
+    @GetMapping("/{id}/cast")
+    public List<CastDto> getSeriesCast(@PathVariable Long id) {
+        return seriesService.findCast(id);
+    }
+
+    @GetMapping("/{id}/similar")
+    public List<ContentDto> getSeriesSimilar(@PathVariable Long id) {
+        return seriesService.findSimilar(id);
     }
 
     @GetMapping("/{id}")
