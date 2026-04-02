@@ -48,7 +48,7 @@ export const SignUp = () => {
             </div>
 
             <div className="flex items-center w-full my-6 gap-4">
-              <div className="flex-1 h-[1px] bg-signup-line"></div>
+              <div className="flex-1 h-[1px] bg-signup-line" />
 
               <span className="text-signup-text-2 text-[20px] font-semibold">or</span>
 
