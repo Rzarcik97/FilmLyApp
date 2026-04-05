@@ -5,15 +5,21 @@ export interface Genre {
 
 export interface Movie {
   id: number;
-  title: string;
+  title: string | null;
   overview: string;
   status: string;
   runtime: number;
   popularity: number;
-  vote_average: number;
+
+  vote_average?: number;
+  voteAverage?: number;
+
   vote_count: number;
   trailerKey: string;
-  poster_path: string;
+
+  poster_path?: string;
+  posterPath?: string;
+
   backdrop_path: string;
   genres: Genre[];
 }
