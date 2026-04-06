@@ -1,4 +1,4 @@
-import type { Movie } from '../types';
+import type { Genre, Movie } from '../types';
 import apiClient from './apiClient';
 
 export const getMovieDetails = async (id: string | number): Promise<Movie> => {
@@ -23,5 +23,10 @@ export const getRecentMovies = async (): Promise<Movie[]> => {
 
 export const getPopularMovies = async (): Promise<Movie[]> => {
   const response = await apiClient.get<Movie[]>('/movies/popular');
+  return response.data;
+}
+
+export const getGenres = async (): Promise<Genre[]> => {
+  const response = await apiClient.get<Genre[]>('/genres');
   return response.data;
 }

@@ -27,7 +27,11 @@ export const ScrollSection = ({ title, items }: ScrollSectionProps) => {
   return (
     <section className="py-10 px-12">
       <div className="flex justify-between items-center pb-2">
-        <h2 className="text-[48px] fw-bold">{title}</h2>
+        <div className="flex gap-2 items-center">
+          <div className="w-1 h-[35px] bg-primary-0 rounded-full" />
+          <h2 className="text-[36px] leading-[1.2] font-bold text-secondary-light">{title}</h2>
+        </div>
+        
         <button className="cursor-pointer text-[20px]">
           View all
         </button>
@@ -36,7 +40,13 @@ export const ScrollSection = ({ title, items }: ScrollSectionProps) => {
       <div className="flex justify-center items-center gap-2">
         <button
           onClick={() => scroll('left')}
-          className="text-[#626262] cursor-pointer"
+          className="text-primary-0 cursor-pointer
+          w-12 h-12 flex justify-center items-center
+          bg-gray-80/10 backdrop-blur-[2px]
+          rounded-full border border-gray-80/10
+          before:content-[''] before:absolute before:inset-0
+          before:rounded-full before:border before:border-white/20
+          "
         >
           <ChevronLeft size={24} />
         </button>
@@ -50,7 +60,13 @@ export const ScrollSection = ({ title, items }: ScrollSectionProps) => {
         </div>
         <button
           onClick={() => scroll('right')}
-          className="text-[#626262] cursor-pointer"
+          className="text-primary-0 cursor-pointer
+          w-12 h-12 flex justify-center items-center
+          bg-gray-80/10 backdrop-blur-[2px]
+          rounded-full border border-gray-80/10
+          before:content-[''] before:absolute before:inset-0
+          before:rounded-full before:border before:border-white/20
+          "
         >
           <ChevronRight size={24} />
         </button>

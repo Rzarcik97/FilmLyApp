@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
-import type { Actor, Movie } from '../../types';
+import { type Genre, type Actor, type Movie } from '../../types';
 import { mockActors, mockMovies } from '../../utils/mockData';
 import { AboutUs } from './AboutUs';
 import { ScrollActors } from './ScrollActors';
 import { ScrollSection } from './ScrollSection';
 import { WhatShouldIWatch } from './WhatShouldIWatch';
-import { getPopularMovies, getRecentMovies, getTrendingMovies, getTrendingSeries } from '../../api/movieService';
+import { getGenres, getPopularMovies, getRecentMovies, getTrendingMovies, getTrendingSeries } from '../../api/movieService';
+import { MainBrowse } from './MainBrowse';
 
 
 export const MainPage = () => {
@@ -13,16 +14,18 @@ export const MainPage = () => {
   const [trendingSeries, setTrendingSeries] = useState<Movie[]>([]);
   const [recent, setRecent] = useState<Movie[]>([]);
   const [popular, setPopular] = useState<Movie[]>([]);
+  const [genres, setGenres] = useState<Genre[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchAllData = async () => {
       try {
-        const [trendingData, seriesData, recentData, popularData] = await Promise.all([
+        setLoading(true);
+
+        const [trendingData, seriesData, allGenres] = await Promise.all([
           getTrendingMovies(),
           getTrendingSeries(),
-          getRecentMovies(),
-          getPopularMovies(),
+          getGenres(),
         ]);
 
         const prepareMovies = (movies: Movie[]) => {
@@ -33,8 +36,7 @@ export const MainPage = () => {
 
         setTrending(prepareMovies(trendingData));
         setTrendingSeries(prepareMovies(seriesData));
-        setRecent(prepareMovies(recentData));
-        setPopular(prepareMovies(popularData));
+        setGenres(allGenres);
       } catch (error) {
         console.error('Failed to load movies from the backend', error);
       } finally {
@@ -47,9 +49,10 @@ export const MainPage = () => {
 
 
   return (
-    <main className="bg-light-background">
+    <main className="bg-primary-background-dark">
       <AboutUs />
-      <ScrollSection title="Trending now" items={loading ? [] : trending} />
+      <MainBrowse genres={genres} />
+      <ScrollSection title="Trending Now" items={loading ? [] : trending} />
       <WhatShouldIWatch />
       <ScrollSection title="Critics’ Choice" items={mockMovies} />
       <ScrollSection title="Top TV Series" items={loading ? [] : trendingSeries} />
