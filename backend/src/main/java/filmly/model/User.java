@@ -41,6 +41,8 @@ public class User implements UserDetails {
     private String lastName;
     @Column(nullable = false)
     private String avatarUrl;
+    @Column(nullable = false)
+    private LocalDateTime createdAt;
     // @Enumerated(EnumType.STRING)
     //  for later use
     //    @Column(nullable = false)

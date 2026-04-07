@@ -31,6 +31,7 @@ public abstract class MovieMapper {
     @Mapping(source = "genreIds", target = "genres")
     public abstract ContentDto fromContentResult(TmdbContentResult result);
 
+    @Mapping(target = "type", constant = "MOVIE")
     @Mapping(source = "videos", target = "trailerKey")
     public abstract MovieDetailDto toDetailDto(TmdbMovieDetailResponse response);
 

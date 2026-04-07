@@ -7,9 +7,10 @@ import java.util.List;
 public record TmdbSeriesDetailResponse(
         Long id,
         String name,
+        @JsonProperty("tagline")String tagLine,
         String overview,
         String status,
-        @JsonProperty("first_air_date") String firstAirDate,
+        @JsonProperty("first_air_date")String firstAirDate,
         @JsonProperty("number_of_episodes")Integer numberOfEpisodes,
         @JsonProperty("number_of_seasons")Integer numberOfSeasons,
         Double popularity,

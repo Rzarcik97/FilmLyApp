@@ -34,6 +34,7 @@ public abstract class SeriesMapper {
     @Mapping(source = "firstAirDate", target = "releaseDate")
     public abstract ContentDto fromContentResult(TmdbContentResult result);
 
+    @Mapping(target = "type", constant = "SERIES")
     @Mapping(source = "name", target = "title")
     @Mapping(source = "firstAirDate",target = "releaseDate")
     @Mapping(source = "videos", target = "trailerKey")
