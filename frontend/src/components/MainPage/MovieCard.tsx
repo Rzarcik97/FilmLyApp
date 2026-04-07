@@ -17,7 +17,7 @@ export const MovieCard = ({ movie }: { movie: Movie }) => {
           cursor-pointer
     ">
       <Link
-        to={`/movies/${movie.id}`}
+        to={`/movies/${movie.contentId}`}
         state={{ from: location.pathname }}
       >
         <div className="h-[328px] flex-1 flex justify-center items-center">
@@ -32,7 +32,6 @@ export const MovieCard = ({ movie }: { movie: Movie }) => {
           />
         </div>
         <div className="p-2 bg-gray-100 h-28 shrink-0 text-gray-30 text-[16px] font-bold">
-          {/* h-auto replace h-18 here because of that Mario Movie, I need to ask a designer what to do in such cases */}
           <div className="flex items-center justify-between">
             <div className="flex gap-2 items-center">
               <p className="">

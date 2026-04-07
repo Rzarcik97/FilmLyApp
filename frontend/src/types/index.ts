@@ -4,12 +4,15 @@ export interface Genre {
 }
 
 export interface Movie {
-  id: number;
+  id?: number;
+  contentId?: number;
+
   title: string | null;
   overview: string;
   status: string;
   runtime: number;
   popularity: number;
+  release_date?: string;
 
   vote_average?: number;
   voteAverage?: number;
