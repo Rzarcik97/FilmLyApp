@@ -6,7 +6,8 @@ import java.util.List;
 
 public record TmdbMovieDetailResponse(
         Long id,
-        String name,
+        String title,
+        @JsonProperty("tagline")String tagLine,
         String overview,
         String status,
         @JsonProperty("release_date") String releaseDate,
