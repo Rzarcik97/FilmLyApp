@@ -23,6 +23,9 @@ jobs:
       # BACKEND
       - name: Build backend
         working-directory: backend
+        env:
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          JWT_EXPIRATION: ${{ secrets.JWT_EXPIRATION }}
         run: mvn --batch-mode clean verify
 
 #      # NODE
