@@ -1,7 +1,13 @@
 package filmly.controller;
 
+import filmly.dto.user.UserLoginRequestDto;
+import filmly.dto.user.UserLoginResponseDto;
+import filmly.dto.user.UserRegisterRequestDto;
+import filmly.dto.user.UserResponseDto;
+import filmly.service.AuthenticationService;
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,27 +18,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthController {
 
-    @Deprecated
-    @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody Object registerRequest) {
-        // TODO: replace Object with RegisterRequest DTO
-        // TODO: implement
-        return ResponseEntity.status(201).build();
+    private final AuthenticationService authenticationService;
+
+    @PostMapping("/registration")
+    @Operation(summary = "Register User", description = "Register new user in dataBase")
+    UserResponseDto register(@RequestBody @Valid UserRegisterRequestDto request) {
+        return authenticationService.register(request);
     }
 
-    @Deprecated
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Object loginRequest) {
-        // TODO: replace Object with LoginRequest DTO
-        // TODO: implement – authenticate and return JWT / session token
-        return ResponseEntity.ok().build();
-    }
-
-    @Deprecated
-    @PostMapping("/logout")
-    public ResponseEntity<?> logout() {
-        // TODO: resolve current user from SecurityContext
-        // TODO: implement – invalidate token / session
-        return ResponseEntity.noContent().build();
+    @Operation(summary = "Login User", description = "Authorize user with dataBase")
+    public UserLoginResponseDto login(@RequestBody @Valid UserLoginRequestDto request) {
+        return authenticationService.login(request);
     }
 }

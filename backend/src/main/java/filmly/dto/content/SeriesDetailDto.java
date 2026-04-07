@@ -2,11 +2,14 @@ package filmly.dto.content;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import filmly.dto.genre.GenreDto;
+import filmly.model.Content;
 import java.util.List;
 
 public record SeriesDetailDto(
         Long id,
         String title,
+        Content.ContentType type,
+        String tagLine,
         String overview,
         String status,
         @JsonProperty("release_date") String releaseDate,
