@@ -23,11 +23,12 @@ const NavItem = ({ icon, alt }: NavItemsProps) => (
 export const Header = () => {
   return (
     <header className="flex justify-between items-center
-      sticky top-8 z-50 mx-15 h-[79px]
+      absolute top-8 z-50 mx-15 h-[79px]
       bg-gray-90/28 backdrop-blur-[2px] rounded-2xl border border-gray-90/10
       relative z-0
       before:content-[''] before:absolute before:inset-0 before:pointer-events-none
       before:rounded-2xl before:border before:border-gray-90/20
+      shadow-[0_20px_50px_rgba(0,0,0,0.8)]
     ">
       <div className="relative">
         <Link to="/">

@@ -7,6 +7,7 @@ import { ScrollSection } from './ScrollSection';
 import { WhatShouldIWatch } from './WhatShouldIWatch';
 import { getGenres, getPopularMovies, getRecentMovies, getTrendingMovies, getTrendingSeries } from '../../api/movieService';
 import { MainBrowse } from './MainBrowse';
+import { ScrollSectionTrending } from './ScrollSectionTrending';
 
 
 export const MainPage = () => {
@@ -52,7 +53,7 @@ export const MainPage = () => {
     <main className="bg-primary-background-dark">
       <AboutUs />
       <MainBrowse genres={genres} />
-      <ScrollSection title="Trending Now" items={loading ? [] : trending} />
+      <ScrollSectionTrending title="Trending Now" items={loading ? [] : trending} />
       <WhatShouldIWatch />
       <ScrollSection title="Critics’ Choice" items={mockMovies} />
       <ScrollSection title="Top TV Series" items={loading ? [] : trendingSeries} />

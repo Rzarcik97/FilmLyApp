@@ -3,12 +3,12 @@ import type { Movie } from '../../types'
 import { MovieCard } from './MovieCard';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-interface ScrollSectionProps {
+interface ScrollSectionTrendingProps {
   items: Movie[];
   title: string;
 }
 
-export const ScrollSection = ({ title, items }: ScrollSectionProps) => {
+export const ScrollSectionTrending = ({ title, items }: ScrollSectionTrendingProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scroll = (direction: 'left' | 'right') => {
@@ -31,7 +31,7 @@ export const ScrollSection = ({ title, items }: ScrollSectionProps) => {
           <div className="w-1 h-[35px] bg-primary-0 rounded-full" />
           <h2 className="text-[36px] leading-[1.2] font-bold text-secondary-light">{title}</h2>
         </div>
-
+        
         <button className="cursor-pointer text-[16px] text-secondary-light font-nunito font-bold">
           View all
         </button>
@@ -52,11 +52,27 @@ export const ScrollSection = ({ title, items }: ScrollSectionProps) => {
         </button>
         <div
           ref={scrollRef}
-          className="flex flex-nowrap w-full gap-10 overflow-x-hidden scroll-smooth py-4"
+          className="flex flex-nowrap w-full gap-6 overflow-x-hidden scroll-smooth px-12 py-4"
         >
-          {items.map((item) => (
-            <div className="relative z-10">
-              <MovieCard movie={item} />
+          {items.map((item, index) => (
+            <div 
+              key={item.id}
+              className="relative flex-none w-[240px] snap-start"
+            >
+              <span className="
+                absolute -left-12 top-3/4 -translate-y-1/2 
+                text-[200px] font-bold leading-none
+                text-primary-0/20
+                select-none z-0
+                font-nunito tracking-tighter
+                opacity-80 blur-[0.5px]"
+              >
+                {index + 1}
+              </span>
+
+              <div className="relative z-10">
+                <MovieCard movie={item} />
+              </div>
             </div>
           ))}
         </div>

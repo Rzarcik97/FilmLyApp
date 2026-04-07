@@ -49,7 +49,7 @@ function App() {
           <Route path="/" element={<MainPage />} />
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/sign-up/password" element={<CreatePassword />} />
-          <Route path="/movie/:id" element={<OverviewPage />} />
+          <Route path="/movies/:id" element={<OverviewPage />} />
           <Route path="/test-browse" element={<BrowsePage />} />
         </Routes>
 
