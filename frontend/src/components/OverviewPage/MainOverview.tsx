@@ -4,47 +4,15 @@ import imdb from '../../../public/icons/imdb.png';
 import thumbsUp from '../../../public/icons/thumbUp-primary.png';
 import play from '../../../public/icons/play.png';
 import mute from '../../../public/icons/mute.png';
-import { useEffect, useState } from 'react';
 import type { Movie } from '../../types';
-import { getMovieDetails } from '../../api/movieService';
 
-export const MainOverview = () => {
+interface MainOverviewProps {
+  movie: Movie;
+}
+
+export const MainOverview = ({ movie }: MainOverviewProps) => {
   const navigate = useNavigate();
-  const location = useLocation();
-
-  const { id } = useParams<{ id: string }>();
-  const [movie, setMovie] = useState<Movie | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchMovie = async () => {
-      if (!id) return;
-      try {
-        setLoading(true);
-        const data = await getMovieDetails(id);
-        setMovie(data);
-      } catch (error) {
-        console.error('Error fetching movie details occurred: ', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchMovie();
-  }, [id]);
-
-  // if (loading) {
-  //   return (
-
-  //   )
-  // }
-
-  // if (!movie) {
-  //   return (
-
-  //   )
-  // } add logic for loading and no movie found later
-
-  const genres = movie?.genres;
+  const location = useLocation();  
 
   const navigateBack = () => {
     if (location.state?.from) {
@@ -54,10 +22,11 @@ export const MainOverview = () => {
     }
   };
 
+  const genres = movie?.genres;
   const backdropUrl = movie?.backdrop_path
     ? `https://image.tmdb.org/t/p/original${movie.backdrop_path}`
     : '';
-
+  
   return (
     <div
       className="bg-gray-100 px-10 min-h-screen bg-cover bg-center bg-no-repeat relative flex flex-col -mt-[111px]"
@@ -65,7 +34,7 @@ export const MainOverview = () => {
         backgroundImage: `linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 40%, transparent 100%), url(${backdropUrl})`
       }}
     >
-      <div className="flex justify-between items-center pt-36">
+      <div className="flex justify-between items-center pt-36 hidden">
         <button
           className="flex justify-center items-center cursor-pointer"
           onClick={(e) => {
@@ -85,7 +54,9 @@ export const MainOverview = () => {
       <div className="flex justify-between items-end pb-8">
         <div className="w-[432px] flex flex-col gap-2">
           <h1 className="text-[48px] text-gray-0 font-bold text-center font-nunito leading-[1]">{movie?.title || 'Movie Title'}</h1>
-          <p className="text-[20px] leading-[1.45] text-gray-0 font-semibold text-center font-nunito">Slogan</p>
+          {movie?.tagLine && (
+            <p className="text-[20px] leading-[1.45] text-gray-0 font-semibold text-center font-nunito">{`"${movie?.tagLine}"`}</p>
+          )}
 
           <div className="flex flex-wrap justify-center items-center gap-2">
             {genres?.map((genre) => (
@@ -98,7 +69,9 @@ export const MainOverview = () => {
             ))}
           </div>
           <p className="text-[20px] text-gray-30 text-center leading-[1.45]">
-            {movie?.release_date?.split('-')[0] || 'YYYY'} • {movie?.runtime}m • TV-Ma
+            {movie?.release_date?.split('-')[0] || 'YYYY'} • {movie?.runtime}m • <span className="capitalize">
+              {movie?.type.toLowerCase()}
+            </span>
           </p>
 
           <div className="flex justify-evenly items-center">

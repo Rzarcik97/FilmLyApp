@@ -3,8 +3,13 @@ import watchlist from '../../../public/icons/watchlist_popcorn.png';
 import thumbsUp from '../../../public/icons/thumbUp.png';
 import thumbsUpPrimary from '../../../public/icons/thumbUp-primary.png';
 import thumbsDown from '../../../public/icons/thumbDown.png';
+import type { Movie } from '../../types';
 
-export const MoreDetails = () => {
+interface MoreDetailsProps {
+  movie: Movie;
+}
+
+export const MoreDetails = ({ movie }: MoreDetailsProps) => {
   return (
     <div className="px-12 pt-8 bg-gray-100">
       <div className="flex justify-between items-center pb-[42px]">
@@ -43,18 +48,16 @@ export const MoreDetails = () => {
         </div>
       </div>
 
-      <div className="py-6 border-y border-primary-background">
-        <h1 className="text-[32px] text-black font-bold pb-8">More Details</h1>
-        <p className="text-[16px] text-black font-bold pb-8">A chemistry teacher diagnosed with inoperable lung cancer
-          turns to manufacturing and selling methamphetamine with a former student
-          to secure his family's future.</p>
-        <div className="flex justify-start items-center gap-1 text-[16px] font-bold pb-8">
-          <p className="text-foreground-light-2">CREATOR:</p>
-          <span className="text-black">Vince Gilligan</span>
+      <div className="py-6 border-b border-secondary-light flex flex-col gap-8">
+        <h1 className="text-[36px] text-secondary-light font-bold leading-[1.2] font-nunito">More Details</h1>
+        <p className="text-[20px] text-gray-50 font-semibold">{movie?.overview}</p>
+        <div className="flex justify-start items-center gap-1 text-[24px] leading-[1.3] font-semibold font-nunito">
+          <p className="text-gray-80">Creator:</p>
+          <span className="text-primary-0">Vince Gilligan</span>
         </div>
-        <div className="flex justify-start items-center gap-1 text-[16px] font-bold">
-          <p className="text-foreground-light-2">PRODUCTION COUNTRY:</p>
-          <span className="text-black">United States</span>
+        <div className="flex justify-start items-center gap-1 text-[24px] leading-[1.3] font-semibold font-nunito">
+          <p className="text-gray-80">Production Country:</p>
+          <span className="text-primary-0">United States</span>
         </div>
       </div>
     </div>

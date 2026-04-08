@@ -8,6 +8,8 @@ export interface Movie {
   contentId?: number;
 
   title: string | null;
+  tagLine: string;
+  type: string;
   overview: string;
   status: string;
   runtime: number;
@@ -30,6 +32,7 @@ export interface Movie {
 export interface Actor {
   id: number;
   name: string;
+  profile_path?: string;
 }
 
 export interface RangeState {

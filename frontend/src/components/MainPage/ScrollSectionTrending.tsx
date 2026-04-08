@@ -70,8 +70,8 @@ export const ScrollSectionTrending = ({ title, items }: ScrollSectionTrendingPro
                 {index + 1}
               </span>
 
-              <div className="relative z-10" key={item.contentId}>
-                <MovieCard movie={item} />
+              <div className="relative z-10">
+                <MovieCard key={item.contentId} movie={item} />
               </div>
             </div>
           ))}

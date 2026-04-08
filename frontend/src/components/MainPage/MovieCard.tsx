@@ -8,6 +8,10 @@ import empty_img from '../../../public/icons/empty-img.png';
 export const MovieCard = ({ movie }: { movie: Movie }) => {
   const location = useLocation();
 
+  const posterUrl = (movie.posterPath || movie.poster_path)
+    ? `https://image.tmdb.org/t/p/w500${movie.posterPath || movie.poster_path}`
+    : empty_img;
+
   return (
     <div className="w-[203px] h-auto flex flex-col shrink-0 rounded-[16px] overflow-hidden 
           border border-gray-30/10 backdrop-blur-[2px]
@@ -22,13 +26,9 @@ export const MovieCard = ({ movie }: { movie: Movie }) => {
       >
         <div className="h-[328px] flex-1 flex justify-center items-center">
           <img
-            src={
-              (movie.posterPath || movie.poster_path)
-                ? `https://image.tmdb.org/t/p/w500${movie.posterPath || movie.poster_path}`
-                : empty_img
-            }
+            src={posterUrl}
             alt={movie.title || "Movie Poster"}
-            className="w-full h-full object-cover"
+            className={`w-full h-full ${posterUrl === empty_img ? 'object-contain p-8' : 'object-cover'}`}
           />
         </div>
         <div className="p-2 bg-gray-100 h-28 shrink-0 text-gray-30 text-[16px] font-bold">
