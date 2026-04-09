@@ -45,7 +45,7 @@ public class SecurityConfig {
                                         "/movies/**",
                                         "/genres/**",
                                         "/search/**",
-                                        "series/**")
+                                        "/series/**")
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated()

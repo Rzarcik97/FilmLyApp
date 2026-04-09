@@ -8,7 +8,8 @@ import filmly.dto.tmdb.TmdbCreditsResponse;
 import filmly.dto.tmdb.TmdbMovieDetailResponse;
 import filmly.exception.EntityNotFoundException;
 import filmly.mapper.MovieMapper;
-import filmly.service.TmdbContentService;
+import filmly.service.MovieService;
+import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ import org.springframework.web.client.RestClient;
 
 @Service
 @RequiredArgsConstructor
-public class MovieServiceImpl implements TmdbContentService<ContentDto, MovieDetailDto> {
+public class MovieServiceImpl implements MovieService {
 
     private final RestClient restClient;
 
@@ -36,6 +37,15 @@ public class MovieServiceImpl implements TmdbContentService<ContentDto, MovieDet
     @Override
     public List<ContentDto> findRecent() {
         return fetch("/movie/now_playing");
+    }
+
+    @Override
+    public List<ContentDto> findUpcoming() {
+        String today = LocalDate.now().toString();
+        String future = LocalDate.now().plusMonths(3).toString();
+        return fetch("/discover/movie?primary_release_date.gte=" + today
+                + "&primary_release_date.lte=" + future
+                + "&sort_by=popularity.desc");
     }
 
     @Override
