@@ -23,14 +23,17 @@ export const MainPage = () => {
       try {
         setLoading(true);
 
-        const [trendingData, seriesData, allGenres] = await Promise.all([
+        const [trendingData, seriesData, allGenres, popularData, recentData] = await Promise.all([
           getTrendingMovies(),
           getTrendingSeries(),
           getGenres(),
+          getPopularMovies(),
+          getRecentMovies()
         ]);
 
         const prepareMovies = (movies: Movie[]) => {
           return movies
+            .filter(movie => movie.posterPath !== null)
             .slice(0, 10) // I believe we discussed to take only first 10 items for this
             .map(movie => ({ ...movie }));
         };
@@ -38,6 +41,8 @@ export const MainPage = () => {
         setTrending(prepareMovies(trendingData));
         setTrendingSeries(prepareMovies(seriesData));
         setGenres(allGenres);
+        setPopular(prepareMovies(popularData));
+        setRecent(prepareMovies(recentData));
       } catch (error) {
         console.error('Failed to load movies from the backend', error);
       } finally {
@@ -55,9 +60,9 @@ export const MainPage = () => {
       <MainBrowse genres={genres} />
       <ScrollSectionTrending title="Trending Now" items={loading ? [] : trending} />
       <WhatShouldIWatch />
-      <ScrollSection title="Critics’ Choice" items={mockMovies} />
+      <ScrollSection title="Critics’ Choice" items={loading ? [] : popular} />
       <ScrollSection title="Top TV Series" items={loading ? [] : trendingSeries} />
-      <ScrollSection title="Coming Soon" items={mockMovies} />
+      <ScrollSection title="Latest Premieres" items={loading ? [] : recent} />
       <ScrollActors title="Popular actors" items={mockActors} />
     </main>
   )

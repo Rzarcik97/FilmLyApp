@@ -8,6 +8,7 @@ import { BrowsePage } from './components/BrowsePage/BrowsePage';
 import { SignUp } from './components/SignUp/SignUp';
 import { CreatePassword } from './components/SignUp/CreatePassword';
 import { StepEnum } from './types/enums';
+import { Footer } from './components/MainPage/Footer';
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -53,6 +54,7 @@ function App() {
           <Route path="/test-browse" element={<BrowsePage />} />
         </Routes>
 
+        <Footer />
       </div>
     </BrowserRouter>
   )

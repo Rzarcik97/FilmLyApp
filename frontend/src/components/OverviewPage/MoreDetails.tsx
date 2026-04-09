@@ -40,9 +40,7 @@ export const MoreDetails = ({ movie }: MoreDetailsProps) => {
           before:content-[''] before:absolute before:inset-0
           before:rounded-full before:border before:border-gray-80/20
           ">
-            <div className="w-6 h-6 flex justify-center items-center">
-              <img src={thumbsDown} alt="Dislikes"/>
-            </div>
+            <img src={thumbsDown} alt="Dislikes" className="w-6 h-6 object-cover" />
             <span className="text-white text-[12px] font-semibold font-nunito">2.8k</span>
           </button>
         </div>

@@ -29,8 +29,15 @@ export const OverviewPage = () => {
           getSimilarContent(id, movieData.type)
         ]);
 
+        const prepareMovies = (movies: Movie[]) => {
+          return movies
+            .filter(movie => movie.posterPath !== null)
+            .slice(0, 10)
+            .map(movie => ({ ...movie }));
+        };
+
         setCast(castData);
-        setSimilarItems(similarData);
+        setSimilarItems(prepareMovies(similarData));
       } catch (error) {
         console.error('Error fetching movie details occurred: ', error);
       } finally {
