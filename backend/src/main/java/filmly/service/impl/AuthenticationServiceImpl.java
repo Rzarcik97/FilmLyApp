@@ -42,7 +42,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         user.setEmail(user.getEmail().toLowerCase());
         user.setUsername(user.getUsernameField());
         user.setCreatedAt(LocalDateTime.now());
-        //TODO create default avatar url
         user.setAvatarUrl("default.jpg");
         User savedUser = userRepository.save(user);
         log.info("User register successfully: id = {}", savedUser.getId());

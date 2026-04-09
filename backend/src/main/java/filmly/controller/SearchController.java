@@ -4,9 +4,13 @@ import filmly.dto.content.ContentDto;
 import filmly.dto.search.DiscoverRequest;
 import filmly.dto.search.PagedResponse;
 import filmly.enums.SortBy;
+import filmly.exception.ErrorResponse;
 import filmly.model.Content;
 import filmly.service.SearchService;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +26,14 @@ public class SearchController {
     private final SearchService searchService;
 
     @GetMapping
+    @Operation(summary = "Search content by title",
+            description = "Search for movies and series by title,"
+                    + " optionally filtered by content type")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "429", description = "Too many requests to TMDB",
+                    content = @io.swagger.v3.oas.annotations.media.Content(
+                            schema = @Schema(implementation = ErrorResponse.class)))
+    })
     public PagedResponse<ContentDto> search(
             @RequestParam String title,
             @RequestParam(required = false) Content.ContentType type,
@@ -29,6 +41,14 @@ public class SearchController {
         return searchService.search(title,type,page);
     }
 
+    @Operation(summary = "Discover content",
+            description = "Filter and sort movies or series by rating, release date"
+                    + ", genres, content type and sort order")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "429", description = "Too many requests to TMDB",
+                    content = @io.swagger.v3.oas.annotations.media.Content(
+                            schema = @Schema(implementation = ErrorResponse.class)))
+    })
     @GetMapping("/discover")
     public PagedResponse<ContentDto> discover(
             @RequestParam(required = false) @Schema(example = "7.0") Double ratingMin,

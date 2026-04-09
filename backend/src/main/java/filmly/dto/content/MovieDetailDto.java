@@ -2,6 +2,7 @@ package filmly.dto.content;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import filmly.dto.genre.GenreDto;
+import filmly.dto.tmdb.TmdbProductionCountryDto;
 import filmly.model.Content;
 import java.util.List;
 
@@ -20,5 +21,6 @@ public record MovieDetailDto(
         String trailerKey,
         @JsonProperty("poster_path") String posterPath,
         @JsonProperty("backdrop_path") String backdropPath,
+        @JsonProperty("production_countries") List<TmdbProductionCountryDto> productionCountries,
         List<GenreDto> genres
 ) {}
