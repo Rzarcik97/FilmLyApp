@@ -1,15 +1,18 @@
-import { ChevronLeft, Play, VolumeX, UserStar } from 'lucide-react';
+import { ChevronLeft } from 'lucide-react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import empty_img from '../../../public/icons/empty-img.png';
-import imdb from '../../../public/icons/imdb_black.png';
+import imdb from '../../../public/icons/imdb.png';
+import thumbsUp from '../../../public/icons/thumbUp-primary.png';
+import play from '../../../public/icons/play.png';
+import mute from '../../../public/icons/mute.png';
+import type { Movie } from '../../types';
 
-export const MainOverview = () => {
+interface MainOverviewProps {
+  movie: Movie;
+}
+
+export const MainOverview = ({ movie }: MainOverviewProps) => {
   const navigate = useNavigate();
-  const location = useLocation();
-
-  const { id } = useParams();
-
-  const genres = ["Drama Mystery", "Thriller", "Crime", "Dark Crime"]; // this will be replaced with the data from DB, I kept it here for now just for my visual understanding how to style it
+  const location = useLocation();  
 
   const navigateBack = () => {
     if (location.state?.from) {
@@ -19,9 +22,19 @@ export const MainOverview = () => {
     }
   };
 
+  const genres = movie?.genres;
+  const backdropUrl = movie?.backdrop_path
+    ? `https://image.tmdb.org/t/p/original${movie.backdrop_path}`
+    : '';
+  
   return (
-    <div className="bg-primary-background p-10 min-h-screen">
-      <div className="flex justify-between items-center">
+    <div
+      className="bg-gray-100 px-10 min-h-screen bg-cover bg-center bg-no-repeat relative flex flex-col -mt-[111px]"
+      style={{
+        backgroundImage: `linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 40%, transparent 100%), url(${backdropUrl})`
+      }}
+    >
+      <div className="flex justify-between items-center pt-36 hidden">
         <button
           className="flex justify-center items-center cursor-pointer"
           onClick={(e) => {
@@ -29,58 +42,56 @@ export const MainOverview = () => {
             navigateBack();
           }}
         >
-          <span className="text-foreground-light">
+          <span className="text-secondary-light">
             <ChevronLeft size={32} />
           </span>
-          <p className="text-[24px] text-foreground-light">Back</p>
+          <p className="text-[24px] text-secondary-light">Back</p>
         </button>
-
-        <span className="text-white flex justify-center items-center gap-5">
-          <span className="cursor-pointer">
-            <Play size={24} />
-          </span>
-          <span className="cursor-pointer">
-            <VolumeX size={24} />
-          </span>
-        </span>
       </div>
 
-      <div className="flex justify-start gap-[136px]">
-        <div className="pt-[290px] w-[401px] h-[243px]">
-          <h1 className="text-[48px] font-500 text-center pb-4">Breaking Bad</h1>
-          <div className="flex justify-evenly items-center pb-4">
-            <div className="flex justify-center items-center gap-[9px]">
-              <p className="text-[16px] text-black font-bold">7.6</p>
-              <img src={imdb} alt="Imdb Rating" className="w-6 h-6" />
-            </div>
-            <div className="flex justify-center items-center gap-[9px]">
-              <p className="text-[16px] text-black font-bold">85%</p>
-              <UserStar size={22} />
-            </div>
-          </div>
-          <div className="flex flex-wrap justify-center items-center gap-2 pb-[21px]">
-            {genres.map((genre, index) => (
+      <div className="flex-grow" />
+
+      <div className="flex justify-between items-end pb-8">
+        <div className="w-[432px] flex flex-col gap-2">
+          <h1 className="text-[48px] text-gray-0 font-bold text-center font-nunito leading-[1]">{movie?.title || 'Movie Title'}</h1>
+          {movie?.tagLine && (
+            <p className="text-[20px] leading-[1.45] text-gray-0 font-semibold text-center font-nunito">{`"${movie?.tagLine}"`}</p>
+          )}
+
+          <div className="flex flex-wrap justify-center items-center gap-2">
+            {genres?.map((genre) => (
               <span
-                key={index} // this will also be replaced with the actual movie id from the DB
-                className="px-[10px] py-[2.5px] pb-[5px] text-foreground-grey text-[16px] text-opacity-80 border border-foreground-grey rounded-[32px]"
+                key={genre.id}
+                className="px-[10px] py-[2.5px] pb-[5px] text-gray-30 text-[16px] border border-gray-30 rounded-[32px]"
               >
-                {genre}
+                {genre.name}
               </span>
             ))}
           </div>
-          <p className="text-[16px] text-[#4A4A4A] text-center pb-4">2008 • 47m • TV-Ma • TV Series </p>
-          <button className="h-11 bg-white border-none cursor-pointer w-full rounded-[30px]">
-            <span className="text-black text-[16px] font-bold">
-              Watch from $7.99
+          <p className="text-[20px] text-gray-30 text-center leading-[1.45]">
+            {movie?.release_date?.split('-')[0] || 'YYYY'} • {movie?.runtime}m • <span className="capitalize">
+              {movie?.type.toLowerCase()}
             </span>
-          </button>
+          </p>
+
+          <div className="flex justify-evenly items-center">
+            <div className="flex justify-center items-center gap-2">
+              <p className="text-[16px] leading-[1.5] text-gray-0 font-bold">{movie?.voteAverage || movie?.vote_average || '0.0'}</p>
+              <img src={imdb} alt="Imdb Rating" className="w-6 h-5" />
+            </div>
+            <div className="flex justify-center items-center gap-2">
+              <p className="text-[16px] leading-[1.5] text-gray-0 font-bold">85%</p>
+              <img src={thumbsUp} alt="Filmly Rating" className="w-8 h-8" />
+            </div>
+          </div>
         </div>
-        <img
-          src={empty_img}
-          alt="Main Item Picture"
-          className="w-[246px] h-[246px]"
-        />
+
+        <div className="flex gap-[30px]">
+            <img src={play} alt="Play Button" className="cursor-pointer w-8 h-8" />
+            <img src={mute} alt="Play Button" className="cursor-pointer w-8 h-8" />
+        </div>
       </div>
+      
     </div>
   )
 }

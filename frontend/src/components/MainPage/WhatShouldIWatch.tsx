@@ -1,35 +1,49 @@
 import { ChevronRight } from 'lucide-react';
 import { Popcorn } from 'lucide-react';
+import popcorn from '../../../public/icons/popcorn.png';
 
 export const WhatShouldIWatch = () => {
   return (
-    <div className="px-12">
-      <div className="flex justify-between items-center pb-8">
-        <h2 className="text-[48px]">What should I watch?</h2>
+    <div className="mx-12 mt-11 bg-gray-100 px-8 py-11 rounded-[51px] overflow-hidden
+          bg-gray-80/10 backdrop-blur-[2px]
+          border border-gray-80/10
+          before:content-[''] before:absolute before:inset-0
+          before:rounded-[51px] before:border before:border-gray-80/20
+          shadow-[0_20px_50px_rgba(0,0,0,0.8)]
+          flex flex-col gap-6 font-nunito
+    ">
+      <div className="flex justify-between items-center">
+        <div className="flex gap-4 items-center">
+          <div className="w-1 h-[43px] bg-secondary-light rounded-full" />
+          <h2 className="text-[36px] text-primary-0 leading-[1.2] font-bold">What should I watch?</h2>
+        </div>
         <div className="">
-          <button className="cursor-pointer flex justify-center items-center gap-2 text-black font-bold text-8">
-            <span>From your Watchlist</span>
-            <div className="text-[#626262] cursor-pointer">
-              <ChevronRight size={24} />
+          <button className="cursor-pointer flex justify-center items-center gap-2 text-black font-bold text-8 relative z-10">
+            <span className="text-secondary-light font-bold text-[16px]">From your Watchlist</span>
+            <div className="text-primary-0 cursor-pointer">
+              <ChevronRight size={16} />
             </div>
           </button>
         </div>
       </div>
 
+      <button className="flex justify-center items-center cursor-pointer relative z-10">
+        <img src={popcorn} alt="Go to watchlist" className="w-50 h-50" />
+      </button>
+
       <div className="h-[119px] pb-8 flex flex-col justify-center items-center">
-        <p className="text-[32px]">
+        <p className="text-[32px] leading-[1.3] font-bold text-gray-0">
           Stop scrolling. Start watching.
         </p>
-        <p className="text-[24px]">
+        <p className="text-[20px] leading-[1.45] text-gray-0">
           Join now to get personalized recommendations and find
           your next movie instantly.
         </p>
       </div>
 
-      <div className="flex justify-center items-center pb-[113px]">
-        <button className="cursor-pointer border-none rounded-[32px] bg-[#797979] w-[454px] h-[124px] flex justify-center items-center gap-5">
-          <span className="text-[#C9C9C9]"><Popcorn size={92} /></span>
-          <span className="text-[#E9E4E4] text-[24px] font-semibold">Sing in to FILMLY</span>
+      <div className="flex justify-center items-center">
+        <button className="cursor-pointer border-none rounded-[32px] bg-primary-0 w-[522px] h-[56px] flex justify-center items-center relative z-10">
+          <span className="text-secondary-dark text-[20px] leading-[1.45] font-semibold">Sing in to FILMLY</span>
         </button>
       </div>
       

@@ -1,44 +1,61 @@
-import { Popcorn, ThumbsUp, ThumbsDown, Check } from 'lucide-react';
+import { ThumbsUp, ThumbsDown, Check } from 'lucide-react';
+import watchlist from '../../../public/icons/watchlist_popcorn.png';
+import thumbsUp from '../../../public/icons/thumbUp.png';
+import thumbsUpPrimary from '../../../public/icons/thumbUp-primary.png';
+import thumbsDown from '../../../public/icons/thumbDown.png';
+import type { Movie } from '../../types';
 
-export const MoreDetails = () => {
+interface MoreDetailsProps {
+  movie: Movie;
+}
+
+export const MoreDetails = ({ movie }: MoreDetailsProps) => {
   return (
-    <div className="px-12 pt-8 bg-light-background">
+    <div className="px-12 pt-8 bg-gray-100">
       <div className="flex justify-between items-center pb-[42px]">
-        <div className="flex justify-center items-center gap-6">
-          <button className="text-black bg-white cursor-pointer w-38 h-14 flex justify-center items-center gap-0.5">
-            <Popcorn size={24} />
+        <div className="flex justify-center items-center gap-6 text-[16px] font-nunito font-semibold leading-[1]">
+          <button className="text-black bg-primary-0 cursor-pointer w-51 h-14 flex justify-center items-center gap-2 border-1 border-primary-10 rounded-[9px]">
+            <img src={watchlist} alt="Add to watchlist" className="w-6 h-6" />
             <span className="text-black text-[13px]">Watchlist</span>
           </button>
-          <button className="text-foreground-light bg-dark-button cursor-pointer w-38 h-14 flex justify-center items-center gap-0.5">
-            <Check size={24} />
-            <span className="text-foreground-light text-[13px]">Seen it</span>
+          <button className="text-primary-0 bg-secondary-dark cursor-pointer w-51 h-14 flex justify-center items-center gap-2 border-1 border-gray-80 rounded-[9px]">
+            <Check size={12} />
+            <span className="text-gray-30 text-[13px]">Seen it</span>
           </button>
         </div>
 
         <div className="flex justify-center items-center gap-6">
-          <button className="cursor-pointer border border-light-border rounded-full w-16 h-16 text-black text-[13px] flex justify-center items-center gap-1">
-            <ThumbsUp size={20} />
-            <span>82k</span>
+          <button className="cursor-pointer w-16 h-16 flex justify-center items-center gap-1
+          bg-gray-80/10 backdrop-blur-[2px]
+          rounded-full border border-gray-80/10
+          before:content-[''] before:absolute before:inset-0
+          before:rounded-full before:border before:border-gray-80/20
+          ">
+            <img src={thumbsUpPrimary} alt="Likes" className="w-6 h-6 object-cover" />
+            <span className="text-white text-[12px] font-semibold font-nunito">82k</span>
           </button>
-          <button className="cursor-pointer border border-light-border rounded-full w-16 h-16 text-black text-[13px] flex justify-center items-center gap-1">
-            <ThumbsDown size={20} />
-            <span>2.8k</span>
+          <button className="cursor-pointer w-16 h-16 flex justify-center items-center gap-1
+          bg-gray-80/10 backdrop-blur-[2px]
+          rounded-full border border-gray-80/10
+          before:content-[''] before:absolute before:inset-0
+          before:rounded-full before:border before:border-gray-80/20
+          ">
+            <img src={thumbsDown} alt="Dislikes" className="w-6 h-6 object-cover" />
+            <span className="text-white text-[12px] font-semibold font-nunito">2.8k</span>
           </button>
         </div>
       </div>
 
-      <div className="py-6 border-y border-primary-background">
-        <h1 className="text-[32px] text-black font-bold pb-8">More Details</h1>
-        <p className="text-[16px] text-black font-bold pb-8">A chemistry teacher diagnosed with inoperable lung cancer
-          turns to manufacturing and selling methamphetamine with a former student
-          to secure his family's future.</p>
-        <div className="flex justify-start items-center gap-1 text-[16px] font-bold pb-8">
-          <p className="text-foreground-light-2">CREATOR:</p>
-          <span className="text-black">Vince Gilligan</span>
+      <div className="py-6 border-b border-secondary-light flex flex-col gap-8">
+        <h1 className="text-[36px] text-secondary-light font-bold leading-[1.2] font-nunito">More Details</h1>
+        <p className="text-[20px] text-gray-50 font-semibold">{movie?.overview}</p>
+        <div className="flex justify-start items-center gap-1 text-[24px] leading-[1.3] font-semibold font-nunito">
+          <p className="text-gray-80">Creator:</p>
+          <span className="text-primary-0">Vince Gilligan</span>
         </div>
-        <div className="flex justify-start items-center gap-1 text-[16px] font-bold">
-          <p className="text-foreground-light-2">PRODUCTION COUNTRY:</p>
-          <span className="text-black">United States</span>
+        <div className="flex justify-start items-center gap-1 text-[24px] leading-[1.3] font-semibold font-nunito">
+          <p className="text-gray-80">Production Country:</p>
+          <span className="text-primary-0">United States</span>
         </div>
       </div>
     </div>

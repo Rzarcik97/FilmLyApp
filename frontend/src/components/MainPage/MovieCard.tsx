@@ -1,40 +1,52 @@
 import type { Movie } from '../../types';
 import { Link, useLocation } from 'react-router-dom';
 import imdb from '../../../public/icons/imdb.png';
+import thumbUp from '../../../public/icons/thumbUp.png';
 import { UserStar } from 'lucide-react';
 import empty_img from '../../../public/icons/empty-img.png';
 
 export const MovieCard = ({ movie }: { movie: Movie }) => {
   const location = useLocation();
 
+  const posterUrl = (movie.posterPath || movie.poster_path)
+    ? `https://image.tmdb.org/t/p/w500${movie.posterPath || movie.poster_path}`
+    : empty_img;
+
   return (
-    <div className="w-[200px] h-[400px] flex flex-col shrink-0">
+    <div className="w-[203px] h-auto flex flex-col shrink-0 rounded-[16px] overflow-hidden 
+          border border-gray-30/10 backdrop-blur-[2px]
+          before:content-[''] before:absolute before:inset-0
+          before:rounded-[16px] before:border before:border-gray-80/20
+          before:pointer-events-none
+          cursor-pointer
+    ">
       <Link
-        to={`/movie/${movie.id}`}
+        to={`/movies/${movie.contentId}`}
         state={{ from: location.pathname }}
       >
-        <div className="bg-primary-background h-[328px] flex-1 flex justify-center items-center">
-          {/* <img src={movie.poster_path} alt="Item Main Image" /> */}
+        <div className="h-[328px] flex-1 flex justify-center items-center">
           <img
-            src={empty_img}
-            alt="Item Main Image"
-            className="w-27 h-27"
+            src={posterUrl}
+            alt={movie.title || "Movie Poster"}
+            className={`w-full h-full ${posterUrl === empty_img ? 'object-contain p-8' : 'object-cover'}`}
           />
         </div>
-        <div className="p-2 bg-dark-background h-18 shrink-0">
-          <div className="flex items-center justify-between text-white">
-            <div className="flex gap-[7px] items-center">
-              <p className="text-[16px]">7.6</p>
-              <img src={imdb} alt="IMDB Rating" className="w-6 h-6" />
+        <div className="p-2 bg-gray-100 h-28 shrink-0 text-gray-30 text-[16px] font-bold">
+          <div className="flex items-center justify-between">
+            <div className="flex gap-2 items-center">
+              <p className="">
+                {movie.voteAverage || movie.vote_average
+                  ? Number(movie.voteAverage || movie.vote_average).toFixed(1)
+                  : '0.0'}
+              </p>
+              <img src={imdb} alt="IMDB Rating" className="w-6 h-5" />
             </div>
-            <div className="flex gap-[7px] items-center">
-              <p className="text-[16px]">85%</p>
-              <UserStar size={22} />
-              {/* <img src={rt} alt="Rotten Tomatoes Rating" className="w-6 h-6" /> */}
+            <div className="flex gap-2 items-center">
+              <p className="">2.1k</p>
+              <img src={thumbUp} alt="Filmly Rating" className="w-8 h-8" />
             </div>
           </div>
-          {/* <p>{movie.title}</p> */}
-          <p className="pt-[13px] text-white text-[16px]">Movie Title</p>
+          <p className="pt-[13px] leading-[1.5]">{movie.title || 'Movie Title'}</p>
         </div>
       </Link>
     </div>
