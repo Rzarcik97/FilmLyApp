@@ -23,7 +23,7 @@ export const MainPage = () => {
       try {
         setLoading(true);
 
-        const [trendingData, seriesData, allGenres, popularData, recentData] = await Promise.all([
+        const results = await Promise.allSettled([
           getTrendingMovies(),
           getTrendingSeries(),
           getGenres(),
@@ -31,20 +31,33 @@ export const MainPage = () => {
           getRecentMovies()
         ]);
 
+        const getValue = <T,>(result: PromiseSettledResult<T>, fallback: T): T => {
+          return result.status === 'fulfilled' ? result.value : fallback;
+        };
+
+        const [
+          trendingRes,
+          seriesRes,
+          genresRes,
+          popularRes,
+          recentRes
+        ] = results;
+
         const prepareMovies = (movies: Movie[]) => {
           return movies
             .filter(movie => movie.posterPath !== null)
-            .slice(0, 10) // I believe we discussed to take only first 10 items for this
+            .slice(0, 10)
             .map(movie => ({ ...movie }));
         };
 
-        setTrending(prepareMovies(trendingData));
-        setTrendingSeries(prepareMovies(seriesData));
-        setGenres(allGenres);
-        setPopular(prepareMovies(popularData));
-        setRecent(prepareMovies(recentData));
+        setTrending(prepareMovies(getValue(trendingRes, [])));
+        setTrendingSeries(prepareMovies(getValue(seriesRes, [])));
+        setGenres(getValue(genresRes, []));
+        setPopular(prepareMovies(getValue(popularRes, [])));
+        setRecent(prepareMovies(getValue(recentRes, [])));
+
       } catch (error) {
-        console.error('Failed to load movies from the backend', error);
+        console.error('Critical failure in fetchAllData', error);
       } finally {
         setLoading(false);
       }
@@ -53,9 +66,8 @@ export const MainPage = () => {
     fetchAllData();
   }, []);
 
-
   return (
-    <main className="bg-primary-background-dark">
+    <main className="bg-gray-100">
       <AboutUs />
       <MainBrowse genres={genres} />
       <ScrollSectionTrending title="Trending Now" items={loading ? [] : trending} />
