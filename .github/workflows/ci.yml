@@ -26,6 +26,8 @@ jobs:
         env:
           JWT_SECRET: ${{ secrets.JWT_SECRET }}
           JWT_EXPIRATION: ${{ secrets.JWT_EXPIRATION }}
+          TMDB_READ_TOKEN: ${{ secrets.TMDB_READ_TOKEN }}
+          TMDB_API_TOKEN: ${{ secrets.TMDB_API_TOKEN }}
         run: mvn --batch-mode clean verify
 
 #      # NODE
