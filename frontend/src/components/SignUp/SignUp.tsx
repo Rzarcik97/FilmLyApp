@@ -43,7 +43,7 @@ export const SignUp = () => {
 
             <div className="px-24 flex justify-between items-center">
               <img src={google_btn} alt="Sign Up with Google" className="w-20 h-20" />
-              <img src={fb_btn} alt="Sign Up with Facebook" className="w-22 h-22 object-fit: contain" />
+              <img src={fb_btn} alt="Sign Up with Facebook" className="w-22 h-22 object-contain" />
               <img src={apple_btn} alt="Sign Up with Apple" className="w-20 h-20" />
             </div>
 

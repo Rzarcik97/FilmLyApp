@@ -9,6 +9,7 @@ import { SignUp } from './components/SignUp/SignUp';
 import { CreatePassword } from './components/SignUp/CreatePassword';
 import { StepEnum } from './types/enums';
 import { Footer } from './components/MainPage/Footer';
+import { DiscoverPage } from './components/DiscoverPage/DiscoverPage';
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -51,7 +52,8 @@ function App() {
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/sign-up/password" element={<CreatePassword />} />
           <Route path="/movies/:id" element={<OverviewPage />} />
-          <Route path="/test-browse" element={<BrowsePage />} />
+          <Route path="/browse" element={<BrowsePage />} />
+          <Route path="/discover/:type" element={<DiscoverPage />} />
         </Routes>
 
         <Footer />

@@ -3,6 +3,7 @@ import { FilterSection } from '../../types/enums';
 import { ListFilter, ChevronDown, ChevronUp } from 'lucide-react';
 import { RangeFilter } from './RangeFilter';
 import type { RangeState } from '../../types';
+import filter from '../../../public/icons/filter.png';
 
 interface FiltersSideBarProps {
   title: string;
@@ -32,13 +33,17 @@ export const FiltersSideBar = ({ title }: FiltersSideBarProps) => {
   ]
 
   return (
-    <div className='w-[328px] py-12 px-6 flex flex-col bg-light-background'>
-      <h2 className="text-[24px] font-semibold h-18 pb-12">{title}</h2>
-      <div className="h-21 flex justify-between items-center border-b border-primary-background w-full">
-        <p className="text-[24px] font-semibold">Filters</p>
-        <span className="bg-primary-background w-[27px] h-[27px] rounded-full flex justify-center items-center">
-          <ListFilter size={18} />
-        </span>
+    <div className="w-[328px] py-12 px-6 flex flex-col bg-gray-100 rounded-[16px]
+          border border-gray-30/10 backdrop-blur-[2px]
+          before:content-[''] before:absolute before:inset-0
+          before:rounded-[16px] before:border before:border-gray-80/20
+          before:pointer-events-none
+          cursor-pointer
+    ">
+      <h2 className="text-[36px] leading-[1.2] text-gray-0 font-semibold h-18 pb-12">{title}</h2>
+      <div className="h-14 flex justify-between items-center border-b border-gray-90 w-full">
+        <p className="text-[20px] leading-[1.45] text-gray-0 font-semibold font-nunito">Sort by</p>
+        <img src={filter} alt="Filters" className="w-6 h-6" />
       </div>
 
       <div className="flex flex-col gap-6 py-6">

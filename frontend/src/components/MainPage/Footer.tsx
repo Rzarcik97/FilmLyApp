@@ -5,7 +5,7 @@ import youtube from '../../../public/icons/youtube.png';
 import fb from '../../../public/icons/facebook.png';
 
 export const Footer = () => {
-  const baseColor = 'rgba(21, 20, 18, 1)';
+  const baseColor = 'rgba(17, 17, 16, 1)';
 
   return (
     <footer className="relative w-full h-[700px] bg-gray-100 overflow-hidden">
