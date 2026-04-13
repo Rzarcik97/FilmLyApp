@@ -43,7 +43,7 @@ public class GenreServiceImpl implements GenreService {
             return;
         }
         List<Genre> movieGenres = fetchGenres("/genre/movie/list", GenreType.MOVIE);
-        List<Genre> tvGenres = fetchGenres("/genre/tv/list", GenreType.TV);
+        List<Genre> tvGenres = fetchGenres("/genre/tv/list", GenreType.SERIES);
 
         genreRepository.saveAll(movieGenres);
 
