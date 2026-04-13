@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import logo from '../../../public/icons/logo.png';
 import telegram from '../../../public/icons/telegram.png';
 import youtube from '../../../public/icons/youtube.png';
 import fb from '../../../public/icons/facebook.png';
@@ -41,8 +40,8 @@ export const Footer = () => {
         ">
           <div className="flex pt-12 pr-30 pb-[105px] pl-12 w-full justify-between items-start">
             <div className="flex flex-col gap-1.5">
-              <Link to='/'>
-                <img src={logo} alt="Filmly Logo" className="h-[29px]" />
+              <Link to='/' className="h-[66px] flex flex-col items-start justify-center">
+                <span className="text-[48px] text-secondary-light font-bold">Filmly</span>
               </Link>
               <p className="text-gray-80 text-[20px] leading-[1.45]">@ 2026 All rights  reserved</p>
               <div className="flex gap-2">
@@ -52,8 +51,8 @@ export const Footer = () => {
               </div>
             </div>
 
-            <div className="flex flex-col gap-[5px] text-[20px] leading-[1.45] w-51">
-              <p className="text-gray-80">Navigation</p>
+            <div className="flex flex-col gap-[5px] text-[20px] leading-[1.45] w-51 font-nunito">
+              <p className="text-primary-20">Navigation</p>
               <Link to="/watchlist">
                 <p className="text-gray-70">Watchlist</p>
               </Link>
@@ -68,8 +67,8 @@ export const Footer = () => {
               </Link>
             </div>
 
-            <div className="flex flex-col gap-[5px] text-[20px] leading-[1.45] w-61">
-              <p className="text-gray-80">Information</p>
+            <div className="flex flex-col gap-[5px] text-[20px] leading-[1.45] w-61 font-nunito">
+              <p className="text-primary-20">Information</p>
               <p className="text-gray-70">Privacy Policy</p>
               <p className="text-gray-70">FAQ</p>
               <p className="text-gray-70">Cookie Policy</p>

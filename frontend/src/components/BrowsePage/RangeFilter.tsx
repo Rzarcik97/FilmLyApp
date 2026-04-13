@@ -25,16 +25,39 @@ export const RangeFilter = ({ label, range, setRange }: RangeFilterProps) => {
   };
 
   return (
-    <div>
-      <div className="border-b border-b-2 border-primary-background pb-4">
-        <div className="flex justify-between items-center px-4 pb-[27px]">
-          <span className="text-[18px] font-medium">{label}</span>
+    <div className="border border-gray-90 mb-2 bg-secondary-dark rounded-[8px] w-70 h-[195px]">
+      <div className="flex flex-col gap-7">
+        <div className="flex justify-between items-center px-2 py-4 gap-7">
+          <span className="text-[16px] text-gray-0 leading-[1.35] font-bold font-nunito">{label}</span>
           <label className="flex items-center gap-2 cursor-pointer group">
-            <span className="text-[16px]">Sort by</span>
-            <input
-              type="checkbox"
-              className="w-4 h-4 border-1 border-black cursor-pointer accent-check-button"
-            />
+            <span className="text-[16px] text-gray-70 leading-[1.35] font-nunito">Sort by</span>
+            <div className="relative flex items-center justify-center">
+              <input
+                type="checkbox"
+                className="peer sr-only"
+              />
+
+              <div className="w-5 h-5 rounded-[5px] border-2 border-gray-70 
+                bg-transparent transition-all duration-200
+                peer-checked:border-gray-70
+                group-hover:border-gray-50
+              ">
+              </div>
+
+              <svg
+                className="absolute w-3.5 h-3.5 text-primary-0 
+                  opacity-0 transition-opacity duration-200 peer-checked:opacity-100"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            </div>
           </label>
         </div>
 
@@ -47,9 +70,9 @@ export const RangeFilter = ({ label, range, setRange }: RangeFilterProps) => {
             step="0.1"
             value={range.min}
             onChange={(e) => handleInputChange(e, 'min')}
-            className="flex-1 min-w-0 h-[34px] border border-input-border bg-transparent text-left py-[5px] px-[10px] focus:outline-none focus:border-check-button focus:border-2"
+            className="flex-1 min-w-0 h-[34px] rounded-[8px] border border-gray-30 bg-transparent text-left text-[16px] text-gray-30 leading-[1.5] font-nunito py-[5px] px-[10px] focus:outline-none focus:border-primary-0 focus:border-2"
           />
-          <div className="h-[1px] w-[35px] bg-input-border"></div>
+          <div className="h-[1px] w-[35px] bg-gray-30"></div>
           <input
             type="number"
             placeholder="10"
@@ -58,24 +81,24 @@ export const RangeFilter = ({ label, range, setRange }: RangeFilterProps) => {
             step="0.1"
             value={range.max}
             onChange={(e) => handleInputChange(e, 'max')}
-            className="flex-1 min-w-0 h-[34px] border border-input-border bg-transparent text-left py-[5px] px-[10px] focus:outline-none focus:border-check-button focus:border-2"
+            className="flex-1 min-w-0 h-[34px] rounded-[8px] border border-gray-30 bg-transparent text-left text-[16px] text-gray-30 leading-[1.5] font-nunito py-[5px] px-[10px] focus:outline-none focus:border-primary-0 focus:border-2"
           />
         </div>
 
         <Slider.Root
-          className="relative flex items-center select-none touch-none w-full h-8"
+          className="relative flex items-center select-none touch-none w-full h-8 px-1"
           value={[range.min, range.max]}
           max={10}
           step={0.1}
           onValueChange={handleRangeChange}
         >
-          <Slider.Track className="bg-input-range relative grow rounded-full h-[6px]">
-            <Slider.Range className="absolute bg-check-button rounded-full h-full" />
+          <Slider.Track className="bg-secondary-light relative grow rounded-full h-[6px]">
+            <Slider.Range className="absolute bg-primary-0 rounded-full h-full" />
           </Slider.Track>
 
-          <Slider.Thumb className="block w-5 h-5 bg-check-button border-2 border-input-border-2 rounded-full cursor-pointer hover:scale-110 transition-transform focus:outline-none shadow-sm" />
+          <Slider.Thumb className="block w-5 h-5 bg-secondary-light border-2 border-primary-0 rounded-full cursor-pointer hover:scale-110 transition-transform focus:outline-none shadow-sm" />
 
-          <Slider.Thumb className="block w-5 h-5 bg-check-button border-2 border-input-border-2 rounded-full cursor-pointer hover:scale-110 transition-transform focus:outline-none shadow-sm" />
+          <Slider.Thumb className="block w-5 h-5 bg-primary-0 border-2 border-primary-0 rounded-full cursor-pointer hover:scale-110 transition-transform focus:outline-none shadow-sm" />
         </Slider.Root>
       </div>
     </div>

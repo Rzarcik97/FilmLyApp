@@ -1,4 +1,4 @@
-import logo from '../../../public/icons/logo.png';
+import logo from '../../../public/icons/logo.svg';
 import watchlist from '../../../public/icons/watchlist.png';
 import reminder from '../../../public/icons/reminder.png';
 import profile from '../../../public/icons/profile.png';
@@ -40,11 +40,21 @@ export const Header = () => {
       before:rounded-2xl before:border before:border-gray-90/20
       shadow-[0_20px_50px_rgba(0,0,0,0.8)]
     ">
-        <div className="relative">
-          <Link to="/">
-            <img src={logo} alt="Filmly Logo" className="m-0 pl-[73px] h-[29px]" />
+        <div className="relative h-full flex items-center pl-10 w-[200px]">
+          <Link to="/" className="relative flex items-center justify-center">
+
+            <span className="text-secondary-light font-bold text-[48px] tracking-tight z-10">
+              Filmly
+            </span>
+
+            <img
+              src={logo}
+              alt=""
+              className="absolute w-[380px] h-[auto] max-w-none top-[-28px] left-[-76px] z-20 pointer-events-none opacity-90"
+            />
           </Link>
         </div>
+
         <div className="relative">
           <SearchBar onFocusChange={setIsFocused} isFocused={isFocused}/>
         </div>

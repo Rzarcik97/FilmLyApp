@@ -64,7 +64,7 @@ export const ScrollSectionTrending = ({ title, items }: ScrollSectionTrendingPro
                 text-[200px] font-bold leading-none
                 text-primary-0/20
                 select-none z-0
-                font-nunito tracking-tighter
+                tracking-tighter
                 opacity-80 blur-[0.5px]"
               >
                 {index + 1}

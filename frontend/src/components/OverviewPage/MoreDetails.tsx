@@ -49,13 +49,17 @@ export const MoreDetails = ({ movie }: MoreDetailsProps) => {
       <div className="py-6 border-b border-secondary-light flex flex-col gap-8">
         <h1 className="text-[36px] text-secondary-light font-bold leading-[1.2] font-nunito">More Details</h1>
         <p className="text-[20px] text-gray-50 font-semibold">{movie?.overview}</p>
-        <div className="flex justify-start items-center gap-1 text-[24px] leading-[1.3] font-semibold font-nunito">
+        {/* <div className="flex justify-start items-center gap-1 text-[24px] leading-[1.3] font-semibold font-nunito">
           <p className="text-gray-80">Creator:</p>
           <span className="text-primary-0">Vince Gilligan</span>
-        </div>
+        </div> */}
         <div className="flex justify-start items-center gap-1 text-[24px] leading-[1.3] font-semibold font-nunito">
-          <p className="text-gray-80">Production Country:</p>
-          <span className="text-primary-0">United States</span>
+          {movie.production_countries.length === 1 ? (
+            <p className="text-gray-80">Production Country:</p>
+          ) : (
+              <p className="text-gray-80">Production Counties:</p>
+          )}
+          <span className="text-primary-0">{movie.production_countries.map(country => country.name).join(', ')}</span>
         </div>
       </div>
     </div>

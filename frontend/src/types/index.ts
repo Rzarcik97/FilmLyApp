@@ -3,10 +3,14 @@ export interface Genre {
   name: string;
 }
 
+export interface ProductionCountry {
+  iso_3166_1: string;
+  name: string;
+}
+
 export interface Movie {
   id?: number;
   contentId?: number;
-
   title: string | null;
   tagLine: string;
   type: string;
@@ -15,18 +19,16 @@ export interface Movie {
   runtime: number;
   popularity: number;
   release_date?: string;
-
   vote_average?: number;
   voteAverage?: number;
-
   vote_count: number;
   trailerKey: string;
-
   poster_path?: string;
   posterPath?: string;
-
   backdrop_path: string;
   genres: Genre[];
+  production_countries: ProductionCountry[];
+  numberOfEpisodes?: number;
 }
 
 export interface Actor {

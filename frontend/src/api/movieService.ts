@@ -1,8 +1,10 @@
 import type { Actor, Genre, Movie } from '../types';
 import apiClient from './apiClient';
 
-export const getMovieDetails = async (id: string | number): Promise<Movie> => {
-  const response = await apiClient.get<Movie>(`/movies/${id}`);
+export const getMovieDetails = async (id: string | number, type: string): Promise<Movie> => {
+  const endpoint = type.toLowerCase() === 'movies' ? 'movies' : 'series';
+
+  const response = await apiClient.get<Movie>(`/${endpoint}/${id}`);
   return response.data;
 }
 
@@ -31,8 +33,10 @@ export const getGenres = async (): Promise<Genre[]> => {
   return response.data;
 }
 
-export const getMovieCast = async (id: string): Promise<Actor[]> => {
-  const response = await apiClient.get<Actor[]>(`/movies/${id}/cast`);
+export const getMovieCast = async (id: string, type: string): Promise<Actor[]> => {
+  const endpoint = type.toLowerCase() === 'movies' ? 'movies' : 'series';
+
+  const response = await apiClient.get<Actor[]>(`/${endpoint}/${id}/cast`);
   return response.data;
 }
 
