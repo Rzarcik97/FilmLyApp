@@ -2,13 +2,16 @@ package filmly.service.impl;
 
 import filmly.dto.genre.GenreDto;
 import filmly.dto.tmdb.TmdbGenreResponse;
+import filmly.enums.GenreType;
 import filmly.exception.EntityNotFoundException;
 import filmly.mapper.GenreMapper;
 import filmly.model.Genre;
 import filmly.repository.GenreRepository;
 import filmly.service.GenreService;
+import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Stream;
+import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -36,18 +39,33 @@ public class GenreServiceImpl implements GenreService {
 
     @Override
     public void syncGenres() {
-        List<Genre> movieGenres = fetchGenres("/genre/movie/list");
-        List<Genre> tvGenres = fetchGenres("/genre/tv/list");
+        if (genreRepository.count() > 0) {
+            return;
+        }
+        List<Genre> movieGenres = fetchGenres("/genre/movie/list", GenreType.MOVIE);
+        List<Genre> tvGenres = fetchGenres("/genre/tv/list", GenreType.TV);
 
-        List<Genre> all = Stream.concat(movieGenres.stream(), tvGenres.stream())
-                .filter(g -> !genreRepository.existsById(g.getId()))
-                .distinct()
-                .toList();
+        genreRepository.saveAll(movieGenres);
 
-        genreRepository.saveAll(all);
+        Map<Long, Genre> tvGenreMap = tvGenres.stream()
+                .collect(Collectors.toMap(Genre::getId, g -> g));
+
+        Map<Long, Genre> movieGenreMap = movieGenres.stream()
+                .collect(Collectors.toMap(Genre::getId, g -> g));
+
+        movieGenreMap.forEach((id, genre) -> {
+            if (tvGenreMap.containsKey(id)) {
+                genre.setType(GenreType.BOTH);
+            }
+        });
+
+        Map<Long, Genre> allGenres = new HashMap<>(movieGenreMap);
+        tvGenreMap.forEach(allGenres::putIfAbsent);
+
+        genreRepository.saveAll(allGenres.values());
     }
 
-    private List<Genre> fetchGenres(String uri) {
+    private List<Genre> fetchGenres(String uri, GenreType type) {
         TmdbGenreResponse response = restClient.get()
                 .uri(uri)
                 .retrieve()
@@ -58,7 +76,11 @@ public class GenreServiceImpl implements GenreService {
         }
 
         return response.genres().stream()
-                .map(genreMapper::toEntity)
+                .map(g -> {
+                    Genre genre = genreMapper.toEntity(g);
+                    genre.setType(type);
+                    return genre;
+                })
                 .toList();
     }
 }
