@@ -38,6 +38,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDto updateMyProfile(String email, UserPatchRequestDto request) {
+        if (userRepository.existsByUsername(request.username())) {
+            throw new RegistrationException("Username already exists");
+        }
         log.info("starting editing user {} profile",email);
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new EntityNotFoundException("Email",email));
@@ -57,7 +60,7 @@ public class UserServiceImpl implements UserService {
             throw new AuthenticationException("Invalid current password");
         }
 
-        if (userRepository.findByEmail(newEmail).isPresent()) {
+        if (userRepository.existsByEmail(email)) {
             throw new RegistrationException("Email already exists");
         }
         return verificationTokenService.createToken(user,
