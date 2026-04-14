@@ -6,6 +6,7 @@ import { MoreDetails } from './MoreDetails';
 import { useEffect, useState } from 'react';
 import { getMovieCast, getMovieDetails, getSimilarContent } from '../../api/movieService';
 import { type Actor, type Movie } from '../../types';
+import { Loader } from '../Utilities/Loader';
 
 export const OverviewPage = () => {
   const { id, type } = useParams<{ id: string, type: string }>();
@@ -52,7 +53,14 @@ export const OverviewPage = () => {
     fetchMovie();
   }, [id, type]);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) {
+    return (
+      <div className="fixed inset-0 w-screen h-screen bg-gray-100 flex flex-col items-center justify-center z-[9999]">
+        <Loader />
+      </div>
+    );
+  };
+
   if (!movie) return <div>Movie not found.</div>;
 
   return (
