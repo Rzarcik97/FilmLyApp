@@ -1,4 +1,4 @@
-package filmly.dto.genre;
+package filmly.dto.favoritegenres;
 
 import filmly.enums.GenreType;
 

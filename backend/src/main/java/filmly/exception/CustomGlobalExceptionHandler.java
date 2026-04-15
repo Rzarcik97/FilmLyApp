@@ -84,6 +84,17 @@ public class CustomGlobalExceptionHandler extends ResponseEntityExceptionHandler
         return new ResponseEntity<>(body, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(EntityAlreadyExistsException.class)
+    protected ResponseEntity<ErrorResponse> handleEntityAlreadyExists(RuntimeException ex) {
+        ErrorResponse body = new ErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.CONFLICT.value(),
+                List.of(ex.getMessage()),
+                ex.getMessage()
+        );
+        return new ResponseEntity<>(body, HttpStatus.CONFLICT);
+    }
+
     @ExceptionHandler(value = {AuthenticationException.class})
     protected ResponseEntity<ErrorResponse> handleAuthorization(RuntimeException ex) {
         ErrorResponse body = new ErrorResponse(

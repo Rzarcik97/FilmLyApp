@@ -1,7 +1,7 @@
 package filmly.service.impl;
 
 import filmly.dto.favoritegenres.FavoriteGenreDto;
-import filmly.dto.genre.FavoriteGenreResponseDto;
+import filmly.dto.favoritegenres.FavoriteGenreResponseDto;
 import filmly.exception.EntityAlreadyExistsException;
 import filmly.exception.EntityNotFoundException;
 import filmly.mapper.FavoriteGenreMapper;
@@ -12,6 +12,7 @@ import filmly.repository.FavoriteGenreRepository;
 import filmly.repository.GenreRepository;
 import filmly.repository.UserRepository;
 import filmly.service.FavoriteGenreService;
+import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -100,6 +101,7 @@ public class FavoriteGenreServiceImpl implements FavoriteGenreService {
     }
 
     @Override
+    @Transactional
     public void deleteFavoriteGenre(String email, String genreName) {
         User user = userRepository.findByEmail(email).orElseThrow(
                 () -> new EntityNotFoundException("User", email));
