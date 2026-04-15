@@ -1,8 +1,10 @@
 package filmly.dto.user;
 
+import jakarta.validation.constraints.NotBlank;
+
 public record UserPatchRequestDto(
-        String username,
-        String firstName,
-        String lastName,
-        String avatarUrl
+        @NotBlank String username,
+        @NotBlank String firstName,
+        @NotBlank String lastName,
+        @NotBlank String avatarUrl
 ) {}

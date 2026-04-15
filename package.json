@@ -1,0 +1,19 @@
+{
+  "name": "filmly-app",
+  "private": true,
+  "workspaces": [
+    "frontend"
+  ],
+  "devDependencies": {
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "typescript": "^6.0.2"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^5.2.2",
+    "framer-motion": "^12.38.0",
+    "lucide-react": "^1.0.1",
+    "react-hook-form": "^7.72.0",
+    "zod": "^4.3.6"
+  }
+}

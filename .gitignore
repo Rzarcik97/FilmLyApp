@@ -26,3 +26,14 @@ replay_pid*
 .idea/
 .vscode/
 *.iml
+
+# ===== FRONTEND & GENERAL JS =====
+node_modules/
+.pnp
+.pnp.js
+dist/
+build/
+.npm
+.eslintcache
+*.local
+LoaderDisposal.tsx
