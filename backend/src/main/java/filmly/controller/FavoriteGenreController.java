@@ -1,7 +1,7 @@
 package filmly.controller;
 
 import filmly.dto.favoritegenres.FavoriteGenreDto;
-import filmly.model.FavoriteGenre;
+import filmly.dto.genre.FavoriteGenreResponseDto;
 import filmly.service.FavoriteGenreService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -32,7 +32,7 @@ public class FavoriteGenreController {
     @Operation(summary = "Get Sorted Favorite Genres",
             description = "Retrieve all genres sorted by user's rating (descending). "
                     + "Genres not yet rated by the user are included with a neutral rating of 5.0")
-    public List<FavoriteGenre> getSortedFavoriteGenres(Authentication authentication) {
+    public List<FavoriteGenreResponseDto> getSortedFavoriteGenres(Authentication authentication) {
         String email = authentication.getName();
         return favoriteGenreService.getSortedFavoriteGenreByUserId(email);
     }
@@ -40,7 +40,7 @@ public class FavoriteGenreController {
     @GetMapping
     @Operation(summary = "Get All Favorite Genres",
             description = "Retrieve all explicitly rated favorite genres for a given user")
-    public List<FavoriteGenre> getAllFavoriteGenres(Authentication authentication) {
+    public List<FavoriteGenreResponseDto> getAllFavoriteGenres(Authentication authentication) {
         String email = authentication.getName();
         return favoriteGenreService.getAllByUserId(email);
     }
@@ -50,7 +50,7 @@ public class FavoriteGenreController {
     @Operation(summary = "Create Favorite Genre",
             description = "Add a new favorite genre with a rating for the specified user. "
                     + "If the genre is already rated, the existing rating will be updated instead")
-    public FavoriteGenre createFavoriteGenre(
+    public FavoriteGenreResponseDto createFavoriteGenre(
             Authentication authentication,
             @RequestBody @Valid FavoriteGenreDto favoriteGenreDto) {
         String email = authentication.getName();
@@ -63,7 +63,7 @@ public class FavoriteGenreController {
     @Operation(summary = "Update Favorite Genre",
             description = "Update the rating of an already existing favorite "
                     + "genre for the specified user")
-    public FavoriteGenre updateFavoriteGenre(
+    public FavoriteGenreResponseDto updateFavoriteGenre(
             Authentication authentication,
             @RequestBody @Valid FavoriteGenreDto favoriteGenreDto) {
         String email = authentication.getName();

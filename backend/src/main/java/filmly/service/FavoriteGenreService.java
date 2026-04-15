@@ -1,18 +1,18 @@
 package filmly.service;
 
 import filmly.dto.favoritegenres.FavoriteGenreDto;
-import filmly.model.FavoriteGenre;
+import filmly.dto.genre.FavoriteGenreResponseDto;
 import java.util.List;
 
 public interface FavoriteGenreService {
 
-    List<FavoriteGenre> getSortedFavoriteGenreByUserId(String email);
+    List<FavoriteGenreResponseDto> getSortedFavoriteGenreByUserId(String email);
 
-    List<FavoriteGenre> getAllByUserId(String email);
+    List<FavoriteGenreResponseDto> getAllByUserId(String email);
 
-    FavoriteGenre createFavoriteGenre(String email, FavoriteGenreDto favoriteGenreDto);
+    FavoriteGenreResponseDto createFavoriteGenre(String email, FavoriteGenreDto favoriteGenreDto);
 
-    FavoriteGenre updateFavoriteGenre(String email, FavoriteGenreDto favoriteGenreDto);
+    FavoriteGenreResponseDto updateFavoriteGenre(String email, FavoriteGenreDto favoriteGenreDto);
 
     void deleteFavoriteGenre(String email, String genreName);
 }
