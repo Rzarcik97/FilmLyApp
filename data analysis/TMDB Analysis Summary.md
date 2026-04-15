@@ -124,6 +124,13 @@ Not all exploratory hypotheses were supported. For example, the idea that shorte
 - A ratio such as `revenue / budget` is better interpreted as a **reported revenue-to-budget ratio**, not true profitability.
 - Therefore, cases where `revenue < budget` should not automatically be interpreted as actual financial loss.
 
+### Recommendations: 
+1: Use vote_count as a stronger signal of audience engagement than vote_average when exploring recommendation features.
+2: Treat vote_average as a quality-related metric, but not as a strong indicator of commercial success.
+3: Prioritize genre and genre combinations as key metadata features for recommendation logic.
+4: Use revenue carefully as a proxy for commercial performance, while clearly acknowledging data completeness limitations.
+5: Exclude tagline length from core recommendation features, as the analysis did not show a meaningful relationship with engagement.
+6: Build dashboards and future analysis around engagement and evaluation as separate dimensions.
 ---
 
 ## Short Summary
