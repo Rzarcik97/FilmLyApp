@@ -1,7 +1,7 @@
 package filmly.controller;
 
 import filmly.dto.favoritegenres.FavoriteGenreDto;
-import filmly.dto.genre.FavoriteGenreResponseDto;
+import filmly.dto.favoritegenres.FavoriteGenreResponseDto;
 import filmly.service.FavoriteGenreService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;

@@ -1,7 +1,7 @@
 package filmly.service;
 
 import filmly.dto.favoritegenres.FavoriteGenreDto;
-import filmly.dto.genre.FavoriteGenreResponseDto;
+import filmly.dto.favoritegenres.FavoriteGenreResponseDto;
 import java.util.List;
 
 public interface FavoriteGenreService {

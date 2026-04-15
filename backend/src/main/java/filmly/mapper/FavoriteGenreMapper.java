@@ -1,7 +1,7 @@
 package filmly.mapper;
 
 import filmly.config.MapperConfig;
-import filmly.dto.genre.FavoriteGenreResponseDto;
+import filmly.dto.favoritegenres.FavoriteGenreResponseDto;
 import filmly.model.FavoriteGenre;
 import java.util.List;
 import org.mapstruct.Mapper;
