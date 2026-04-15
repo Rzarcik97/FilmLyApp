@@ -34,7 +34,7 @@ export const MainOverview = ({ movie }: MainOverviewProps) => {
         backgroundImage: `linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 40%, transparent 100%), url(${backdropUrl})`
       }}
     >
-      <div className="flex justify-between items-center pt-36 hidden">
+      {/* <div className="flex justify-between items-center pt-36 hidden">
         <button
           className="flex justify-center items-center cursor-pointer"
           onClick={(e) => {
@@ -47,7 +47,7 @@ export const MainOverview = ({ movie }: MainOverviewProps) => {
           </span>
           <p className="text-[24px] text-secondary-light">Back</p>
         </button>
-      </div>
+      </div> */}
 
       <div className="flex-grow" />
 
@@ -69,8 +69,16 @@ export const MainOverview = ({ movie }: MainOverviewProps) => {
             ))}
           </div>
           <p className="text-[20px] text-gray-30 text-center leading-[1.45]">
-            {movie?.release_date?.split('-')[0] || 'YYYY'} • {movie?.runtime}m • <span className="capitalize">
-              {movie?.type.toLowerCase()}
+            {movie?.release_date?.split('-')[0] || 'YYYY'} • {' '}
+
+            {movie?.type === 'MOVIE' ? (
+              <span>{movie?.runtime || 0}m</span>
+            ) : (
+              <span>{movie?.numberOfEpisodes || 0} Episodes </span>
+            )}
+
+            • <span className="capitalize">
+              {movie?.type === 'SERIES' ? 'TV Series' : movie?.type?.toLowerCase()}
             </span>
           </p>
 

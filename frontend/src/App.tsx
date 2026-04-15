@@ -51,7 +51,7 @@ function App() {
           <Route path="/" element={<MainPage />} />
           <Route path="/sign-up" element={<SignUp />} />
           <Route path="/sign-up/password" element={<CreatePassword />} />
-          <Route path="/movies/:id" element={<OverviewPage />} />
+          <Route path="/:type/:id" element={<OverviewPage />} />
           <Route path="/browse" element={<BrowsePage />} />
           <Route path="/discover/:type" element={<DiscoverPage />} />
         </Routes>

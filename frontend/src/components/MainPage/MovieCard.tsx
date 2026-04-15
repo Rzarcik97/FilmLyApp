@@ -8,6 +8,9 @@ import empty_img from '../../../public/icons/empty-img.png';
 export const MovieCard = ({ movie }: { movie: Movie }) => {
   const location = useLocation();
 
+  const contentType = movie.type.toLowerCase();
+  const basePath = contentType === 'movie' ? 'movies' : 'series';
+
   const posterUrl = (movie.posterPath || movie.poster_path)
     ? `https://image.tmdb.org/t/p/w500${movie.posterPath || movie.poster_path}`
     : empty_img;
@@ -21,7 +24,7 @@ export const MovieCard = ({ movie }: { movie: Movie }) => {
           cursor-pointer
     ">
       <Link
-        to={`/movies/${movie.contentId}`}
+        to={`/${basePath}/${movie.contentId}`}
         state={{ from: location.pathname }}
       >
         <div className="h-[328px] flex-1 flex justify-center items-center">
