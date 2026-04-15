@@ -1,7 +1,7 @@
 # TMDB Movie Dataset Analysis
 
 ## Project Overview
-This analysis was conducted as part of a broader team project related to the development of a **movie recommendation app**. The main purpose of the analysis was to explore which movie attributes are associated with:
+The main purpose of the analysis was to explore which movie attributes are associated with:
 
 - **audience engagement** — using `vote_count` as a proxy
 - **audience evaluation** — using `vote_average` as a proxy
@@ -22,6 +22,18 @@ The analysis was designed to answer the following questions:
 
 ---
 
+## Key Limitations
+- The dataset contains **popular TMDB movies**, not a random sample of all films.
+- `popularity` is a TMDB-specific metric, so it is less transparent than `vote_count`, `vote_average`, or `revenue`.
+- Financial fields are incomplete and may not reflect full lifetime performance.
+- Genre categories overlap.
+- Country values may include co-productions, which can complicate country-level comparisons.
+- Some language and country groups have very small sample sizes.
+- Mean financial metrics can be strongly distorted by outliers, so medians are often more reliable.
+
+---
+
+## [Overview in Tableau](https://public.tableau.com/app/profile/kseniia.kornienko/viz/TMDBMovies_17761972864920/OverviewofTMDBMovieDS?publish=yes)
 ## What Was Done
 
 ### 1. Data loading and preparation
@@ -45,7 +57,7 @@ The analysis was designed to answer the following questions:
 - Removed rows with missing critical fields such as `release_date` and `genres` where necessary.
 - Replaced empty text values in fields such as `tagline` with explicit placeholders.
 - Treated `budget = 0` and `revenue = 0` as missing values.
-- Removed very small financial values (for example, under 10,000) as likely unreliable or non-informative for financial analysis.
+- Treated very small financial values (for example, under 10,000) as missing values because they are likely unreliable or non-informative for financial analysis.
 - Checked duplicates and dataset consistency.
 - Removed columns with no analytical value, such as `adult`, when they contained only one category.
 
@@ -111,61 +123,6 @@ Not all exploratory hypotheses were supported. For example, the idea that shorte
 - `revenue` and `budget` in TMDB should not be treated as complete profit-and-loss data.
 - A ratio such as `revenue / budget` is better interpreted as a **reported revenue-to-budget ratio**, not true profitability.
 - Therefore, cases where `revenue < budget` should not automatically be interpreted as actual financial loss.
-
----
-
-## Key Limitations
-- The dataset contains **popular TMDB movies**, not a random sample of all films.
-- `popularity` is a TMDB-specific metric, so it is less transparent than `vote_count`, `vote_average`, or `revenue`.
-- Financial fields are incomplete and may not reflect full lifetime performance.
-- Genre categories overlap.
-- Country values may include co-productions, which can complicate country-level comparisons.
-- Some language and country groups have very small sample sizes.
-- Mean financial metrics can be strongly distorted by outliers, so medians are often more reliable.
-
----
-
-## Recommended Next Steps
-
-### 1. Focus the main analysis on three key metrics
-Given the product goal and metric interpretability, the strongest analytical focus is:
-- `vote_count` — engagement proxy
-- `vote_average` — rating / satisfaction proxy
-- `revenue` — commercial performance proxy
-
-### 2. Add feature engineering
-Recommended new fields:
-- `release_year`
-- `release_decade`
-- `profit = revenue - budget`
-- `revenue_to_budget_ratio`
-- `has_tagline`
-- `tagline_length`
-- `genre_count`
-- `has_known_budget`
-- `has_known_revenue`
-
-### 3. Deepen the analysis of key outcomes
-Recommended next analyses:
-- what affects `vote_count`
-- what affects `vote_average`
-- what affects `revenue`
-- how these metrics differ by genre, language, runtime group, and release year
-
-### 4. Prepare Tableau-ready exports
-Recommended exports:
-- **movie-level table**: one row per movie
-- **genre-level table**: one row per movie-genre
-- **country-level table**: one row per movie-country
-- **studio-level table**: one row per movie-studio
-
-### 5. Build dashboard-ready summary tables
-This analysis is well suited for Tableau dashboards focused on:
-- audience engagement
-- audience ratings
-- revenue analysis
-- genre comparisons
-- data quality / financial completeness
 
 ---
 
