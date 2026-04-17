@@ -30,7 +30,7 @@ export const ScrollActors = ({ title, items }: ScrollActorsProps) => {
       <div className="flex justify-between items-center">
         <div className="flex gap-2 items-center">
           <div className="w-1 h-[35px] bg-primary-0 rounded-full" />
-          <h2 className="text-[36px] leading-[1.2] font-bold text-secondary-light">{title}</h2>
+          <h2 className="text-[24px] md:text-[36px] leading-[1.2] font-bold text-secondary-light">{title}</h2>
         </div>
 
         <Link 
@@ -57,7 +57,7 @@ export const ScrollActors = ({ title, items }: ScrollActorsProps) => {
 
         <div
           ref={scrollRef}
-          className="flex justify-center items-center gap-6 no-wrap overflow-x-hidden scroll-smooth"
+          className="flex justify-start items-start gap-2 md:gap-6 flex-nowrap overflow-x-hidden scroll-smooth"
         >
           {items.map(item => (
             <div className="relative z-10">

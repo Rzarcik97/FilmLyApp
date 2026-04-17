@@ -5,7 +5,7 @@ import mute from '../../../public/icons/mute.png';
 export const AboutUs = () => {
   return (
     <main className="bg-gray-100 px-6 md:px-12 min-h-screen md:h-[672px] -mt-[111px] pt-[111px]
-    bg-[url('../../../public/backgrounds/All_Of_Us_Strangers.png')]
+    bg-[url('/backgrounds/All_Of_Us_Strangers.png')]
     bg-cover bg-center bg-no-repeat
     flex flex-col relative
     ">

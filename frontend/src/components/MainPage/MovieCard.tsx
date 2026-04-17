@@ -16,7 +16,7 @@ export const MovieCard = ({ movie }: { movie: Movie }) => {
     : empty_img;
 
   return (
-    <div className="w-[203px] h-auto flex flex-col shrink-0 rounded-[16px] overflow-hidden 
+    <div className="w-[175px] md:w-[203px] h-auto flex flex-col shrink-0 rounded-[16px] overflow-hidden 
           border border-gray-30/10 backdrop-blur-[2px]
           before:content-[''] before:absolute before:inset-0
           before:rounded-[16px] before:border before:border-gray-80/20
