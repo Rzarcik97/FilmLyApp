@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import type { Actor } from '../../types'
 import { ActorCard } from './ActorCard';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface ScrollActorsProps {
   items: Actor[];
@@ -32,12 +33,15 @@ export const ScrollActors = ({ title, items }: ScrollActorsProps) => {
           <h2 className="text-[36px] leading-[1.2] font-bold text-secondary-light">{title}</h2>
         </div>
 
-        <button className="cursor-pointer text-[16px] text-secondary-light font-nunito font-bold">
+        <Link 
+          to='/actors'
+          className="cursor-pointer text-[16px] text-secondary-light font-nunito font-bold"
+        >
           View all
-        </button>
+        </Link>
       </div>
 
-      <div className="flex justify-center items-center gap-2">
+      <div className="flex justify-center items-center gap-2 pt-6">
         <button
           onClick={() => scroll('left')}
           className="text-primary-0 cursor-pointer
