@@ -7,7 +7,7 @@ import { SearchBar } from './SearchBar';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import search from '../../../public/icons/search.svg';
-import burger from '../../../public/icons/burger.svg';
+import { Menu } from 'lucide-react';
 
 interface NavItemsProps {
   icon: string;
@@ -74,8 +74,8 @@ export const Header = () => {
           <button className="w-8 h-8 flex items-center justify-center cursor-pointer rounded-full bg-gray-90 border border-gray-50 backdrop-blur-md">
             <img src={search} alt="Search" className="w-6 h-6" />
           </button>
-          <button className="w-8 h-8 flex items-center justify-center cursor-pointer rounded-full bg-gray-90 border border-gray-50 backdrop-blur-md">
-            <img src={burger} alt="Menu" className="w-6 h-6" />
+          <button className="w-8 h-8 flex items-center justify-center cursor-pointer rounded-full bg-gray-90 border border-gray-50 backdrop-blur-md text-gray-50">
+            <Menu size={24} />
           </button>
         </div>
       </header>

@@ -81,12 +81,12 @@ export const MainPage = () => {
     <main className="bg-gray-100">
       <AboutUs />
       <MainBrowse genres={genres} />
-      <ScrollSectionTrending title="Trending Now" items={loading ? [] : trending} />
+      <ScrollSectionTrending title="Trending Now" items={trending} />
       <WhatShouldIWatch />
-      <ScrollSection title="Critics’ Choice" items={loading ? [] : popular} />
-      <ScrollSection title="Top TV Series" items={loading ? [] : trendingSeries} />
-      <ScrollSection title="Latest Premieres" items={loading ? [] : recent} />
-      <ScrollActors title="Popular actors" items={loading ? [] : actors} />
+      <ScrollSection title="Critics’ Choice" items={popular} />
+      <ScrollSection title="Top TV Series" items={trendingSeries} />
+      <ScrollSection title="Latest Premieres" items={recent} />
+      <ScrollActors title="Popular actors" items={actors} />
     </main>
   )
 }

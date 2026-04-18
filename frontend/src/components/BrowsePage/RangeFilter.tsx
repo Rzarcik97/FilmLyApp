@@ -45,8 +45,11 @@ export const RangeFilter = ({ label, range, setRange }: RangeFilterProps) => {
               ">
               </div>
 
-              <CheckIcon className="absolute w-3.5 h-3.5 text-primary-0 
-                  opacity-0 transition-opacity duration-200 peer-checked:opacity-100" />
+              <CheckIcon
+                size={14}
+                color="currentColor"
+                className="absolute text-primary-0 opacity-0 transition-opacity duration-200 peer-checked:opacity-100 text-primary-0"
+              />
             </div>
           </label>
         </div>
