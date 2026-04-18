@@ -36,4 +36,3 @@ build/
 .npm
 .eslintcache
 *.local
-LoaderDisposal.tsx

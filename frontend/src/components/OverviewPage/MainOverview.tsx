@@ -72,7 +72,7 @@ export const MainOverview = ({ movie }: MainOverviewProps) => {
             {movie?.release_date?.split('-')[0] || 'YYYY'} • {' '}
 
             {movie?.type === 'MOVIE' ? (
-              <span>{movie?.runtime || 0}m</span>
+              <span>{movie?.runtime || 0}m </span>
             ) : (
               <span>{movie?.numberOfEpisodes || 0} Episodes </span>
             )}
