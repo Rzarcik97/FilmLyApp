@@ -15,10 +15,13 @@ import filmly.repository.WatchListRepository;
 import filmly.service.WatchListService;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Log4j2
 @Service
 @RequiredArgsConstructor
 public class WatchListServiceImpl implements WatchListService {
@@ -40,54 +43,69 @@ public class WatchListServiceImpl implements WatchListService {
     }
 
     @Override
-    public WatchListResponseDto addToWatchList(String email, WatchListRequestDto requestedDto) {
+    public WatchListResponseDto addToWatchList(String email, WatchListRequestDto requestDto) {
         User user = userRepository.findByEmail(email).orElseThrow(
                 () -> new EntityNotFoundException("User", email));
         if (watchListRepository.findByUser_IdAndContentIdAndContentType(
-                user.getId(), requestedDto.contentId(), requestedDto.contentType()).isPresent()) {
+                user.getId(), requestDto.contentId(), requestDto.contentType()).isPresent()) {
             throw new EntityAlreadyExistsException("Content is already in your watchlist");
         }
         String title;
         String posterPath;
 
-        if (requestedDto.contentType() == Content.ContentType.MOVIE) {
-            MovieDetailDto movie = movieService.findById(requestedDto.contentId());
+        if (requestDto.contentType() == Content.ContentType.MOVIE) {
+            MovieDetailDto movie = movieService.findById(requestDto.contentId());
             title = movie.title();
             posterPath = movie.posterPath();
         } else {
-            SeriesDetailDto series = seriesService.findById(requestedDto.contentId());
+            SeriesDetailDto series = seriesService.findById(requestDto.contentId());
             title = series.title();
             posterPath = series.posterPath();
         }
 
         WatchList watchList = new WatchList();
         watchList.setUser(user);
-        watchList.setContentId(requestedDto.contentId());
-        watchList.setContentType(requestedDto.contentType());
+        watchList.setContentId(requestDto.contentId());
+        watchList.setContentType(requestDto.contentType());
         watchList.setTitle(title);
         watchList.setPosterPath(posterPath);
         watchList.setAddedAt(LocalDateTime.now());
+        log.info("User {} added {} with id: {} to watchlist",
+                email, requestDto.contentType(), requestDto.contentId());
         return watchListMapper.toDto(watchListRepository.save(watchList));
     }
 
     @Override
-    public WatchListResponseDto markAsWatched(String email, WatchListRequestDto dto) {
+    public WatchListResponseDto markAsWatched(String email, WatchListRequestDto requestDto) {
         User user = userRepository.findByEmail(email).orElseThrow(
                 () -> new EntityNotFoundException("User", email));
         WatchList watchList = watchListRepository
                 .findByUser_IdAndContentIdAndContentType(
-                        user.getId(), dto.contentId(), dto.contentType())
-                .orElseThrow(() -> new EntityNotFoundException("WatchList", dto.contentId()));
+                        user.getId(), requestDto.contentId(), requestDto.contentType())
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "WatchList", requestDto.contentId()));
         watchList.setWatchedAt(LocalDateTime.now());
+        log.info("User {} marked {} with id: {} as watched",
+                email, requestDto.contentType(), requestDto.contentId());
         return watchListMapper.toDto(watchListRepository.save(watchList));
     }
 
     @Override
     @Transactional
-    public void deleteFromWatchList(String email, Long contentId, Content.ContentType contentType) {
+    public void deleteFromWatchList(String email, WatchListRequestDto requestDto) {
         User user = userRepository.findByEmail(email).orElseThrow(
                 () -> new EntityNotFoundException("User", email));
+        Optional<WatchList> watchList = watchListRepository
+                .findByUser_IdAndContentIdAndContentType(
+                        user.getId(), requestDto.contentId(), requestDto.contentType());
+        if (watchList.isEmpty()) {
+            log.warn("Content {} not found in watchlist for user {}",
+                    requestDto.contentId(), email);
+            return;
+        }
         watchListRepository.deleteByUser_IdAndContentIdAndContentType(
-                user.getId(), contentId, contentType);
+                user.getId(), requestDto.contentId(), requestDto.contentType());
+        log.info("Content {} removed from watchlist for user {}",
+                requestDto.contentId(), email);
     }
 }

@@ -2,7 +2,6 @@ package filmly.service;
 
 import filmly.dto.watchlist.WatchListRequestDto;
 import filmly.dto.watchlist.WatchListResponseDto;
-import filmly.model.Content;
 import java.util.List;
 
 public interface WatchListService {
@@ -13,5 +12,5 @@ public interface WatchListService {
 
     WatchListResponseDto markAsWatched(String email, WatchListRequestDto requestDto);
 
-    void deleteFromWatchList(String email, Long contentId, Content.ContentType contentType);
+    void deleteFromWatchList(String email, WatchListRequestDto requestDto);
 }
