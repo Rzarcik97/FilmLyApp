@@ -26,7 +26,7 @@ export const ScrollActors = ({ title, items }: ScrollActorsProps) => {
   };
 
   return (
-    <section className="px-12 pt-18 pb-2">
+    <section className="px-4 md:px-12 pt-10 md:pt-18 pb-2">
       <div className="flex justify-between items-center">
         <div className="flex gap-2 items-center">
           <div className="w-1 h-[35px] bg-primary-0 rounded-full" />

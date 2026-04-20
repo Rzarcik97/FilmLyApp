@@ -36,7 +36,7 @@ export const Header = () => {
       )}
 
       <header className="flex justify-between items-center
-      absolute top-8 z-50 pl-6 lg:mx-15 h-8 lg:h-[79px]
+      absolute z-60 top-8 pl-6 lg:mx-15 h-8 lg:h-[79px]
       bg-transparent lg:bg-gray-90/28 lg:backdrop-blur-[2px] lg:rounded-2xl lg:border lg:border-gray-90/10
       relative z-0
       lg:before:content-[''] lg:before:absolute lg:before:inset-0 lg:before:pointer-events-none

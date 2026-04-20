@@ -53,7 +53,11 @@ export const MainOverview = ({ movie }: MainOverviewProps) => {
 
       <div className="flex justify-between items-end pb-8">
         <div className="w-[432px] flex flex-col gap-2">
-          <h1 className="text-[48px] text-gray-0 font-bold text-center font-nunito leading-[1]">{movie?.title || 'Movie Title'}</h1>
+          <div className="flex md:hidden gap-[20px] justify-end pb-2">
+            <img src={play} alt="Play Button" className="cursor-pointer w-8 h-8" />
+            <img src={mute} alt="Play Button" className="cursor-pointer w-8 h-8" />
+          </div>
+          <h1 className="text-[36px] md:text-[48px] text-gray-0 font-bold text-center font-nunito leading-[1]">{movie?.title || 'Movie Title'}</h1>
           {movie?.tagLine && (
             <p className="text-[20px] leading-[1.45] text-gray-0 font-semibold text-center font-nunito">{`"${movie?.tagLine}"`}</p>
           )}
@@ -94,7 +98,7 @@ export const MainOverview = ({ movie }: MainOverviewProps) => {
           </div>
         </div>
 
-        <div className="flex gap-[30px]">
+        <div className="hidden md:flex gap-[30px]">
             <img src={play} alt="Play Button" className="cursor-pointer w-8 h-8" />
             <img src={mute} alt="Play Button" className="cursor-pointer w-8 h-8" />
         </div>

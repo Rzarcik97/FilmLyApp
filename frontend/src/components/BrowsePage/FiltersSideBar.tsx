@@ -40,7 +40,7 @@ export const FiltersSideBar = ({ title }: FiltersSideBarProps) => {
           before:pointer-events-none
           cursor-pointer
     ">
-      <h2 className="text-[36px] leading-[1.2] text-gray-0 font-semibold h-18 pb-12">{title}</h2>
+      <h2 className="text-[32px] leading-[1.2] text-gray-0 font-semibold h-18 pb-12">{title}</h2>
       <div className="h-14 flex justify-between items-center border-b border-gray-90 w-full">
         <p className="text-[20px] leading-[1.45] text-gray-0 font-semibold font-nunito">Sort by</p>
         <img src={filter} alt="Filters" className="w-6 h-6" />
