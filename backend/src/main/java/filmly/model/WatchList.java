@@ -2,6 +2,8 @@ package filmly.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,7 +22,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Table(name = "watchlist", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"user_id", "content_id"})
+        @UniqueConstraint(columnNames = {"user_id", "content_id", "content_type"})
 })
 public class WatchList {
 
@@ -30,6 +32,19 @@ public class WatchList {
 
     @Column(name = "content_id", nullable = false)
     private Long contentId;
+
+    @Column(nullable = false)
+    private String title;
+
+    @Column(nullable = false)
+    private String posterPath;
+
+    @Column
+    private LocalDateTime watchedAt;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Content.ContentType contentType;
 
     @Column(nullable = false)
     private LocalDateTime addedAt;
