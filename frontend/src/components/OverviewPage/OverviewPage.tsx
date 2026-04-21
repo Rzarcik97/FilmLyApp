@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { getMovieCast, getMovieDetails, getSimilarContent } from '../../api/movieService';
 import { type Actor, type Movie } from '../../types';
 import { Loader } from '../Utilities/Loader';
+import { NotFoundPage } from '../Utilities/NotFoundPage';
 
 export const OverviewPage = () => {
   const { id, type } = useParams<{ id: string, type: string }>();
@@ -61,7 +62,11 @@ export const OverviewPage = () => {
     );
   };
 
-  if (!movie) return <div>Movie not found.</div>;
+  if (!movie) {
+    return (
+      <NotFoundPage />
+    )
+  }
 
   return (
     <div className="bg-gray-100">

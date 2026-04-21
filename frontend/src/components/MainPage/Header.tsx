@@ -6,6 +6,8 @@ import lang from '../../../public/icons/lang.png';
 import { SearchBar } from './SearchBar';
 import { Link } from 'react-router-dom';
 import { useState } from 'react';
+import search from '../../../public/icons/search.svg';
+import { Menu } from 'lucide-react';
 
 interface NavItemsProps {
   icon: string;
@@ -22,6 +24,7 @@ const NavItem = ({ icon, alt }: NavItemsProps) => (
 
 export const Header = () => {
   const [isFocused, setIsFocused] = useState(false);
+
   return (
     <>
       {isFocused && (
@@ -33,32 +36,32 @@ export const Header = () => {
       )}
 
       <header className="flex justify-between items-center
-      absolute top-8 z-50 mx-15 h-[79px]
-      bg-gray-90/28 backdrop-blur-[2px] rounded-2xl border border-gray-90/10
+      absolute top-8 z-50 pl-6 lg:mx-15 h-8 lg:h-[79px]
+      bg-transparent lg:bg-gray-90/28 lg:backdrop-blur-[2px] lg:rounded-2xl lg:border lg:border-gray-90/10
       relative z-0
-      before:content-[''] before:absolute before:inset-0 before:pointer-events-none
-      before:rounded-2xl before:border before:border-gray-90/20
-      shadow-[0_20px_50px_rgba(0,0,0,0.8)]
+      lg:before:content-[''] lg:before:absolute lg:before:inset-0 lg:before:pointer-events-none
+      lg:before:rounded-2xl lg:before:border lg:before:border-gray-90/20
+      lg:shadow-[0_20px_50px_rgba(0,0,0,0.8)]
     ">
-        <div className="relative h-full flex items-center pl-10 w-[200px]">
+        <div className="relative flex items-center lg:pl-10 w-auto lg:w-[200px]">
           <Link to="/" className="relative flex items-center justify-center">
 
-            <span className="text-secondary-light font-bold text-[48px] tracking-tight z-10">
+            <span className="text-secondary-light font-bold text-[18px] md:text-[48px] tracking-tight z-10">
               Filmly
             </span>
 
             <img
               src={logo}
               alt=""
-              className="absolute w-[380px] h-[auto] max-w-none top-[-28px] left-[-76px] z-20 pointer-events-none opacity-90"
+              className="absolute w-[120px] md:w-[380px] h-[auto] max-w-none top-[-8px] md:top-[-28px] left-[-22px] md:left-[-76px] z-20 pointer-events-none opacity-90"
             />
           </Link>
         </div>
 
-        <div className="relative">
+        <div className="hidden lg:block relative">
           <SearchBar onFocusChange={setIsFocused} isFocused={isFocused}/>
         </div>
-        <nav className="flex justify-center items-center gap-6 pr-6">
+        <nav className="hidden lg:flex justify-center items-center gap-6 pr-6">
           <NavItem icon={watchlist} alt="Watchlist icon" />
           <NavItem icon={reminder} alt="Reminder icon" />
           <NavItem icon={lang} alt="Language icon" />
@@ -66,6 +69,15 @@ export const Header = () => {
             <NavItem icon={profile} alt="Sign-in icon" />
           </Link>
         </nav>
+
+        <div className="flex lg:hidden items-center gap-2 pr-6">
+          <button className="w-8 h-8 flex items-center justify-center cursor-pointer rounded-full bg-gray-90 border border-gray-50 backdrop-blur-md">
+            <img src={search} alt="Search" className="w-6 h-6" />
+          </button>
+          <button className="w-8 h-8 flex items-center justify-center cursor-pointer rounded-full bg-gray-90 border border-gray-50 backdrop-blur-md text-gray-50">
+            <Menu size={24} />
+          </button>
+        </div>
       </header>
     </>
   )

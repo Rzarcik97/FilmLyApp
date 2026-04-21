@@ -25,11 +25,11 @@ export const ScrollSection = ({ title, items }: ScrollSectionProps) => {
   };
 
   return (
-    <section className="py-10 px-12">
+    <section className="py-10 px-4 md:px-12">
       <div className="flex justify-between items-center">
         <div className="flex gap-2 items-center">
           <div className="w-1 h-[35px] bg-primary-0 rounded-full" />
-          <h2 className="text-[36px] leading-[1.2] font-bold text-secondary-light">{title}</h2>
+          <h2 className="text-[24px] md:text-[36px] leading-[1.2] font-bold text-secondary-light">{title}</h2>
         </div>
 
         <button className="cursor-pointer text-[16px] text-secondary-light font-nunito font-bold">
@@ -52,7 +52,7 @@ export const ScrollSection = ({ title, items }: ScrollSectionProps) => {
         </button>
         <div
           ref={scrollRef}
-          className="flex flex-nowrap w-full gap-10 overflow-x-hidden scroll-smooth py-4"
+          className="flex flex-nowrap w-full gap-2 md:gap-10 overflow-x-hidden scroll-smooth py-4"
         >
           {items.map((item) => (
             <div className="relative z-10">

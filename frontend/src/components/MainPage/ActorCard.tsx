@@ -9,7 +9,7 @@ export const ActorCard = ({ actor }: { actor: Actor }) => {
   
   return (
     <div className="cursor-pointer">
-      <div className="bg-gray-90 w-[200px] h-[200px] rounded-full flex-1 flex justify-center items-center overflow-hidden
+      <div className="bg-gray-90 w-40 h-40 md:w-[200px] md:h-[200px] rounded-full flex-1 flex justify-center items-center overflow-hidden
           bg-gray-80/10 backdrop-blur-[2px]
           rounded-full border border-gray-80/10
           before:content-[''] before:absolute before:inset-0
