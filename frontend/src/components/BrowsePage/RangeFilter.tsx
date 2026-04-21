@@ -1,5 +1,6 @@
 import * as Slider from '@radix-ui/react-slider';
 import type { RangeState } from '../../types';
+import { CheckIcon } from 'lucide-react';
 
 interface RangeFilterProps {
   label: string;
@@ -44,19 +45,11 @@ export const RangeFilter = ({ label, range, setRange }: RangeFilterProps) => {
               ">
               </div>
 
-              <svg
-                className="absolute w-3.5 h-3.5 text-primary-0 
-                  opacity-0 transition-opacity duration-200 peer-checked:opacity-100"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="4"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <polyline points="20 6 9 17 4 12" />
-              </svg>
+              <CheckIcon
+                size={14}
+                color="currentColor"
+                className="absolute text-primary-0 opacity-0 transition-opacity duration-200 peer-checked:opacity-100 text-primary-0"
+              />
             </div>
           </label>
         </div>

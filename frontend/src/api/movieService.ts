@@ -45,3 +45,8 @@ export const getSimilarContent = async (id: string, type: string): Promise<Movie
   const response = await apiClient.get<Movie[]>(`/${endpoint}/${id}/similar`);
   return response.data;
 }
+
+export const getPopularActors = async (): Promise<Actor[]> => {
+  const response = await apiClient.get<Actor[]>('/actors/popular');
+  return response.data;
+}
