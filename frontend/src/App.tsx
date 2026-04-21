@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
-import { Header } from './components/MainPage/Header';
+import { Header } from './components/Header/Header';
 import { MainPage } from './components/MainPage/MainPage';
 import './styles/App.css';
 import { OverviewPage } from './components/OverviewPage/OverviewPage';

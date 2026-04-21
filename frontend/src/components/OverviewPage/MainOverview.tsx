@@ -1,5 +1,3 @@
-import { ChevronLeft } from 'lucide-react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import imdb from '../../../public/icons/imdb.png';
 import thumbsUp from '../../../public/icons/thumbUp-primary.png';
 import play from '../../../public/icons/play.png';
@@ -11,17 +9,6 @@ interface MainOverviewProps {
 }
 
 export const MainOverview = ({ movie }: MainOverviewProps) => {
-  const navigate = useNavigate();
-  const location = useLocation();  
-
-  const navigateBack = () => {
-    if (location.state?.from) {
-      navigate(location.state.from);
-    } else {
-      window.location.href = "/";
-    }
-  };
-
   const genres = movie?.genres;
   const backdropUrl = movie?.backdrop_path
     ? `https://image.tmdb.org/t/p/original${movie.backdrop_path}`
@@ -29,26 +16,11 @@ export const MainOverview = ({ movie }: MainOverviewProps) => {
   
   return (
     <div
-      className="bg-gray-100 px-10 min-h-screen bg-cover bg-center bg-no-repeat relative flex flex-col -mt-[111px]"
+      className="bg-gray-100 px-10 min-h-screen bg-cover bg-center bg-no-repeat relative flex flex-col"
       style={{
         backgroundImage: `linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 40%, transparent 100%), url(${backdropUrl})`
       }}
     >
-      {/* <div className="flex justify-between items-center pt-36 hidden">
-        <button
-          className="flex justify-center items-center cursor-pointer"
-          onClick={(e) => {
-            e.preventDefault();
-            navigateBack();
-          }}
-        >
-          <span className="text-secondary-light">
-            <ChevronLeft size={32} />
-          </span>
-          <p className="text-[24px] text-secondary-light">Back</p>
-        </button>
-      </div> */}
-
       <div className="flex-grow" />
 
       <div className="flex justify-between items-end pb-8">

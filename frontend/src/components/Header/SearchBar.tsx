@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import type { Movie } from '../../types';
 import { getSearchData } from '../../api/movieService';
 import { Loader2 } from 'lucide-react';
+
 interface SearchBarProps {
   onFocusChange: (focused: boolean) => void;
   isFocused: boolean;
@@ -17,6 +18,7 @@ export const SearchBar = ({ onFocusChange, isFocused }: SearchBarProps) => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const showDropdown = isFocused && query.trim().length >= 0;
+  
 
   useEffect(() => {
     if (query.trim().length < 0) {
