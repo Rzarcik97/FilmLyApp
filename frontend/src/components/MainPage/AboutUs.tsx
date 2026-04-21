@@ -21,6 +21,18 @@ const heroSection = [
     title: "The Departed",
     info: "Thriller  •  2006  •  2h 31m",
     bg: "/backgrounds/departed.jpg"
+  },
+  {
+    id: 4,
+    title: "Interstellar",
+    info: "Sci-Fi  •  2014  •  2h 49m",
+    bg: "/backgrounds/interstellar.jpg"
+  },
+  {
+    id: 5,
+    title: "Dune: Part Two",
+    info: "Action  •  2024  •  2h 46m",
+    bg: "/backgrounds/dune.webp"
   }
 ];
 
@@ -84,6 +96,19 @@ export const AboutUs = () => {
               <img src={mute} alt="Mute button" className="cursor-pointer w-8 h-8" />
             </div>
           </div>
+        </div>
+
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-[3px] z-20">
+          {heroSection.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentIndex(index)}
+              className={`transition-all duration-300 ${currentIndex === index
+                  ? 'w-[24px] h-[6px] rounded-[3px] bg-primary-0'
+                  : 'w-[6px] h-[6px] rounded-full bg-gray-0 hover:bg-gray-30'
+                }`}
+            />
+          ))}
         </div>
       </div>
     </main >

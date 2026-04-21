@@ -5,12 +5,13 @@ import './styles/App.css';
 import { OverviewPage } from './components/OverviewPage/OverviewPage';
 import { useEffect, useState } from 'react';
 import { BrowsePage } from './components/BrowsePage/BrowsePage';
-import { SignUp } from './components/SignUp/SignUp';
-import { CreatePassword } from './components/SignUp/CreatePassword';
 import { StepEnum } from './types/enums';
 import { Footer } from './components/MainPage/Footer';
 import { DiscoverPage } from './components/DiscoverPage/DiscoverPage';
 import { ActorsPage } from './components/BrowsePage/ActorsBrowse';
+import { SignUpPage } from './components/SignUp/SignUpPage';
+import { CreatePasswordPage } from './components/SignUp/CreatePasswordPage';
+import { LoginPage } from './components/SignUp/LoginPage';
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -50,8 +51,9 @@ function App() {
 
         <Routes>
           <Route path="/" element={<MainPage />} />
-          <Route path="/sign-up" element={<SignUp />} />
-          <Route path="/sign-up/password" element={<CreatePassword />} />
+          <Route path="/sign-up" element={<SignUpPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/sign-up/password" element={<CreatePasswordPage />} />
           <Route path="/:type/:id" element={<OverviewPage />} />
           <Route path="/browse" element={<BrowsePage />} />
           <Route path="/discover/:type" element={<DiscoverPage />} />

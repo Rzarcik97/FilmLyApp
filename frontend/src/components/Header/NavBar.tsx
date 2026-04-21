@@ -19,7 +19,7 @@ const NavItem = ({ icon, alt }: NavItemsProps) => (
 
 export const NavBar = () => {
   return (
-    <nav className="hidden lg:flex justify-center items-center gap-6 pr-6">
+    <nav className="hidden lg:flex justify-center items-center gap-6">
       <NavItem icon={watchlist} alt="Watchlist icon" />
       <NavItem icon={reminder} alt="Reminder icon" />
       <NavItem icon={lang} alt="Language icon" />

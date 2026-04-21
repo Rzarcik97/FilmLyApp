@@ -3,7 +3,7 @@ import logo from '../../../public/icons/logo.svg';
 
 export const Logo = () => {
   return (
-    <div className="relative flex items-center lg:pl-10 w-auto lg:w-[200px]">
+    <div className="relative flex items-center w-auto lg:w-[200px]">
       <Link to="/" className="relative flex items-center justify-center">
 
         <span className="text-secondary-light font-bold text-[24px] md:text-[48px] tracking-tight z-10">
