@@ -1,9 +1,11 @@
-import { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FilterSection } from '../../types/enums';
-import { ListFilter, ChevronDown, ChevronUp } from 'lucide-react';
+import { ChevronDown, ChevronUp, ChevronRight } from 'lucide-react';
 import { RangeFilter } from './RangeFilter';
-import type { RangeState } from '../../types';
+import type { Genre, RangeState } from '../../types';
 import filter from '../../../public/icons/filter.png';
+import { getGenres } from '../../api/movieService';
+import { CheckIcon } from '../../assets/icons/CheckIcon';
 
 interface FiltersSideBarProps {
   title: string;
@@ -13,6 +15,8 @@ export const FiltersSideBar = ({ title }: FiltersSideBarProps) => {
   const [openedSection, setOpenedSection] = useState<FilterSection[]>([]);
   const [imdbRange, setImdbRange] = useState<RangeState>({ min: 7.7, max: 10 });
   const [voteRange, setVoteRange] = useState<RangeState>({ min: 4.3, max: 5.9 });
+  const [allGenres, setAllGenres] = useState<Genre[]>([]);
+  const [selectedGenreIds, setSelectedGenreIds] = useState<number[]>([]);
 
   const isSectionOpened = (section: FilterSection) => openedSection.includes(section);
 
@@ -24,13 +28,37 @@ export const FiltersSideBar = ({ title }: FiltersSideBarProps) => {
     );
   };
 
+  useEffect(() => {
+    const fetchGenres = async () => {
+      const genres = await getGenres();
+      setAllGenres(genres);
+    };
+
+    fetchGenres();
+  }, []);
+
+  const toggleGenre = (genreId: number) => {
+    setSelectedGenreIds(prev => 
+      prev.includes(genreId)
+        ? prev.filter(id => id !== genreId)
+        : [...prev, genreId]
+    );
+  };
+
   const sections = [
-    FilterSection.SortBy,
     FilterSection.Genres,
     FilterSection.Country,
     FilterSection.Year,
-    FilterSection.Cast
-  ]
+    // FilterSection.Cast,
+    FilterSection.Title,
+  ];
+
+  const sectionLabels: Record<string, string> = {
+    [FilterSection.Genres]: 'All',
+    [FilterSection.Country]: 'All',
+    [FilterSection.Year]: 'All',
+    [FilterSection.Title]: 'Default',
+  };
 
   return (
     <div className="w-[328px] py-12 px-6 flex flex-col bg-gray-100 rounded-[16px]
@@ -38,9 +66,9 @@ export const FiltersSideBar = ({ title }: FiltersSideBarProps) => {
           before:content-[''] before:absolute before:inset-0
           before:rounded-[16px] before:border before:border-gray-80/20
           before:pointer-events-none
-          cursor-pointer
+          cursor-pointer z-100
     ">
-      <h2 className="text-[36px] leading-[1.2] text-gray-0 font-semibold h-18 pb-12">{title}</h2>
+      <h2 className="text-[32px] leading-[1.2] text-gray-0 font-semibold h-18 pb-12">{title}</h2>
       <div className="h-14 flex justify-between items-center border-b border-gray-90 w-full">
         <p className="text-[20px] leading-[1.45] text-gray-0 font-semibold font-nunito">Sort by</p>
         <img src={filter} alt="Filters" className="w-6 h-6" />
@@ -74,23 +102,86 @@ export const FiltersSideBar = ({ title }: FiltersSideBarProps) => {
           </label>
         </div>
 
-        {sections.map((section) => (
-          <div key={section} className="flex flex-col border-b border-gray-90">
-            <div className="flex justify-between items-center px-2 h-14">
-              <p className="text-gray-0 text-[16px] leading-[1.35] font-bold font-nunito">{section}</p>
-              <button
-                className="cursor-pointer text-gray-70"
-                onClick={() => toggleSection(section)}
-              >
-                {isSectionOpened(section) ? (
-                  <ChevronUp size={24} />
-                ) : (
-                  <ChevronDown size={24} />
-                )}
-              </button>
-            </div>
+        <div key={FilterSection.SortBy} className="flex flex-col border-b border-gray-90">
+          <div className="flex justify-between items-center px-2 h-14">
+            <p className="text-gray-0 text-[16px] leading-[1.35] font-bold font-nunito">{FilterSection.SortBy}</p>
+            <button
+              className="cursor-pointer text-gray-70"
+              onClick={() => toggleSection(FilterSection.SortBy)}
+            >
+              {isSectionOpened(FilterSection.SortBy) ? (
+                <ChevronUp size={24} />
+              ) : (
+                <ChevronDown size={24} />
+              )}
+            </button>
           </div>
-        ))}
+        </div>
+        {isSectionOpened(FilterSection.SortBy) && (
+          <div className="flex flex-col gap-6">
+            {sections.map((section) => (
+              <React.Fragment key={section}>
+                <div className="">
+                  <div className="flex justify-between items-center px-2 h-14 border-b border-gray-90">
+                    <p className="text-gray-0 text-[16px] leading-[1.35] font-bold font-nunito">{section}</p>
+                    <button
+                      className="cursor-pointer text-gray-70"
+                      onClick={() => toggleSection(section)}
+                    >
+                      {isSectionOpened(section) ? (
+                        <ChevronUp size={24} />
+                      ) : (
+                        <div className="flex gap-2 text-gray-70 text-[16px] leading-[1.35] items-center">
+                          <span>{sectionLabels[section] || 'All'}</span>
+                          <ChevronRight size={24} />
+                        </div>
+                      )}
+                    </button>
+                  </div>
+                </div>
+
+                {section === FilterSection.Genres && isSectionOpened(section) && (
+                  <div className="flex flex-col py-4 gap-4 animate-in fade-in slide-in-from-top-2">
+                    {allGenres.map((genre) => {
+                      const isSelected = selectedGenreIds.includes(genre.id);
+
+                      return (
+                        <label
+                          key={genre.id}
+                          className="flex justify-between items-center px-4 py-1 hover:bg-gray-90/50 transition-colors group cursor-pointer"
+                        >
+                          <span className={`text-[15px] font-nunito transition-colors ${isSelected ? 'text-primary-20' : 'text-gray-30'}`}>
+                            {genre.name}
+                          </span>
+
+                          <div className="relative flex items-center justify-center">
+                            <input
+                              type="checkbox"
+                              className="peer sr-only"
+                              checked={isSelected}
+                              onChange={() => toggleGenre(genre.id)}
+                            />
+
+                            <div className="w-5 h-5 rounded-[5px] border-2 border-gray-70 
+                                            bg-transparent transition-all duration-200
+                                            peer-checked:border-gray-70 group-hover:border-gray-50">
+                            </div>
+
+                            <CheckIcon
+                              size={14}
+                              color="currentColor"
+                              className="absolute text-primary-0 opacity-0 transition-opacity duration-200 peer-checked:opacity-100"
+                            />
+                          </div>
+                        </label>
+                      );
+                    })}
+                  </div>
+                )}
+              </React.Fragment>
+            ))}
+          </div>
+        )}
         <div className="flex justify-between items-center px-2 mt-2 h-14 border-t border-gray-70 text-[16px] text-gray-0 leading-[1.35] font-bold font-nunito">
           <p>{FilterSection.Rating}</p>
           <button

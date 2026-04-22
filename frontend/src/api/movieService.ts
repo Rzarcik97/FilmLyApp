@@ -28,6 +28,20 @@ export const getPopularMovies = async (): Promise<Movie[]> => {
   return response.data;
 }
 
+export const getUpcomingMovies = async (): Promise<Movie[]> => {
+  const response = await apiClient.get<Movie[]>('/movies/upcoming');
+  return response.data;
+}
+
+export const getSearchData = async (title: string, type?: string): Promise<Movie[]> => {
+  const response = await apiClient.get<any>('/search', {
+    params: { title }
+  });
+
+  const movies = response.data.results || [];
+  return movies;
+}
+
 export const getGenres = async (): Promise<Genre[]> => {
   const response = await apiClient.get<Genre[]>('/genres');
   return response.data;
@@ -43,5 +57,10 @@ export const getMovieCast = async (id: string, type: string): Promise<Actor[]> =
 export const getSimilarContent = async (id: string, type: string): Promise<Movie[]> => {
   const endpoint = type.toLowerCase() === 'movie' ? 'movies' : 'series';
   const response = await apiClient.get<Movie[]>(`/${endpoint}/${id}/similar`);
+  return response.data;
+}
+
+export const getPopularActors = async (): Promise<Actor[]> => {
+  const response = await apiClient.get<Actor[]>('/actors/popular');
   return response.data;
 }

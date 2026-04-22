@@ -28,3 +28,16 @@ export const createPasswordSchema = z.object({
   });
 
 export type CreatePasswordFormData = z.infer<typeof createPasswordSchema>;
+
+export const loginSchema = z.object({
+  email: z
+    .string()
+    .min(1, 'Email is required')
+    .email({ message: 'Please enter a valid email address' }),
+  password: z
+    .string()
+    .min(1, 'Password is required')
+    // .min(8, 'Password length should be at least 8 characters'),
+});
+
+export type LoginFormData = z.infer<typeof loginSchema>;

@@ -9,7 +9,7 @@ export interface ProductionCountry {
 }
 
 export interface Movie {
-  id?: number;
+  id: number;
   contentId?: number;
   title: string | null;
   tagLine: string;

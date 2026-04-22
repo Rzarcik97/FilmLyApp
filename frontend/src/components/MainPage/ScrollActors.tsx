@@ -2,6 +2,7 @@ import { useRef } from 'react';
 import type { Actor } from '../../types'
 import { ActorCard } from './ActorCard';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface ScrollActorsProps {
   items: Actor[];
@@ -25,19 +26,22 @@ export const ScrollActors = ({ title, items }: ScrollActorsProps) => {
   };
 
   return (
-    <section className="px-12 pt-18 pb-2">
+    <section className="px-4 md:px-12 pt-10 md:pt-18 pb-2">
       <div className="flex justify-between items-center">
         <div className="flex gap-2 items-center">
           <div className="w-1 h-[35px] bg-primary-0 rounded-full" />
-          <h2 className="text-[36px] leading-[1.2] font-bold text-secondary-light">{title}</h2>
+          <h2 className="text-[24px] md:text-[36px] leading-[1.2] font-bold text-secondary-light">{title}</h2>
         </div>
 
-        <button className="cursor-pointer text-[16px] text-secondary-light font-nunito font-bold">
+        <Link 
+          to='/actors'
+          className="cursor-pointer text-[16px] text-secondary-light font-nunito font-bold"
+        >
           View all
-        </button>
+        </Link>
       </div>
 
-      <div className="flex justify-center items-center gap-2">
+      <div className="flex justify-center items-center gap-2 pt-6">
         <button
           onClick={() => scroll('left')}
           className="text-primary-0 cursor-pointer
@@ -53,7 +57,7 @@ export const ScrollActors = ({ title, items }: ScrollActorsProps) => {
 
         <div
           ref={scrollRef}
-          className="flex justify-center items-center gap-6 no-wrap overflow-x-hidden scroll-smooth"
+          className="flex justify-start items-start gap-2 md:gap-6 flex-nowrap overflow-x-hidden scroll-smooth"
         >
           {items.map(item => (
             <div className="relative z-10">

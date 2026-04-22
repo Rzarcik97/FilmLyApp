@@ -2,13 +2,15 @@ import { useRef } from 'react';
 import type { Movie } from '../../types'
 import { MovieCard } from './MovieCard';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface ScrollSectionTrendingProps {
   items: Movie[];
   title: string;
+  viewAllPath: string;
 }
 
-export const ScrollSectionTrending = ({ title, items }: ScrollSectionTrendingProps) => {
+export const ScrollSectionTrending = ({ title, items, viewAllPath }: ScrollSectionTrendingProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scroll = (direction: 'left' | 'right') => {
@@ -25,16 +27,18 @@ export const ScrollSectionTrending = ({ title, items }: ScrollSectionTrendingPro
   };
 
   return (
-    <section className="py-10 px-12">
+    <section className="py-10 px-4 md:px-12">
       <div className="flex justify-between items-center">
         <div className="flex gap-2 items-center">
           <div className="w-1 h-[35px] bg-primary-0 rounded-full" />
-          <h2 className="text-[36px] leading-[1.2] font-bold text-secondary-light">{title}</h2>
+          <h2 className="text-[24px] md:text-[36px] leading-[1.2] font-bold text-secondary-light">{title}</h2>
         </div>
         
-        <button className="cursor-pointer text-[16px] text-secondary-light font-nunito font-bold">
+        <Link 
+          to={viewAllPath}
+          className="cursor-pointer text-[16px] text-secondary-light font-nunito font-bold">
           View all
-        </button>
+        </Link>
       </div>
 
       <div className="flex justify-center items-center gap-2">
@@ -52,7 +56,7 @@ export const ScrollSectionTrending = ({ title, items }: ScrollSectionTrendingPro
         </button>
         <div
           ref={scrollRef}
-          className="flex flex-nowrap w-full gap-6 overflow-x-hidden scroll-smooth px-12 py-4"
+          className="flex flex-nowrap w-full gap-2 md:gap-6 overflow-x-hidden scroll-smooth px-12 py-4"
         >
           {items.map((item, index) => (
             <div 

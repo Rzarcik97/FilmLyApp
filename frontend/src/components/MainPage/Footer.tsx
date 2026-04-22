@@ -7,9 +7,9 @@ export const Footer = () => {
   const baseColor = 'rgba(17, 17, 16, 1)';
 
   return (
-    <footer className="relative w-full h-[700px] bg-gray-100 overflow-hidden">
+    <footer className="relative w-full md:h-[700px] bg-gray-100 overflow-hidden">
       <div
-        className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat brightness-[0.4] saturate-[0.5]"
+        className="absolute inset-0 z-0 bg-cover md:bg-center bg-no-repeat brightness-[0.4] saturate-[0.5]"
         style={{ backgroundImage: "url('/backgrounds/footer_bg_img.webp')" }}
       />
 
@@ -29,7 +29,7 @@ export const Footer = () => {
 
       <div className="absolute top-0 left-0 right-0 h-64 backdrop-blur-2xl z-20 [mask-image:linear-gradient(to_bottom,black_20%,transparent_100%)]" />
 
-      <div className="relative z-20 h-full flex items-end">
+      <div className="relative z-20 h-[700px] md:h-full flex items-end">
         <div className="
                 w-full 
                 bg-gray-90/40 
@@ -38,7 +38,7 @@ export const Footer = () => {
                 border-t border-x border-gray-80/10
                 flex justify-between
         ">
-          <div className="flex pt-12 pr-30 pb-[105px] pl-12 w-full justify-between items-start">
+          <div className="flex flex-col gap-4 md:flex-row pt-12 md:pr-30 pb-8 md:pb-[105px] pl-12 w-full justify-between items-start">
             <div className="flex flex-col gap-1.5">
               <Link to='/' className="h-[66px] flex flex-col items-start justify-center">
                 <span className="text-[48px] text-secondary-light font-bold">Filmly</span>
