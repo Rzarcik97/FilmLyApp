@@ -73,7 +73,11 @@ export const OverviewPage = () => {
       <MainOverview movie={movie} />
       <MoreDetails movie={movie} />
       <ScrollActors title="Cast" items={cast} />
-      <ScrollSection title="Yoy may also like" items={similarItems} />
+      <ScrollSection 
+        title="Yoy may also like" 
+        items={similarItems} 
+        viewAllPath='/actors'
+      />
     </div>
   )
 }

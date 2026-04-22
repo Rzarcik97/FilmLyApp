@@ -1,34 +1,16 @@
-import bg_image from '../../../public/backgrounds/bg_not_found.png';
-import oops from '../../../public/backgrounds/oops.svg';
-import not_found from '../../../public/backgrounds/page_not_found.svg';
+import { Link } from 'react-router-dom';
+import missing from '/backgrounds/missing.png';
 
 export const NotFoundPage = () => {
-  const bgPath = '/backgrounds/not_found_bg.svg';
-  const oopsPath = '/backgrounds/oops.svg';
-  const notFoundPath = '/backgrounds/page_not_found.svg';
-  const baseColor = '#151412';
-
   return (
-    <div className="-mt-[111px] relative w-full min-h-screen flex flex-col items-center justify-center overflow-hidden bg-[#151412]">
-      <div
-        className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat mt-60"
-        style={{
-          backgroundImage: `url(${bgPath})`,
-          WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)',
-          maskImage: 'linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)',
-          filter: 'brightness(0.6) saturate(0.9)'
-        }}
-      />
-
-      <div
-        className="absolute inset-0 z-10 pointer-events-none"
-        style={{
-          background: `
-            radial-gradient(circle at 50% 70%, rgba(21, 20, 18, 0) 0%, rgba(21, 20, 18, 0.4) 40%, ${baseColor} 95%),
-            linear-gradient(to bottom, ${baseColor} 0%, transparent 20%, transparent 80%, ${baseColor} 100%)
-          `
-        }}
-      />
+    <div className="relative w-full min-h-screen flex flex-col gap-8 items-center justify-center overflow-hidden bg-gray-100 pt-40">
+      <img src={missing} alt="" className="w-100 md:w-[562px] md:h-[192px]"/>
+      <p className="text-[16px] md:text-[20px] text-gray-0 font-semibold leading-[1.45]">This page didn't make the final cut.</p>
+      <button className="w-60 md:w-[303px] md:h-[66px] bg-primary-0 border-none cursor-pointer rounded-[32px]">
+        <Link to='/discover/movies' className="text-black text-[20px] md:text-[24px] font-nunito font-bold">
+          Back to Movies
+        </Link>
+      </button>
     </div>
   )
 }

@@ -20,10 +20,11 @@ export const GenericBrowseSection = <T extends { id: number | string }>({
 
   return (
     <div
-      className="grid gap-x-6 gap-y-4.5 justify-center"
-      style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(204px, 1fr))' }}
+      className="grid gap-x-6 gap-y-7.5 justify-center 
+               grid-cols-[repeat(auto-fill,minmax(175px,1fr))] 
+               lg:grid-cols-[repeat(auto-fill,minmax(204px,1fr))]"
     >
-      {items?.map((item) => (
+      {(Array.isArray(items) ? items : [])?.map((item) => (
         <div key={item.id}>
           {renderItem(item)}
         </div>
