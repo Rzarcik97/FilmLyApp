@@ -54,7 +54,7 @@ export const DiscoverPage = () => {
       </aside>
       
       <main className="flex-1 px-10 pt-2">
-        <div className="flex gap-2 items-center">
+        <div className="flex gap-2 items-center md:pb-2">
           <div className="w-1 h-[50px] md:h-[35px] bg-primary-0 rounded-full" />
           <h2 className="text-[24px] md:text-[36px] leading-[1.2] font-bold text-secondary-light">
             Discover the best cinema on Filmly
@@ -69,7 +69,7 @@ export const DiscoverPage = () => {
           </button>
         </div>
         
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center md:block">
           <DiscoverContent
             filters={filters}
           />
