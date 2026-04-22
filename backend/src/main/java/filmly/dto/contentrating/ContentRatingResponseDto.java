@@ -9,5 +9,7 @@ public record ContentRatingResponseDto(
         Content.ContentType contentType,
         Float rating,
         String review,
+        String username,
+        String avatarUrl,
         LocalDateTime createdAt
 ) {}
