@@ -2,16 +2,19 @@ package filmly.service.impl;
 
 import filmly.dto.contentrating.ContentRatingRequestDto;
 import filmly.dto.contentrating.ContentRatingResponseDto;
+import filmly.dto.contentrating.ContentRatingUpdateRequestDto;
+import filmly.exception.AuthenticationException;
 import filmly.exception.EntityAlreadyExistsException;
 import filmly.exception.EntityNotFoundException;
 import filmly.mapper.ContentRatingMapper;
+import filmly.model.Content;
 import filmly.model.ContentRating;
 import filmly.model.User;
 import filmly.repository.ContentRatingRepository;
 import filmly.repository.UserRepository;
 import filmly.service.ContentRatingService;
 import java.time.LocalDateTime;
-import java.util.Optional;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -25,6 +28,17 @@ public class ContentRatingServiceImpl implements ContentRatingService {
     private final ContentRatingRepository contentRatingRepository;
     private final UserRepository userRepository;
     private final ContentRatingMapper contentRatingMapper;
+
+    @Override
+    public List<ContentRatingResponseDto> getByContentId(
+            Long contentId,
+            Content.ContentType contentType) {
+        return contentRatingRepository
+                .findLatestByContentIdAndContentType(contentId, contentType)
+                .stream()
+                .map(contentRatingMapper::toDto)
+                .toList();
+    }
 
     @Override
     public ContentRatingResponseDto addRating(String email, ContentRatingRequestDto dto) {
@@ -47,14 +61,16 @@ public class ContentRatingServiceImpl implements ContentRatingService {
     }
 
     @Override
-    public ContentRatingResponseDto updateRating(String email, ContentRatingRequestDto dto) {
+    public ContentRatingResponseDto updateRating(String email, ContentRatingUpdateRequestDto dto) {
         User user = userRepository.findByEmail(email).orElseThrow(
                 () -> new EntityNotFoundException("User", email));
         ContentRating contentRating = contentRatingRepository
                 .findByUser_IdAndContentIdAndContentType(
                         user.getId(), dto.contentId(), dto.contentType())
                 .orElseThrow(() -> new EntityNotFoundException("Rating", dto.contentId()));
-        contentRating.setRating(dto.rating());
+        if (dto.rating() != null) {
+            contentRating.setRating(dto.rating());
+        }
         if (dto.review() != null && !dto.review().isBlank()) {
             contentRating.setReview(dto.review());
         }
@@ -65,19 +81,17 @@ public class ContentRatingServiceImpl implements ContentRatingService {
 
     @Override
     @Transactional
-    public void deleteRating(String email, ContentRatingRequestDto dto) {
+    public void deleteRating(String email, Long id) {
         User user = userRepository.findByEmail(email).orElseThrow(
                 () -> new EntityNotFoundException("User", email));
-        Optional<ContentRating> contentRating = contentRatingRepository
-                .findByUser_IdAndContentIdAndContentType(
-                        user.getId(), dto.contentId(), dto.contentType());
-        if (contentRating.isEmpty()) {
-            log.warn("User {} tried to delete non-existing rating for {} with id: {}",
-                    email, dto.contentType(), dto.contentId());
-            return;
+        ContentRating contentRating = contentRatingRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Rating", id)
+        );
+        if (!contentRating.getUser().getId().equals(user.getId())) {
+            throw new AuthenticationException("You are not allowed to delete this rating");
         }
-        contentRatingRepository.delete(contentRating.get());
+        contentRatingRepository.delete(contentRating);
         log.info("User {} deleted rating for {} with id: {}",
-                email, dto.contentType(), dto.contentId());
+                email, contentRating.getContentType(), contentRating.getContentId());
     }
 }
