@@ -4,12 +4,14 @@ import { getPopularMovies, getRecentMovies, getSearchData, getTrendingMovies, ge
 import { MovieCard } from '../MainPage/MovieCard';
 import type { Genre, Movie } from '../../types';
 
-export type SortOrder = 'newest' | 'oldest' | 'default';
+export type DateSort = 'newest' | 'oldest' | 'default';
+export type TitleSort = 'asc' | 'desc' | 'default';
 export interface FilterState {
   selectedGenreIds: number[];
   selectedCountries: string[];
   allGenres: Genre[];
-  sortBy: SortOrder;
+  dateSort: DateSort;
+  titleSort: TitleSort;
 }
 
 export const DiscoverContent = ({ filters }: { filters: FilterState }) => {
@@ -34,21 +36,46 @@ export const DiscoverContent = ({ filters }: { filters: FilterState }) => {
   };
 
   const sortFn = (a: Movie, b: Movie) => {
-    if (filters.sortBy === 'default') return 0;
+    // if (filters.dateSort === 'default') return 0;
 
-    const dateA = a.release_date || '';
-    const dateB = b.release_date || '';
+    // const dateA = a.release_date || '';
+    // const dateB = b.release_date || '';
 
-    if (filters.sortBy === 'newest') {
-      return dateB.localeCompare(dateA);
-    } else {
-      return dateA.localeCompare(dateB);
+    // if (filters.dateSort === 'newest') {
+    //   return dateB.localeCompare(dateA);
+    // } else {
+    //   return dateA.localeCompare(dateB);
+    // }
+    if (filters.dateSort === 'default' && filters.titleSort !== 'default') {
+      const titleA = a.title || '';
+      const titleB = b.title || '';
+      return filters.titleSort === 'asc' ? titleA.localeCompare(titleB) : titleB.localeCompare(titleA);
     }
+
+    if (filters.titleSort === 'default' && filters.dateSort !== 'default') {
+      const dateA = a.release_date || '';
+      const dateB = b.release_date || '';
+      return filters.dateSort === 'newest' ? dateB.localeCompare(dateA) : dateA.localeCompare(dateB);
+    }
+
+    if (filters.dateSort !== 'default' && filters.titleSort !== 'default') {
+      const dateA = a.release_date || '';
+      const dateB = b.release_date || '';
+      const dateResult = filters.dateSort === 'newest' ? dateB.localeCompare(dateA) : dateA.localeCompare(dateB);
+
+      if (dateResult !== 0) return dateResult;
+
+      const titleA = a.title || '';
+      const titleB = b.title || '';
+      return filters.titleSort === 'asc' ? titleA.localeCompare(titleB) : titleB.localeCompare(titleA);
+    }
+
+    return 0;
   };
 
   switch (type) {
     case 'trending-movies':
-      return <GenericBrowseSection<Movie> 
+      return <GenericBrowseSection<Movie>
         fetchFn={getTrendingMovies}
         filterFn={applyFilters}
         sortFn={sortFn}

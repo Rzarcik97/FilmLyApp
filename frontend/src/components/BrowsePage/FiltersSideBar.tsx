@@ -6,7 +6,8 @@ import type { Genre, RangeState } from '../../types';
 import filter from '../../../public/icons/filter.png';
 import { getGenres } from '../../api/movieService';
 import { Checkbox } from '../../assets/CheckBox';
-import type { SortOrder } from '../DiscoverPage/DiscoverContent';
+import type { DateSort, TitleSort } from '../DiscoverPage/DiscoverContent';
+import X from '../../../public/icons/mobile/x.svg';
 
 interface FiltersSideBarProps {
   title: string;
@@ -15,8 +16,11 @@ interface FiltersSideBarProps {
   selectedCountries: string[];
   setSelectedCountries: React.Dispatch<React.SetStateAction<string[]>>;
   allGenres: Genre[];
-  sortBy: SortOrder;
-  setSortBy: React.Dispatch<React.SetStateAction<SortOrder>>;
+  dateSort: DateSort;
+  setDateSort: React.Dispatch<React.SetStateAction<DateSort>>;
+  titleSort: TitleSort;
+  setTitleSort: React.Dispatch<React.SetStateAction<TitleSort>>;
+  setIsSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const toggleItemInArray = <T,>(array: T[], item: T): T[] => {
@@ -44,17 +48,34 @@ export const getListLabel = <T,>(
     : firstItemName;
 };
 
-const sortOptions = [
+const dateSortOptions = [
   { label: 'Default', value: 'default', display: 'Default' },
   { label: 'Newest to Oldest', value: 'newest', display: 'By newest' },
   { label: 'Oldest to Newest', value: 'oldest', display: 'By oldest' },
 ] as const;
 
-export const FiltersSideBar = ({ title, selectedGenreIds, setSelectedGenreIds, selectedCountries, setSelectedCountries, sortBy, setSortBy }: FiltersSideBarProps) => {
+const titleSortOptions = [
+  { label: 'Default', value: 'default', display: 'Default' },
+  { label: 'Title (A-Z)', value: 'asc', display: 'A-Z' },
+  { label: 'Title (Z-A)', value: 'desc', display: 'Z-A' },
+] as const;
+
+export const FiltersSideBar = ({
+  title,
+  selectedGenreIds,
+  setSelectedGenreIds,
+  selectedCountries,
+  setSelectedCountries,
+  dateSort,
+  setDateSort,
+  titleSort,
+  setTitleSort,
+  setIsSidebarOpen
+}: FiltersSideBarProps) => {
   const [openedSection, setOpenedSection] = useState<FilterSection[]>([]);
   const [imdbRange, setImdbRange] = useState<RangeState>({ min: 7.7, max: 10 });
   const [voteRange, setVoteRange] = useState<RangeState>({ min: 4.3, max: 5.9 });
-  const [allGenres, setAllGenres] = useState<Genre[]>([]);  
+  const [allGenres, setAllGenres] = useState<Genre[]>([]);
 
   const allCountries = ['United States of America', 'South Korea', 'India', 'China', 'United Kingdom', 'France', 'Japan', 'Spain', 'Germany', 'Mexico'];
 
@@ -99,9 +120,14 @@ export const FiltersSideBar = ({ title, selectedGenreIds, setSelectedGenreIds, s
     );
   };
 
-  const getSortLabel = () => {
-    const activeOption = sortOptions.find(opt => opt.value === sortBy);
+  const getDateLabel = () => {
+    const activeOption = dateSortOptions.find(opt => opt.value === dateSort);
     return activeOption ? activeOption.display : 'Default';
+  };
+
+  const getTitleLabel = () => {
+    const active = titleSortOptions.find(opt => opt.value === titleSort);
+    return active ? active.display : 'Default';
   };
 
   const sections = [
@@ -114,18 +140,24 @@ export const FiltersSideBar = ({ title, selectedGenreIds, setSelectedGenreIds, s
   const sectionLabels: Record<string, string> = {
     [FilterSection.Genres]: getGenresLabel() as string,
     [FilterSection.Country]: getCountriesLabel(),
-    [FilterSection.Year]: getSortLabel(),
-    [FilterSection.Title]: 'Default',
+    [FilterSection.Year]: getDateLabel(),
+    [FilterSection.Title]: getTitleLabel(),
   };
 
   return (
-    <div className="w-[328px] py-2 px-6 flex flex-col bg-gray-100 rounded-r-[16px]
+    <div className="w-[328px] py-2 px-6 flex flex-col bg-gray-100/90 rounded-r-[16px]
           border border-gray-70/10 backdrop-blur-[2px]
           before:content-[''] before:absolute before:inset-0
           before:rounded-r-[16px] before:border before:border-gray-70/20
           before:pointer-events-none
-          cursor-pointer z-100
+          cursor-pointer z-100 backdrop-saturate-[150%]
+          max-h-[90vh] overflow-y-auto
     ">
+      <div className="md:hidden block text-right pb-6 pt-4">
+        <button onClick={() => setIsSidebarOpen(false)}>
+          <img src={X} alt="Close the filtration menu" className="w-8 h-8" />
+        </button>
+      </div>
       <h2 className="text-[32px] leading-[1.2] text-gray-0 font-semibold h-18 pb-12">{title}</h2>
       <div className="h-14 flex justify-between items-center border-b border-gray-90 w-full">
         <p className="text-[20px] leading-[1.45] text-gray-0 font-semibold font-nunito">Sort by</p>
@@ -230,8 +262,8 @@ export const FiltersSideBar = ({ title, selectedGenreIds, setSelectedGenreIds, s
 
               {section === FilterSection.Year && isSectionOpened(section) && (
                 <div className="flex flex-col py-4 gap-4 animate-in fade-in slide-in-from-top-2">
-                  {sortOptions.map((option) => {
-                    const isSelected = sortBy === option.value;
+                  {dateSortOptions.map((option) => {
+                    const isSelected = dateSort === option.value;
 
                     return (
                       <label
@@ -243,7 +275,30 @@ export const FiltersSideBar = ({ title, selectedGenreIds, setSelectedGenreIds, s
                         </span>
                         <Checkbox
                           checked={isSelected}
-                          onChange={() => setSortBy(option.value)}
+                          onChange={() => setDateSort(option.value)}
+                        />
+                      </label>
+                    );
+                  })}
+                </div>
+              )}
+
+              {section === FilterSection.Title && isSectionOpened(section) && (
+                <div className="flex flex-col py-4 gap-4 animate-in fade-in slide-in-from-top-2">
+                  {titleSortOptions.map((option) => {
+                    const isSelected = titleSort === option.value;
+
+                    return (
+                      <label
+                        key={option.value}
+                        className="flex justify-between items-center px-4 py-1 hover:bg-gray-90/50 transition-colors group cursor-pointer"
+                      >
+                        <span className={`text-[15px] font-nunito transition-colors ${isSelected ? 'text-primary-20' : 'text-gray-30'}`}>
+                          {option.label}
+                        </span>
+                        <Checkbox
+                          checked={isSelected}
+                          onChange={() => setTitleSort(option.value)}
                         />
                       </label>
                     );
@@ -254,7 +309,7 @@ export const FiltersSideBar = ({ title, selectedGenreIds, setSelectedGenreIds, s
           ))}
         </div>
 
-        <div className="flex justify-between items-center px-2 mt-2 h-14 border-t border-gray-70 text-[16px] text-gray-0 leading-[1.35] font-bold font-nunito">
+        <div className="flex justify-between items-center px-2 h-14 mt-2 border-t border-gray-70 text-[16px] text-gray-0 leading-[1.35] font-bold font-nunito">
           <p>{FilterSection.Rating}</p>
           <button
             className="cursor-pointer text-gray-70"
@@ -269,17 +324,17 @@ export const FiltersSideBar = ({ title, selectedGenreIds, setSelectedGenreIds, s
         </div>
         {isSectionOpened(FilterSection.Rating) && (
           <div>
-            <RangeFilter 
+            <RangeFilter
               label="IMDB"
               range={imdbRange}
               setRange={setImdbRange}
             />
-            <RangeFilter 
+            <RangeFilter
               label="Vote Rating"
               range={voteRange}
               setRange={setVoteRange}
             />
-          </div>          
+          </div>
         )}
       </div>
     </div>

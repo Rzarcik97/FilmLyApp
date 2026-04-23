@@ -34,7 +34,7 @@ export const MobileNav = ({ onClose }: MobileNavProps) => {
         <Earth size={24} className="text-gray-50 group-active:text-primary-0 transition-colors" />
       </Link>
 
-      <Link to='/' onClick={onClose} className="group w-8 h-8 flex items-center justify-center group">
+      <Link to='/sign-up' onClick={onClose} className="group w-8 h-8 flex items-center justify-center group">
         <UserRound size={24} className="text-gray-50 group-active:text-primary-0 transition-colors" />
       </Link>
     </nav>
