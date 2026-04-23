@@ -2,13 +2,15 @@ import { useRef } from 'react';
 import type { Movie } from '../../types'
 import { MovieCard } from './MovieCard';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 interface ScrollSectionTrendingProps {
   items: Movie[];
   title: string;
+  viewAllPath: string;
 }
 
-export const ScrollSectionTrending = ({ title, items }: ScrollSectionTrendingProps) => {
+export const ScrollSectionTrending = ({ title, items, viewAllPath }: ScrollSectionTrendingProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const scroll = (direction: 'left' | 'right') => {
@@ -32,9 +34,11 @@ export const ScrollSectionTrending = ({ title, items }: ScrollSectionTrendingPro
           <h2 className="text-[24px] md:text-[36px] leading-[1.2] font-bold text-secondary-light">{title}</h2>
         </div>
         
-        <button className="cursor-pointer text-[16px] text-secondary-light font-nunito font-bold">
+        <Link 
+          to={viewAllPath}
+          className="cursor-pointer text-[16px] text-secondary-light font-nunito font-bold">
           View all
-        </button>
+        </Link>
       </div>
 
       <div className="flex justify-center items-center gap-2">

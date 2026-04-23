@@ -5,7 +5,8 @@ export enum FilterSection {
   Country = 'Country',
   Year = 'Year',
   Cast = 'Cast',
-  Rating = 'Rating'
+  Rating = 'Rating',
+  Title = 'Title',
 };
 
 export enum StepEnum {
