@@ -7,4 +7,23 @@ const apiClient = axios.create({
   },
 });
 
+apiClient.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+
+    const isRealToken = token && token.length > 20 && token !== 'null' && token !== 'undefined';
+
+    if (isRealToken) {
+      config.headers.Authorization = `Bearer ${token}`;
+    } else {
+      delete config.headers.Authorization;
+    }
+
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
 export default apiClient;

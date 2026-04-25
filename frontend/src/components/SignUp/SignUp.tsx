@@ -1,13 +1,17 @@
 import google_btn from '../../../public/icons/google.svg';
 import apple_btn from '../../../public/icons/apple.svg';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { signUpSchema } from '../../utils/validationSchemas';
 import type { SignUpFormData } from '../../utils/validationSchemas';
+import { CheckIcon } from '../../assets/icons/CheckIcon';
 
 export const SignUp = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const from = location.state?.from || '/';
 
   const {
     register,
@@ -17,6 +21,7 @@ export const SignUp = () => {
     resolver: zodResolver(signUpSchema),
     mode: 'onChange',
     defaultValues: {
+      name: '',
       email: '',
       isAgreedToTerms: false as unknown as true,
       isAgreedToPromotions: false,
@@ -24,7 +29,12 @@ export const SignUp = () => {
   });
 
   const onSubmit = (data: SignUpFormData) => {
-    navigate('/sign-up/password', { state: { email: data.email } });
+    navigate('/sign-up/password', { 
+      state: { 
+        email: data.email,
+        username: data.name,
+        from: from,
+      } });
   }
 
   return (
@@ -57,6 +67,30 @@ export const SignUp = () => {
 
             <div>
               <div className="flex flex-col gap-2 pb-4">
+                <label htmlFor="name" className="text-gray-30 text-[16px] md:text-[20px] leading-[1.45] font-nunito">
+                  User name
+                </label>
+                <input
+                  id="name"
+                  type="text"
+                  placeholder="Enter your name"
+                  className={`w-full bg-signup-input/91 border rounded-[8px] px-4 py-3 text-gray-80 transition-colors focus:outline-none
+                              autofill:shadow-[inset_0_0_0_1000px_var(--color-gray-100)]
+                              [-webkit-text-fill-color:var(--color-primary-0)]
+                              autofill:text-fill-primary-0
+                              placeholder:[-webkit-text-fill-color:var(--color-gray-80)]
+                  ${errors.email ? 'border-system-error' : 'border-transparent focus:border-primary-0'}`}
+                  {...register('name')}
+                />
+
+                {errors.name && (
+                  <p className="text-system-error text-xs mt-1 font-nunito animate-fade-in">
+                    {errors.name.message}
+                  </p>
+                )}
+              </div>
+
+              <div className="flex flex-col gap-2 pb-4">
                 <label htmlFor="email" className="text-gray-30 text-[16px] md:text-[20px] leading-[1.45] font-nunito">
                   E-mail
                 </label>
@@ -75,18 +109,31 @@ export const SignUp = () => {
 
                 {errors.email && (
                   <p className="text-system-error text-xs mt-1 font-nunito animate-fade-in">
-                    Please enter a valid email address (e.g., name@domain.com)
+                    {errors.email.message}
                   </p>
                 )}
               </div>
 
               <div className="flex flex-col gap-2">
                 <label className="flex items-center gap-3 cursor-pointer group">
-                  <input
-                    type="checkbox"
-                    className="flex-shrink-0 w-4 h-4 md:w-6 md:h-6 rounded-full border border-signup-2 appearance-none checked:bg-primary-0 checked:border-signup-2 transition-all cursor-pointer relative after:content-[''] after:hidden checked:after:block"
-                    {...register('isAgreedToPromotions')}
-                  />
+                  <div className="relative flex-shrink-0 w-4 h-4 md:w-6 md:h-6">
+                    <input
+                      type="checkbox"
+                      className="peer sr-only"
+                      {...register('isAgreedToPromotions')}
+                    />
+                    <div className="w-full h-full rounded-full border border-signup-2 transition-all"></div>
+
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 peer-checked:opacity-100 transition-opacity">
+                      <div className="block md:hidden">
+                        <CheckIcon size={10} color="var(--color-primary-0)" strokeWidth={3} />
+                      </div>
+                      <div className="hidden md:block">
+                        <CheckIcon size={16} color="var(--color-primary-0)" strokeWidth={3} />
+                      </div>
+                    </div>
+                  </div>
+
                   <span className="text-signup-2 text-[12px] md:text-[16px] leading-[1.35]">
                     I agree to receive{" "}
                     <span className="underline underline-offset-4 decoration-1 text-white">
@@ -96,11 +143,24 @@ export const SignUp = () => {
                 </label>
 
                 <label className="flex items-center gap-3 cursor-pointer group">
-                  <input
-                    type="checkbox"
-                    className="flex-shrink-0 w-4 h-4 md:w-6 md:h-6 rounded-full border border-signup-2 appearance-none checked:bg-primary-0 checked:border-signup-2 transition-all cursor-pointer"
-                    {...register('isAgreedToTerms')}
-                  />
+                  <div className="relative flex-shrink-0 w-4 h-4 md:w-6 md:h-6">
+                    <input
+                      type="checkbox"
+                      className="peer sr-only"
+                      {...register('isAgreedToTerms')}
+                    />
+                    <div className={`w-full h-full rounded-full border transition-all ${errors.isAgreedToTerms ? 'border-system-error' : 'border-signup-2'}`}></div>
+
+                    <div className="absolute inset-0 flex items-center justify-center opacity-0 peer-checked:opacity-100 transition-opacity">
+                      <div className="block md:hidden">
+                        <CheckIcon size={10} color="var(--color-primary-0)" strokeWidth={3} />
+                      </div>
+                      <div className="hidden md:block">
+                        <CheckIcon size={16} color="var(--color-primary-0)" strokeWidth={3} />
+                      </div>
+                    </div>
+                  </div>
+
                   <span className="text-signup-2 text-[12px] md:text-[16px] leading-[1.35]">
                     I agree to our{" "}
                     <span className="underline underline-offset-4 decoration-1 text-white">
@@ -112,7 +172,12 @@ export const SignUp = () => {
                     </span>
                   </span>
                 </label>
-                {errors.isAgreedToTerms && <p className="text-system-error text-xs">{errors.isAgreedToTerms.message}</p>}
+
+                {errors.isAgreedToTerms && (
+                  <p className="text-system-error text-xs font-nunito">
+                    {errors.isAgreedToTerms.message}
+                  </p>
+                )}
               </div>
             </div>
 
@@ -133,7 +198,7 @@ export const SignUp = () => {
             <div className="flex gap-[10px] justify-center items-center text-[12px] md:text-[16px]">
               <span className="text-signup-1">Already have an account?</span>
               <button 
-                onClick={() => navigate('/login')}
+                onClick={() => navigate('/login', { state: { from } })}
                 className="cursor-pointer underline text-white"
               >
                 <span>Log in</span>

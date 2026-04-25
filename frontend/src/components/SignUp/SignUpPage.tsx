@@ -9,7 +9,7 @@ export const SignUpPage = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 500);
+    }, 800);
 
     return () => clearTimeout(timer);
   }, []);
