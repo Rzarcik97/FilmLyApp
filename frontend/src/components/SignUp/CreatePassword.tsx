@@ -2,20 +2,27 @@ import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import progress2 from '../../../public/sign_up/progress-2.png';
 import empty_img from '../../../public/icons/empty-img.png';
-import { Eye, EyeClosed } from 'lucide-react';
+import { Eye, EyeOff } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { createPasswordSchema } from '../../utils/validationSchemas';
 import type { CreatePasswordFormData } from '../../utils/validationSchemas';
+import { authService } from '../../api/authService';
 
 export const CreatePassword = () => {
   const location = useLocation();
+  const from = location.state?.from || '/';
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const userEmail = location.state?.email || '';
+  const { email, username } = location.state || {};
+
+  if (!email || !username) {
+    setTimeout(() => navigate('/sign-up'), 0);
+    return null;
+  }
 
   const {
     register,
@@ -30,10 +37,26 @@ export const CreatePassword = () => {
     }
   });
 
-  const onSubmit = (data: CreatePasswordFormData) => {
-    console.log('Final Data:', { email: userEmail, password: data.password, })
-    // future API call
-    navigate('/');
+  const onSubmit = async (data: CreatePasswordFormData) => {
+    const finalData = {
+      username: username,
+      email: email,
+      password: data.password,
+      confirmPassword: data.confirmPassword,
+      firstName: username || 'User',
+      lastName: 'Filmly Member',
+    };
+
+    try {
+      const result = await authService.register(finalData);
+      console.log("Registered user ID:", result.userId);
+      navigate(from, { replace: true });
+    } catch (error: any) {
+      if (error.response?.data?.errors) {
+        console.table(error.response.data.errors);
+      }
+      console.error("Reason:", error.response?.data?.message);
+    }
   }
 
   return (
@@ -69,7 +92,7 @@ export const CreatePassword = () => {
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 top-1/2 -translate-y-1/2"
                   >
-                    {showPassword ? <EyeClosed size={20} className="text-signup-1" /> : <Eye size={20} className="text-signup-1" />}
+                    {showPassword ? <Eye size={20} className="text-primary-0" /> : <EyeOff size={20} className="text-signup-1" />}
                   </button>
                 </div>
                 {errors.password && (
@@ -94,7 +117,7 @@ export const CreatePassword = () => {
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                     className="absolute right-3 top-1/2 -translate-y-1/2"
                   >
-                    {showConfirmPassword ? <EyeClosed size={20} className="text-signup-1" /> : <Eye size={20} className="text-signup-1" />}
+                    {showConfirmPassword ? <Eye size={20} className="text-primary-0" /> : <EyeOff size={20} className="text-signup-1" />}
                   </button>
                 </div>
 

@@ -1,13 +1,15 @@
 import { Link } from 'react-router-dom';
 import popcorn from '../../../public/icons/mobile/popcorn.svg';
 import popcorn_focus from '../../../public/icons/mobile/popcorn_focus.svg';
-import { Bell, Earth, UserRound } from 'lucide-react';
+import { Bell, Earth, Power, UserRound } from 'lucide-react';
 
 interface MobileNavProps {
   onClose: () => void;
+  isLoggedIn: boolean;
+  onLogout: () => void;
 }
 
-export const MobileNav = ({ onClose }: MobileNavProps) => {
+export const MobileNav = ({ onClose, isLoggedIn, onLogout }: MobileNavProps) => {
   return (
     <nav
       className="flex flex-col gap-1 px-1 py-1 border border-gray-50 bg-gray-90 rounded-[45px] w-8 items-center"
@@ -34,9 +36,13 @@ export const MobileNav = ({ onClose }: MobileNavProps) => {
         <Earth size={24} className="text-gray-50 group-active:text-primary-0 transition-colors" />
       </Link>
 
-      <Link to='/sign-up' onClick={onClose} className="group w-8 h-8 flex items-center justify-center group">
-        <UserRound size={24} className="text-gray-50 group-active:text-primary-0 transition-colors" />
-      </Link>
+      {isLoggedIn ? (
+        <Power onClick={onLogout} size={24} className="text-gray-50 group-active:text-primary-0 transition-colors" />
+      ) : (
+          <Link to='/sign-up' onClick={onClose} className="group w-8 h-8 flex items-center justify-center group">
+            <UserRound size={24} className="text-gray-50 group-active:text-primary-0 transition-colors" />
+          </Link>
+      )}      
     </nav>
   );
 };

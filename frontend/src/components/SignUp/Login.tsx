@@ -1,16 +1,25 @@
 import google_btn from '../../../public/icons/google.svg';
 import apple_btn from '../../../public/icons/apple.svg';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { loginSchema } from '../../utils/validationSchemas';
 import type { LoginFormData } from '../../utils/validationSchemas';
 import { useState } from 'react';
-import { Eye, EyeClosed } from 'lucide-react';
+import { Eye, EyeOff } from 'lucide-react';
+import { authService } from '../../api/authService';
+import { fetchWatchList } from '../../store/watchlistSlice';
+import { useDispatch } from 'react-redux';
+import type { AppDispatch } from '../../store';
 
 export const Login = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const dispatch = useDispatch<AppDispatch>();
   const [showPassword, setShowPassword] = useState(false);
+  const [serverError, setServerError] = useState<string | null>(null);
+
+  const from = location.state?.from || '/';
 
   const {
     register,
@@ -25,8 +34,25 @@ export const Login = () => {
     }
   });
 
-  const onSubmit = (data: LoginFormData) => {
-    navigate('/', { state: { email: data.email, password: data.password } });
+  const onSubmit = async (data: LoginFormData) => {
+    setServerError(null);
+
+    try {
+      const result = await authService.login(data);
+      const token = result.token;
+
+      if (token) {
+        localStorage.setItem('token', token);
+        await dispatch(fetchWatchList());
+        navigate(from, { replace: true });
+      } else {
+        setServerError('No token received from the server');
+      }
+    } catch (error: any) {
+      const errorMessage = error.response?.data?.message || "Login failed. Please check your credentials.";
+      setServerError(errorMessage);
+      console.error("Login Error:", error);
+    }
   }
 
   return (
@@ -56,6 +82,12 @@ export const Login = () => {
 
               <div className="flex-1 h-[1px] bg-gray-70"></div>
             </div>
+
+            {serverError && (
+              <p className="text-system-error text-center text-[14px] font-nunito bg-system-error/10 py-2 rounded-md animate-fade-in">
+                {serverError}
+              </p>
+            )}
 
             <div>
               <div className="flex flex-col gap-2 pb-4">
@@ -104,7 +136,7 @@ export const Login = () => {
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 top-1/2 -translate-y-1/2"
                   >
-                    {showPassword ? <EyeClosed size={20} className="text-signup-1" /> : <Eye size={20} className="text-signup-1" />}
+                    {showPassword ? <Eye size={20} className="text-primary-0" /> : <EyeOff size={20} className="text-signup-1" />}
                   </button>
                 </div>
                 {errors.password && (
@@ -131,7 +163,7 @@ export const Login = () => {
               <span className="text-signup-1">Don't have an account?</span>
               <button 
                 type="button"
-                onClick={() => navigate('/sign-up')}
+                onClick={() => navigate('/sign-up', { state: { from } })}
                 className="cursor-pointer underline text-white"
               >
                 <span>Sign Up</span>

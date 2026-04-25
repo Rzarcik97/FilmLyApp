@@ -34,10 +34,10 @@ export const DiscoverPage = () => {
   };
 
   return (
-    <div className="bg-gray-100 pt-30 flex min-h-screen relative z-50">
+    <div className="bg-gray-100 pt-35 flex min-h-screen relative z-50">
       <aside className={`
       ${isSidebarOpen ? 'fixed z-[100] backdrop-blur-sm' : 'hidden'} 
-      md:relative md:inset-auto md:z-auto md:flex md:w-[328px] md:flex-shrink-0 md:bg-transparent
+      md:relative md:inset-auto md:z-auto md:flex md:w-[328px] md:flex-shrink-0 md:bg-transparent md:self-start
     `}>
         <div
           className="fixed inset-0 md:hidden"
@@ -58,7 +58,7 @@ export const DiscoverPage = () => {
         />
       </aside>
 
-      <main className="flex-1 px-10 pt-2">
+      <main className="flex-1 px-4 md:px-10 pt-2">
         <div className="flex gap-2 items-center md:pb-2">
           <div className="w-1 h-[50px] md:h-[35px] bg-primary-0 rounded-full" />
           <h2 className="text-[24px] md:text-[36px] leading-[1.2] font-bold text-secondary-light">

@@ -151,7 +151,7 @@ export const FiltersSideBar = ({
           before:rounded-r-[16px] before:border before:border-gray-70/20
           before:pointer-events-none
           cursor-pointer z-100 backdrop-saturate-[150%]
-          max-h-[90vh] overflow-y-auto
+          max-h-[90vh] overflow-y-auto md:max-h-none md:overflow-visible
     ">
       <div className="md:hidden block text-right pb-6 pt-4">
         <button onClick={() => setIsSidebarOpen(false)}>

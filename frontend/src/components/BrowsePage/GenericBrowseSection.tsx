@@ -31,9 +31,9 @@ export const GenericBrowseSection = <T extends { id: number | string }>({
 
   return (
     <div
-      className="grid gap-x-6 gap-y-7.5 justify-center 
-               grid-cols-[repeat(auto-fill,minmax(175px,1fr))] 
-               lg:grid-cols-[repeat(auto-fill,minmax(204px,1fr))]"
+      className="grid gap-x-6 gap-y-7.5 justify-center grid-cols-2 
+               sm:grid-cols-[repeat(auto-fill,minmax(175px,1fr))] 
+                lg:grid-cols-[repeat(auto-fill,minmax(204px,1fr))]"
     >
       {displayedItems.map((item) => (
         <div key={item.id}>

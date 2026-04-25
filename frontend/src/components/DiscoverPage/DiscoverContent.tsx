@@ -36,16 +36,6 @@ export const DiscoverContent = ({ filters }: { filters: FilterState }) => {
   };
 
   const sortFn = (a: Movie, b: Movie) => {
-    // if (filters.dateSort === 'default') return 0;
-
-    // const dateA = a.release_date || '';
-    // const dateB = b.release_date || '';
-
-    // if (filters.dateSort === 'newest') {
-    //   return dateB.localeCompare(dateA);
-    // } else {
-    //   return dateA.localeCompare(dateB);
-    // }
     if (filters.dateSort === 'default' && filters.titleSort !== 'default') {
       const titleA = a.title || '';
       const titleB = b.title || '';
