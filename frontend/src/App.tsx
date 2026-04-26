@@ -17,6 +17,7 @@ import { Provider, useDispatch } from 'react-redux';
 import { fetchWatchList } from './store/watchlistSlice';
 import type { AppDispatch } from './store';
 import { AuthModal } from './components/Modals/AuthModal';
+import { LogoutModal } from './components/Modals/LogoutModal';
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -74,6 +75,7 @@ function App() {
             <Route path="/profile" element={<Profile />} />
           </Routes>
           <AuthModal />
+          <LogoutModal />
 
           <Footer />
         </div>

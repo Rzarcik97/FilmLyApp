@@ -23,3 +23,13 @@ export interface LoginPayload {
 export interface LoginResponse {
   token: string;
 }
+
+export interface UserProfile {
+  userId: number;
+  username: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  avatarUrl: string | null;
+  createdAt: string;
+}
