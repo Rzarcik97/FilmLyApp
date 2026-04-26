@@ -21,19 +21,27 @@ export const MovieCard = ({ movie }: { movie: Movie }) => {
           before:content-[''] before:absolute before:inset-0
           before:rounded-[16px] before:border before:border-gray-80/20
           before:pointer-events-none
-          cursor-pointer
+          cursor-pointer relative
     ">
       <Link
         to={`/${basePath}/${movie.contentId}`}
         state={{ from: location.pathname }}
       >
-        <div className="h-[328px] flex-1 flex justify-center items-center">
+        <div className="h-[328px] relative flex justify-center items-center overflow-hidden">
           <img
             src={posterUrl}
             alt={movie.title || "Movie Poster"}
-            className={`w-full h-full ${posterUrl === empty_img ? 'object-contain p-8' : 'object-cover'}`}
+            className={`w-full h-full transition-transform duration-500 group-hover:scale-105 ${posterUrl === empty_img ? 'object-contain p-8' : 'object-cover'
+              }`}
+          />
+
+          <div className="absolute inset-0 z-10 
+                        bg-black/40 backdrop-blur-[2px] 
+                        opacity-0 transition-opacity duration-300 
+                        group-hover:opacity-100"
           />
         </div>
+
         <div className="relative h-28 bg-gray-100 overflow-hidden">
 
           <div className="p-2 flex flex-col h-full transition-all duration-300 group-hover:translate-y-[-100%] group-hover:opacity-0">
@@ -47,10 +55,12 @@ export const MovieCard = ({ movie }: { movie: Movie }) => {
                 <img src={thumbUp} alt="Filmly" className="w-6 h-6" />
               </div>
             </div>
-            <p className="pt-[13px] leading-[1.5] text-gray-0 text-[16px] font-bold">{movie.title || 'Movie Title'}</p>
+            <p className="pt-[13px] leading-[1.5] text-gray-0 text-[16px] font-bold truncate">
+              {movie.title || 'Movie Title'}
+            </p>
           </div>
 
-          <div className="absolute inset-0 translate-y-[100%] opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 bg-gray-100/90 backdrop-blur-sm">
+          <div className="absolute inset-0 z-20 translate-y-[100%] opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 bg-gray-100 flex items-center">
             <ButtonsWatchlistSeen
               contentId={Number(movie.contentId)}
               contentType={movie.type}
@@ -61,5 +71,5 @@ export const MovieCard = ({ movie }: { movie: Movie }) => {
         </div>
       </Link>
     </div>
-  )
-}
+  );
+};

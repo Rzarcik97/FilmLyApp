@@ -1,7 +1,5 @@
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import progress2 from '../../../public/sign_up/progress-2.png';
-import empty_img from '../../../public/icons/empty-img.png';
 import { Eye, EyeOff } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';

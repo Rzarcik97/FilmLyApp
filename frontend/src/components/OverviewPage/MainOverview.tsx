@@ -60,7 +60,7 @@ export const MainOverview = ({ movie }: MainOverviewProps) => {
 
           <div className="flex justify-evenly items-center">
             <div className="flex justify-center items-center gap-2">
-              <p className="text-[16px] leading-[1.5] text-gray-0 font-bold">{movie?.voteAverage || movie?.vote_average || '0.0'}</p>
+              <p className="text-[16px] leading-[1.5] text-gray-0 font-bold">{Number(movie.voteAverage || movie.vote_average || 0).toFixed(1) || '0.0'}</p>
               <img src={imdb} alt="Imdb Rating" className="w-6 h-5" />
             </div>
             <div className="flex justify-center items-center gap-2">

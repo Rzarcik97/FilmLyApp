@@ -10,7 +10,7 @@ import { SearchBar } from './SearchBar';
 import { MobileSearch } from './MobileSearch';
 import { MobileNav } from './MobileNav';
 import { useDispatch } from 'react-redux';
-import { clearWatchlist } from '../../store/watchlistSlice';
+import { openLogoutModal } from '../../store/uiSlice';
 
 export const Header = ({ hasBackButton = false }) => {
   const navigate = useNavigate();
@@ -24,10 +24,8 @@ export const Header = ({ hasBackButton = false }) => {
 
   const isLoggedIn = !!localStorage.getItem('token');
 
-  const handleLogout = () => {
-    localStorage.removeItem('token');
-    dispatch(clearWatchlist());
-    navigate('/');
+  const onLogoutClick = () => {
+    dispatch(openLogoutModal());
   }
 
   return (
@@ -61,7 +59,7 @@ export const Header = ({ hasBackButton = false }) => {
           <SearchBar onFocusChange={setIsFocused} isFocused={isFocused} />
         </div>
 
-        <NavBar isLoggedIn={isLoggedIn} onLogout={handleLogout} />
+        <NavBar isLoggedIn={isLoggedIn} onLogout={onLogoutClick} />
 
         <MobileSearch
           isOpen={isMobileSearchOpen}
@@ -80,7 +78,7 @@ export const Header = ({ hasBackButton = false }) => {
             {isMobileMenuOpen ? (
               <MobileNav 
                 isLoggedIn={isLoggedIn} 
-                onLogout={handleLogout}
+                onLogout={onLogoutClick}
                 onClose={() => setIsMobileMenuOpen(false)}
               />
             ) : (

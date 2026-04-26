@@ -47,20 +47,16 @@ export const SearchBar = ({ onFocusChange, isFocused }: SearchBarProps) => {
     const rawType = item.type?.toLowerCase() || 'movie';
     const typePath = rawType === 'movie' ? 'movies' : 'series';
 
-    if (!id) {
-      console.error("Could not find an ID for this item:", item);
-      return;
-    }
+    if (!id) return;
 
     const path = `/${typePath}/${id}`;
-    console.log('Navigating to correct plural path:', path);
 
     navigate(path);
-    onFocusChange(false);
     setQuery('');
+    onFocusChange(false);
+    
+    (document.activeElement as HTMLElement)?.blur();
   };
-
-  
 
   return (
     <div className="flex justify-between items-center gap-[30px] px-2 py-2 rounded-lg bg-gray-90 border border-gray-80 lg:w-[536px] h-10">
