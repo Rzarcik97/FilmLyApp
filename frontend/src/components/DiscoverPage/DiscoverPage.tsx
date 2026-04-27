@@ -21,9 +21,19 @@ export const DiscoverPage = () => {
     const fetchGenres = async () => {
       const genres = await getGenres();
       setAllGenres(genres);
+
+      if (type && genres.length > 0) {
+        const matchedGenre = genres.find(
+          (g) => g.name.toLowerCase().replace(/[\s&]+/g, '-') === type.toLowerCase()
+        );
+
+        if (matchedGenre) {
+          setSelectedGenreIds([matchedGenre.id]);
+        }
+      }
     };
     fetchGenres();
-  }, []);
+  }, [type]);
 
   const filters: FilterState = {
     selectedGenreIds,

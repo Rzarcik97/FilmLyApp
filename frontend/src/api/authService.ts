@@ -25,5 +25,32 @@ export const authService = {
     });
 
     return response.data;
+  },
+
+  changeEmail: async (newEmail: string, currentPassword: string) => {
+    const response = await apiClient.patch('/users/me/change-email', null, {
+      params: {
+        newEmail,
+        currentPassword
+      }
+    });
+    return response.data;
+  },
+
+  changePassword: async (oldPassword: string, newPassword: string) => {
+    const response = await apiClient.patch('/users/me/change-password', null, {
+      params: {
+        oldPassword,
+        newPassword
+      }
+    });
+    return response.data;
+  },
+
+  updateUserName: async (newUsername: string) => {
+    const response = await apiClient.patch('/users/me', {
+      username: newUsername
+    });
+    return response.data;
   }
-}
+};

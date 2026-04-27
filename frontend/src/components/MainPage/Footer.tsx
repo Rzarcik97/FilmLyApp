@@ -68,7 +68,7 @@ export const Footer = () => {
 
             <div className="flex flex-col gap-[5px] text-[20px] leading-[1.45] w-51 font-nunito">
               <p className="text-primary-20">Navigation</p>
-              <Link to="/watchlist">
+              <Link to="/profile">
                 <p className="text-gray-70">Watchlist</p>
               </Link>
               <Link to="/reminder">
