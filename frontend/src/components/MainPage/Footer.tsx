@@ -1,10 +1,20 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import telegram from '../../../public/icons/telegram.png';
 import youtube from '../../../public/icons/youtube.png';
 import fb from '../../../public/icons/facebook.png';
 
 export const Footer = () => {
   const baseColor = 'rgba(17, 17, 16, 1)';
+  const location = useLocation();
+
+  const handleScrollToTop = (e: React.MouseEvent) => {
+    if (location.pathname === '/') {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }
+  };
 
   return (
     <footer className="relative w-full md:h-[700px] bg-gray-100 overflow-hidden">
@@ -34,13 +44,18 @@ export const Footer = () => {
                 w-full 
                 bg-gray-90/40 
                 backdrop-blur-xl 
-                rounded-t-[60px] 
+                rounded-t-[16px]
+                md:rounded-t-[60px] 
                 border-t border-x border-gray-80/10
                 flex justify-between
         ">
           <div className="flex flex-col gap-4 md:flex-row pt-12 md:pr-30 pb-8 md:pb-[105px] pl-12 w-full justify-between items-start">
             <div className="flex flex-col gap-1.5">
-              <Link to='/' className="h-[66px] flex flex-col items-start justify-center">
+              <Link
+                to='/'
+                onClick={handleScrollToTop}
+                className="h-[66px] flex flex-col items-start justify-center"
+              >
                 <span className="text-[48px] text-secondary-light font-bold">Filmly</span>
               </Link>
               <p className="text-gray-80 text-[20px] leading-[1.45]">@ 2026 All rights  reserved</p>

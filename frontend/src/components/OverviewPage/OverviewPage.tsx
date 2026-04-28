@@ -8,6 +8,7 @@ import { getMovieCast, getMovieDetails, getSimilarContent } from '../../api/movi
 import { type Actor, type Movie } from '../../types';
 import { Loader } from '../Utilities/Loader';
 import { NotFoundPage } from '../Utilities/NotFoundPage';
+import { ReviewCards } from './ReviewCards';
 
 export const OverviewPage = () => {
   const { id, type } = useParams<{ id: string, type: string }>();
@@ -78,6 +79,7 @@ export const OverviewPage = () => {
         items={similarItems} 
         viewAllPath='/actors'
       />
+      <ReviewCards />
     </div>
   )
 }

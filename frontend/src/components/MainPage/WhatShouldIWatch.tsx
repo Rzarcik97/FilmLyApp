@@ -1,8 +1,10 @@
 import { ChevronRight } from 'lucide-react';
-import { Popcorn } from 'lucide-react';
 import popcorn from '../../../public/icons/popcorn.png';
+import { useNavigate } from 'react-router-dom';
 
 export const WhatShouldIWatch = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="mx-12 mt-11 bg-gray-100 px-8 py-11 rounded-[51px] overflow-hidden
           bg-gray-80/10 backdrop-blur-[2px]
@@ -42,7 +44,10 @@ export const WhatShouldIWatch = () => {
       </div>
 
       <div className="flex justify-center items-center">
-        <button className="cursor-pointer border-none rounded-[32px] bg-primary-0 w-[522px] h-10 md:h-[56px] flex justify-center items-center relative z-10">
+        <button 
+          onClick={() => navigate('/sign-up')}
+          className="cursor-pointer border-none rounded-[32px] bg-primary-0 w-[522px] h-10 md:h-[56px] flex justify-center items-center relative z-10"
+        >
           <span className="text-secondary-dark text-[20px] leading-[1.45] font-semibold">Sing in to FILMLY</span>
         </button>
       </div>

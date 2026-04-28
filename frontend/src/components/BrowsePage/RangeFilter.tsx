@@ -1,6 +1,7 @@
 import * as Slider from '@radix-ui/react-slider';
 import type { RangeState } from '../../types';
 import { CheckIcon } from 'lucide-react';
+import { Checkbox } from '../../assets/CheckBox';
 
 interface RangeFilterProps {
   label: string;
@@ -32,25 +33,7 @@ export const RangeFilter = ({ label, range, setRange }: RangeFilterProps) => {
           <span className="text-[16px] text-gray-0 leading-[1.35] font-bold font-nunito">{label}</span>
           <label className="flex items-center gap-2 cursor-pointer group">
             <span className="text-[16px] text-gray-70 leading-[1.35] font-nunito">Sort by</span>
-            <div className="relative flex items-center justify-center">
-              <input
-                type="checkbox"
-                className="peer sr-only"
-              />
-
-              <div className="w-5 h-5 rounded-[5px] border-2 border-gray-70 
-                bg-transparent transition-all duration-200
-                peer-checked:border-gray-70
-                group-hover:border-gray-50
-              ">
-              </div>
-
-              <CheckIcon
-                size={14}
-                color="currentColor"
-                className="absolute text-primary-0 opacity-0 transition-opacity duration-200 peer-checked:opacity-100 text-primary-0"
-              />
-            </div>
+            <Checkbox />
           </label>
         </div>
 
