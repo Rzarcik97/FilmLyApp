@@ -6,7 +6,7 @@ import filmly.model.WatchList;
 import java.util.List;
 import org.mapstruct.Mapper;
 
-@Mapper(config = MapperConfig.class)
+@Mapper(config = MapperConfig.class, uses = {GenreMapper.class})
 public interface WatchListMapper {
 
     WatchListResponseDto toDto(WatchList watchList);

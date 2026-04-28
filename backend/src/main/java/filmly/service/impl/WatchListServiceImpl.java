@@ -2,14 +2,17 @@ package filmly.service.impl;
 
 import filmly.dto.content.MovieDetailDto;
 import filmly.dto.content.SeriesDetailDto;
+import filmly.dto.genre.GenreDto;
 import filmly.dto.watchlist.WatchListRequestDto;
 import filmly.dto.watchlist.WatchListResponseDto;
 import filmly.exception.EntityAlreadyExistsException;
 import filmly.exception.EntityNotFoundException;
 import filmly.mapper.WatchListMapper;
 import filmly.model.Content;
+import filmly.model.Genre;
 import filmly.model.User;
 import filmly.model.WatchList;
+import filmly.repository.GenreRepository;
 import filmly.repository.UserRepository;
 import filmly.repository.WatchListRepository;
 import filmly.service.WatchListService;
@@ -31,6 +34,7 @@ public class WatchListServiceImpl implements WatchListService {
     private final WatchListMapper watchListMapper;
     private final MovieServiceImpl movieService;
     private final SeriesServiceImpl seriesService;
+    private final GenreRepository genreRepository;
 
     @Override
     public List<WatchListResponseDto> getWatchList(String email, Boolean showWatched) {
@@ -52,16 +56,30 @@ public class WatchListServiceImpl implements WatchListService {
         }
         String title;
         String posterPath;
+        String releaseDate;
+        List<String> genreNames;
+        Double voteAverage;
+        Integer voteCount;
 
         if (requestDto.contentType() == Content.ContentType.MOVIE) {
             MovieDetailDto movie = movieService.findById(requestDto.contentId());
             title = movie.title();
             posterPath = movie.posterPath();
+            releaseDate = movie.releaseDate();
+            genreNames = movie.genres().stream().map(GenreDto::name).toList();
+            voteAverage = movie.voteAverage();
+            voteCount = movie.voteCount();
         } else {
             SeriesDetailDto series = seriesService.findById(requestDto.contentId());
             title = series.title();
             posterPath = series.posterPath();
+            releaseDate = series.releaseDate();
+            genreNames = series.genres().stream().map(GenreDto::name).toList();
+            voteAverage = series.voteAverage();
+            voteCount = series.voteCount();
         }
+
+        List<Genre> genres = genreRepository.findAllByNameIn(genreNames);
 
         WatchList watchList = new WatchList();
         watchList.setUser(user);
@@ -69,7 +87,11 @@ public class WatchListServiceImpl implements WatchListService {
         watchList.setContentType(requestDto.contentType());
         watchList.setTitle(title);
         watchList.setPosterPath(posterPath);
+        watchList.setReleaseDate(releaseDate);
+        watchList.setGenres(genres);
         watchList.setAddedAt(LocalDateTime.now());
+        watchList.setVoteAverage(voteAverage);
+        watchList.setVoteCount(voteCount);
         log.info("User {} added {} with id: {} to watchlist",
                 email, requestDto.contentType(), requestDto.contentId());
         return watchListMapper.toDto(watchListRepository.save(watchList));
