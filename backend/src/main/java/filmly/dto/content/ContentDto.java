@@ -12,6 +12,6 @@ public record ContentDto(
         @JsonProperty("poster_path")String posterPath,
         List<GenreDto> genres,
         @JsonProperty("release_date")String releaseDate,
-        @JsonProperty("vote_average")String voteAverage,
-        @JsonProperty("vote_count")String voteCount) {}
+        @JsonProperty("vote_average")Double voteAverage,
+        @JsonProperty("vote_count")Integer voteCount) {}
 
