@@ -1,15 +1,16 @@
 import * as Slider from '@radix-ui/react-slider';
 import type { RangeState } from '../../types';
-import { CheckIcon } from 'lucide-react';
 import { Checkbox } from '../../assets/CheckBox';
 
 interface RangeFilterProps {
   label: string;
   range: RangeState;
   setRange: React.Dispatch<React.SetStateAction<RangeState>>;
+  isActive?: boolean;
+  onToggle?: () => void;
 }
 
-export const RangeFilter = ({ label, range, setRange }: RangeFilterProps) => {
+export const RangeFilter = ({ label, range, setRange, isActive, onToggle }: RangeFilterProps) => {
   const handleRangeChange = (val: number[]) => {
     const [min = 0, max = 10] = val;
     setRange({ min, max });
@@ -33,7 +34,10 @@ export const RangeFilter = ({ label, range, setRange }: RangeFilterProps) => {
           <span className="text-[16px] text-gray-0 leading-[1.35] font-bold font-nunito">{label}</span>
           <label className="flex items-center gap-2 cursor-pointer group">
             <span className="text-[16px] text-gray-70 leading-[1.35] font-nunito">Sort by</span>
-            <Checkbox />
+            <Checkbox 
+              checked={isActive}
+              onChange={onToggle}
+            />
           </label>
         </div>
 

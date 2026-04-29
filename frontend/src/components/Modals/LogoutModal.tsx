@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { closeLogoutModal } from '../../store/uiSlice';
 import { clearWatchlist } from '../../store/watchlistSlice';
 import { type RootState } from '../../store';
+import { logout } from '../../store/userSlice';
 
 export const LogoutModal = () => {
   const dispatch = useDispatch();
@@ -12,7 +13,7 @@ export const LogoutModal = () => {
   if (!isOpen) return null;
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
+    dispatch(logout());
     dispatch(clearWatchlist());
     dispatch(closeLogoutModal());
     navigate('/');

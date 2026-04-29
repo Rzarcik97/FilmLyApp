@@ -1,15 +1,23 @@
 import { useEffect, useState } from 'react'
 import { ScrollSection } from '../MainPage/ScrollSection';
 import { ProfileMain } from './ProfileMain';
-import { ChevronDown } from 'lucide-react';
 import { useDispatch, useSelector } from 'react-redux';
 import { type AppDispatch, type RootState } from '../../store';
 import { fetchCurrentUser } from '../../store/userSlice';
 import { ProfileSettings } from './ProfileSettings';
+import { Loader } from '../Utilities/Loader';
+import type { Movie } from '../../types';
 
 export const Profile = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { user, loading } = useSelector((state: RootState) => state.auth);
+  const { user } = useSelector((state: RootState) => state.auth);
+  const { fullList, loading } = useSelector((state: RootState) => state.watchlist);
+
+  const toWatch = (fullList as (Movie & { watchedAt?: string | null })[])
+    .filter(item => !item.watchedAt);
+
+  const alreadyWatched = (fullList as (Movie & { watchedAt?: string | null })[])
+    .filter(item => item.watchedAt);
 
   useEffect(() => {
     if (!user) {
@@ -17,8 +25,8 @@ export const Profile = () => {
     }
   }, [dispatch, user]);
 
-  const displayName = loading ? '...' : user?.username || 'Member';
-  const displayEmail = loading ? '...' : user?.email || 'email@example.com'
+  const displayName = user?.username || 'Member';
+  const displayEmail = user?.email || 'email@example.com'
 
   const [activeTab, setActiveTab] = useState('watchlist');
 
@@ -26,6 +34,8 @@ export const Profile = () => {
     { id: 'watchlist', label: 'Watchlist' },
     { id: 'settings', label: 'Profile Settings' },
   ];
+
+  if (loading) return <Loader />
 
   return (
     <main className="bg-gray-100">
@@ -62,10 +72,10 @@ export const Profile = () => {
       <div>
         {activeTab === 'watchlist' && (
           <div className="animate-in fade-in duration-300">
-            <ScrollSection title="To watch" items={[]} viewAllPath='' />
+            <ScrollSection title="To watch" items={toWatch} viewAllPath='' />
             <ScrollSection title="Top Picks for You" items={[]} viewAllPath='' />
             <ScrollSection title="Your Favorites" items={[]} viewAllPath='' />
-            <ScrollSection title="Already Discovered" items={[]} viewAllPath='' />
+            <ScrollSection title="Already Discovered" items={alreadyWatched} viewAllPath='' />
           </div>
         )}
 

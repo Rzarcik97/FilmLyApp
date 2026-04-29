@@ -13,6 +13,9 @@ export const DiscoverPage = () => {
   const [dateSort, setDateSort] = useState<DateSort>('default');
   const [titleSort, setTitleSort] = useState<TitleSort>('default');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [imdbRange, setImdbRange] = useState<number[]>([0, 10]);
+  const [isImdbActive, setIsImdbActive] = useState(false);
+  const [hideWatched, setHideWatched] = useState(false);
 
   const { type } = useParams<{ type: string }>();
   const pageTitle = type ? type.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase()) : 'Discover';
@@ -40,7 +43,10 @@ export const DiscoverPage = () => {
     selectedCountries,
     allGenres,
     dateSort: dateSort,
-    titleSort: titleSort
+    titleSort: titleSort,
+    imdbRange,
+    isImdbActive,
+    hideWatched
   };
 
   return (
@@ -65,6 +71,12 @@ export const DiscoverPage = () => {
           titleSort={titleSort}
           setTitleSort={setTitleSort}
           setIsSidebarOpen={setIsSidebarOpen}
+          imdbRange={imdbRange}
+          setImdbRange={setImdbRange}
+          isImdbActive={isImdbActive}
+          setIsImdbActive={setIsImdbActive}
+          hideWatched={hideWatched}
+          setHideWatched={setHideWatched}
         />
       </aside>
 

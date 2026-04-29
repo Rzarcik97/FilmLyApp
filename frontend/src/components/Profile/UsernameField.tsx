@@ -4,17 +4,19 @@ import { authService } from '../../api/authService';
 export const UsernameField = ({ initialName }: { initialName: string }) => {
   const [name, setName] = useState(initialName);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  // Only show the button if the name has actually changed
   const isChanged = name !== initialName && name.trim() !== '';
 
   const handleSave = async () => {
     setIsLoading(true);
+    setError(null);
+
     try {
       await authService.updateUserName(name);
       console.log("Username updated!");
-    } catch (error) {
-      console.error("Update failed", error);
+    } catch (error: any) {
+      setError(error.response?.data?.message || 'Failed to update username');
     } finally {
       setIsLoading(false);
     }

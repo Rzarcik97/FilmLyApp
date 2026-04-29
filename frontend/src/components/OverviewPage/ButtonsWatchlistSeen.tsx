@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
-import watchlist from '../../../public/icons/watchlist_popcorn.png';
+import watchlist from '/icons/watchlist_popcorn.png';
+import remove from '/profile/trash.svg';
 import { Check } from 'lucide-react';
 import { type AppDispatch, type RootState } from '../../store/index';
 import { addToWatchlist, markAsWatched, removeFromWatchlist } from '../../store/watchlistSlice';
@@ -8,16 +9,29 @@ import { openAuthModal } from '../../store/uiSlice';
 interface ButtonsProps {
   contentId: number;
   contentType: string;
-  variant?: 'default' | 'compact';
+  variant?: 'default' | 'compact' | 'remove';
 }
 
 export const ButtonsWatchlistSeen = ({ contentId, contentType, variant = 'default' }: ButtonsProps) => {
   const dispatch = useDispatch<AppDispatch>();
   const watchlistIds = useSelector((state: RootState) => state.watchlist.items);
-  const isAdded = watchlistIds.includes(contentId);
   const watchedIds = useSelector((state: RootState) => state.watchlist.watchedItems);
   const isWatched = watchedIds.includes(contentId);
+  const isAdded = watchlistIds.includes(contentId);
   const isLoggedIn = !!localStorage.getItem('token');
+
+  const handleRemove = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    // dispatch(removeFromWatchlist({ contentId, contentType }));
+    try {
+      await dispatch(removeFromWatchlist({ contentId, contentType })).unwrap();
+
+    } catch (error) {
+      console.error("Failed to remove movie:", error);
+    }
+  };
 
   const handleWatchlistToggle = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -29,21 +43,47 @@ export const ButtonsWatchlistSeen = ({ contentId, contentType, variant = 'defaul
     }
 
     const payload = { contentId, contentType };
-    if (isAdded) {
-      dispatch(removeFromWatchlist(payload));
-    } else {
-      dispatch(addToWatchlist(payload));
+
+    if (!isAdded) {
+      dispatch(addToWatchlist({ contentId, contentType }));
     }
   };
 
-  const handleMarkWatched = (e: React.MouseEvent) => {
+  const handleMarkWatched = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
 
-    if (!isWatched) {
-      dispatch(markAsWatched({ contentId, contentType }));
+    if (!isLoggedIn) {
+      dispatch(openAuthModal());
+      return;
+    }
+
+    if (isWatched) return;
+
+    const payload = { contentId, contentType };
+
+    try {
+      if (!isAdded) {
+        await dispatch(addToWatchlist(payload)).unwrap();
+      }
+
+      await dispatch(markAsWatched(payload)).unwrap();
+    } catch (error: any) {
+      console.error('Failed to add into watched, ', error);
     }
   };
+
+  if (variant === 'remove') {
+    return (
+      <button
+        onClick={handleRemove}
+        className="mx-2 cursor-pointer w-full h-10 flex justify-center items-center border border-system-error bg-transparent rounded-[9px] transition-all flex gap-0.5"
+      >
+        <img src={remove} alt="Remove from your watchlist" className="w-4 h-4" />
+        <span className="text-secondary-light font-nunito text-[13px]">Remove</span>
+      </button>
+    );
+  }
 
   if (variant === 'compact') {
     return (

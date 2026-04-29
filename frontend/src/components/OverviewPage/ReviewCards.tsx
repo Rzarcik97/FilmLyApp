@@ -41,7 +41,7 @@ export const ReviewCards = () => {
       {MOCK_REVIEWS.map(review => (
         <div 
           key={review.id}
-          className={`p-3 bg-gray-90 flex flex-col gap-[11px] rounded-[8px] w-80
+          className={`p-3 bg-gray-90 flex flex-col gap-[11px] rounded-[8px] max-w-80
             ${review.id === 1 ? 'flex' : 'hidden'}
             ${review.id === 2 ? 'md:flex' : ''}
             ${review.id > 2 ? 'lg:flex' : ''}

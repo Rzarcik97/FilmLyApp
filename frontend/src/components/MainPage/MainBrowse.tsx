@@ -15,7 +15,13 @@ export const MainBrowse = ({ genres }: MainBrowseProps) => {
 
   const handleGenreClick = (genreId: number, genreName: string) => {
     const slug = genreName.toLowerCase().replace(/[\s&]+/g, '-');
-    navigate(`/browse/${slug}`, { state: { from: location.pathname } });
+    navigate(`/browse/${slug}`, {
+      state: {
+        genreId,
+        genreName,
+        from: location.pathname
+      }
+    });
   };
 
   return (

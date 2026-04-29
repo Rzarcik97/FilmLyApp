@@ -8,6 +8,8 @@ import { ButtonsWatchlistSeen } from '../OverviewPage/ButtonsWatchlistSeen';
 export const MovieCard = ({ movie }: { movie: Movie }) => {
   const location = useLocation();
 
+  const isProfilePage = location.pathname.includes('/profile');
+
   const contentType = movie.type.toLowerCase();
   const basePath = contentType === 'movie' ? 'movies' : 'series';
 
@@ -62,9 +64,9 @@ export const MovieCard = ({ movie }: { movie: Movie }) => {
 
           <div className="absolute inset-0 z-20 translate-y-[100%] opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 bg-gray-100 flex items-center">
             <ButtonsWatchlistSeen
-              contentId={Number(movie.contentId)}
+              contentId={movie.id || Number(movie.contentId)}
               contentType={movie.type}
-              variant="compact"
+              variant={isProfilePage ? 'remove' : 'compact'}
             />
           </div>
 

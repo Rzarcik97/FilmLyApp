@@ -3,9 +3,10 @@ interface ModalProps {
   onClose: () => void;
   title: string;
   children: React.ReactNode;
+  formId?: string;
 }
 
-export const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
+export const Modal = ({ isOpen, onClose, title, children, formId }: ModalProps) => {
   if (!isOpen) return null;
 
   return (
@@ -20,12 +21,14 @@ export const Modal = ({ isOpen, onClose, title, children }: ModalProps) => {
         <div className="flex gap-3 mt-8">
           <button
             onClick={onClose}
-            className="flex-1 py-3 rounded-full border border-gray-70 text-white font-bold hover:bg-white/5"
+            className="cursor-pointer flex-1 py-3 rounded-full border border-gray-70 text-white font-bold hover:bg-white/5"
           >
             Cancel
           </button>
           <button
-            className="flex-1 py-3 rounded-full bg-primary-0 text-gray-dark font-bold hover:brightness-110"
+            type="submit"
+            form={formId}
+            className="cursor-pointer flex-1 py-3 rounded-full bg-primary-0 text-gray-dark font-bold hover:brightness-110"
           >
             Save Changes
           </button>
