@@ -1,6 +1,8 @@
 import watchlist from '../../../public/icons/header_popcorn.svg';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { type LucideIcon, Power, UserRound, Earth, Bell } from 'lucide-react';
+import { useDispatch } from 'react-redux';
+import { openAuthModal } from '../../store/uiSlice';
 
 interface NavItemProps {
   icon?: string;
@@ -29,17 +31,32 @@ const NavItem = ({ icon, LucideIcon, alt, onClick, className }: NavItemProps) =>
 );
 
 export const NavBar = ({ isLoggedIn, onLogout }: NavBarProps) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleWatchlistClick = () => {
+    if (isLoggedIn) {
+      navigate('/profile');
+    } else {
+      dispatch(openAuthModal());
+    }
+  }
+
   return (
     <nav className="hidden lg:flex justify-center items-center gap-6">
-      <NavItem icon={watchlist} alt="Watchlist icon" />
-      <NavItem LucideIcon={Bell} />
+      <NavItem
+        icon={watchlist}
+        alt="Watchlist icon"
+        onClick={handleWatchlistClick}
+      />
+      {/* <NavItem LucideIcon={Bell} /> */}
       <NavItem LucideIcon={Earth} />
       {isLoggedIn ? (
-        <NavItem LucideIcon={Power} onClick={onLogout}/> 
+        <NavItem LucideIcon={Power} onClick={onLogout} />
       ) : (
-          <Link to="/sign-up">
-            <NavItem LucideIcon={UserRound} />
-          </Link>
+        <Link to="/sign-up">
+          <NavItem LucideIcon={UserRound} />
+        </Link>
       )}
     </nav>
   )

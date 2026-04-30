@@ -64,3 +64,29 @@ export const getPopularActors = async (): Promise<Actor[]> => {
   const response = await apiClient.get<Actor[]>('/actors/popular');
   return response.data;
 }
+
+export const getMoviesByRating = async (min: number, max: number, contentType: 'MOVIE' | 'SERIES' = 'MOVIE') => {
+  const response = await apiClient.get('/search/discover', {
+    params: {
+      ratingMin: min,
+      ratingMax: max,
+      type: contentType,
+      page: 1
+    }
+  });
+  
+  return response.data;
+}
+
+export const getContentByGenre = async (genreId: number, type: 'MOVIE' | 'SERIES' = 'MOVIE') => {
+  const response = await apiClient.get('/search/discover', {
+    params: {
+      genreIds: [genreId],
+      type: type,
+      sortBy: 'POPULARITY_DESC',
+      page: 1
+    }
+  });
+
+  return response.data;
+}

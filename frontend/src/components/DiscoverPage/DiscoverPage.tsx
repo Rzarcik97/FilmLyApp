@@ -13,6 +13,9 @@ export const DiscoverPage = () => {
   const [dateSort, setDateSort] = useState<DateSort>('default');
   const [titleSort, setTitleSort] = useState<TitleSort>('default');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [imdbRange, setImdbRange] = useState<number[]>([0, 10]);
+  const [isImdbActive, setIsImdbActive] = useState(false);
+  const [hideWatched, setHideWatched] = useState(false);
 
   const { type } = useParams<{ type: string }>();
   const pageTitle = type ? type.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase()) : 'Discover';
@@ -21,16 +24,29 @@ export const DiscoverPage = () => {
     const fetchGenres = async () => {
       const genres = await getGenres();
       setAllGenres(genres);
+
+      if (type && genres.length > 0) {
+        const matchedGenre = genres.find(
+          (g) => g.name.toLowerCase().replace(/[\s&]+/g, '-') === type.toLowerCase()
+        );
+
+        if (matchedGenre) {
+          setSelectedGenreIds([matchedGenre.id]);
+        }
+      }
     };
     fetchGenres();
-  }, []);
+  }, [type]);
 
   const filters: FilterState = {
     selectedGenreIds,
     selectedCountries,
     allGenres,
     dateSort: dateSort,
-    titleSort: titleSort
+    titleSort: titleSort,
+    imdbRange,
+    isImdbActive,
+    hideWatched
   };
 
   return (
@@ -55,6 +71,12 @@ export const DiscoverPage = () => {
           titleSort={titleSort}
           setTitleSort={setTitleSort}
           setIsSidebarOpen={setIsSidebarOpen}
+          imdbRange={imdbRange}
+          setImdbRange={setImdbRange}
+          isImdbActive={isImdbActive}
+          setIsImdbActive={setIsImdbActive}
+          hideWatched={hideWatched}
+          setHideWatched={setHideWatched}
         />
       </aside>
 

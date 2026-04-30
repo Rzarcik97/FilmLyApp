@@ -29,6 +29,8 @@ export interface Movie {
   genres: Genre[];
   production_countries: ProductionCountry[];
   numberOfEpisodes?: number;
+  isWatched?: boolean;
+  origin_country?: string;
 }
 
 export interface Actor {
