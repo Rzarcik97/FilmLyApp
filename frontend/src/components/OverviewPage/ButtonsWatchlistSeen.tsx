@@ -24,7 +24,6 @@ export const ButtonsWatchlistSeen = ({ contentId, contentType, variant = 'defaul
     e.preventDefault();
     e.stopPropagation();
 
-    // dispatch(removeFromWatchlist({ contentId, contentType }));
     try {
       await dispatch(removeFromWatchlist({ contentId, contentType })).unwrap();
 
