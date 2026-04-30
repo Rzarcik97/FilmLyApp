@@ -3,11 +3,11 @@ import { FilterSection } from '../../types/enums';
 import { ChevronDown, ChevronUp, ChevronRight } from 'lucide-react';
 import { RangeFilter } from './RangeFilter';
 import type { Genre, RangeState } from '../../types';
-import filter from '../../../public/icons/filter.png';
+import filter from '/icons/filter.png';
 import { getGenres } from '../../api/movieService';
 import { Checkbox } from '../../assets/CheckBox';
 import type { DateSort, TitleSort } from '../DiscoverPage/DiscoverContent';
-import X from '../../../public/icons/mobile/x.svg';
+import X from '/icons/mobile/x.svg';
 
 interface FiltersSideBarProps {
   title: string;
