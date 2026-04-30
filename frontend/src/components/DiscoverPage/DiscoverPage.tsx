@@ -4,7 +4,7 @@ import { DiscoverContent, type FilterState, type DateSort, type TitleSort } from
 import { useEffect, useState } from 'react';
 import { getGenres } from '../../api/movieService';
 import type { Genre } from '../../types';
-import sort from '../../../public/icons/filter.png';
+import sort from '/icons/filter.png';
 
 export const DiscoverPage = () => {
   const [selectedGenreIds, setSelectedGenreIds] = useState<number[]>([]);

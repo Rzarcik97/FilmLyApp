@@ -82,6 +82,20 @@ const watchlistSlice = createSlice({
         if (!state.items.includes(contentId)) {
           state.items.push(contentId);
         }
+
+        const alreadyInList = state.fullList.some(
+          (movie: Movie) => (movie.id === contentId || movie.contentId === contentId)
+        );
+
+        if (!alreadyInList) {
+          const newMovie = {
+            ...action.payload,
+            id: action.payload.contentId,
+            type: action.payload.contentType || 'MOVIE',
+          } as unknown as Movie;
+
+          state.fullList.push(newMovie);
+        }
       })
       .addCase(removeFromWatchlist.fulfilled, (state, action) => {
         const removedId = action.payload;

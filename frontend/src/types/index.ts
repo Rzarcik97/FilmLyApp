@@ -1,6 +1,7 @@
 export interface Genre {
   id: number;
   name: string;
+  imagePath?: string;
 }
 
 export interface ProductionCountry {

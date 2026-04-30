@@ -10,7 +10,7 @@ export const BrowsePage = () => {
         <h1 className="text-[36px] leading-[1.2] text-secondary-light font-bold mb-4">Browse</h1>
         <GenericBrowseSection
           fetchFn={getGenres}
-          renderItem={(genre) => <BrowseCard genre={genre.name} />}
+          renderItem={(genre) => <BrowseCard key={genre.id} genre={genre.name} imagePath={genre.imagePath} />}
         />
       </main>
     </div>
