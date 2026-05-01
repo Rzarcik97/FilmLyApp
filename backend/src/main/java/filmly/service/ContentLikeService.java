@@ -8,7 +8,7 @@ import java.util.Map;
 
 public interface ContentLikeService {
 
-    void toggleLike(String email, ContentLikeRequestDto dto);
+    ContentLikeResponseDto toggleLike(String email, ContentLikeRequestDto dto);
 
     ContentLikeResponseDto getLikes(Long contentId, Content.ContentType contentType);
 

@@ -1,6 +1,7 @@
 package filmly.controller;
 
 import filmly.dto.contentlikes.ContentLikeRequestDto;
+import filmly.dto.contentlikes.ContentLikeResponseDto;
 import filmly.service.ContentLikeService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -28,8 +29,8 @@ public class ContentLikeController {
             description = "Like or dislike a movie or series. "
                     + "Clicking the same reaction again removes it,"
                     + " clicking the opposite switches it")
-    public void toggleLike(@RequestBody @Valid ContentLikeRequestDto dto,
-                           Authentication authentication) {
-        contentLikeService.toggleLike(authentication.getName(), dto);
+    public ContentLikeResponseDto toggleLike(@RequestBody @Valid ContentLikeRequestDto dto,
+                                             Authentication authentication) {
+        return contentLikeService.toggleLike(authentication.getName(), dto);
     }
 }

@@ -31,7 +31,7 @@ public class ContentLikeServiceImpl implements ContentLikeService {
 
     @Override
     @Transactional
-    public void toggleLike(String email, ContentLikeRequestDto dto) {
+    public ContentLikeResponseDto toggleLike(String email, ContentLikeRequestDto dto) {
         User user = userRepository.findByEmail(email).orElseThrow(
                 () -> new EntityNotFoundException("User", email));
         Optional<ContentLike> existing = contentLikeRepository
@@ -64,6 +64,7 @@ public class ContentLikeServiceImpl implements ContentLikeService {
                     email, dto.isLike() ? "like" : "dislike",
                     dto.contentType(), dto.contentId());
         }
+        return getLikes(dto.contentId(), dto.contentType());
     }
 
     @Override
