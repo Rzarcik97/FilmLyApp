@@ -3,15 +3,20 @@ package filmly.service.impl;
 import filmly.dto.content.CastDto;
 import filmly.dto.content.ContentDto;
 import filmly.dto.content.MovieDetailDto;
+import filmly.dto.contentlikes.ContentLikeResponseDto;
 import filmly.dto.tmdb.TmdbContentResponse;
+import filmly.dto.tmdb.TmdbContentResult;
 import filmly.dto.tmdb.TmdbCreditsResponse;
 import filmly.dto.tmdb.TmdbMovieDetailResponse;
 import filmly.exception.EntityNotFoundException;
 import filmly.mapper.MovieMapper;
+import filmly.model.Content;
+import filmly.service.ContentLikeService;
 import filmly.service.MovieService;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -21,8 +26,8 @@ import org.springframework.web.client.RestClient;
 public class MovieServiceImpl implements MovieService {
 
     private final RestClient restClient;
-
     private final MovieMapper movieMapper;
+    private final ContentLikeService contentLikeService;
 
     @Override
     public List<ContentDto> findPopular() {
@@ -76,9 +81,20 @@ public class MovieServiceImpl implements MovieService {
             throw new EntityNotFoundException("Movie", id);
         }
 
+        List<TmdbContentResult> results = response.results();
+        List<Long> contentIds = results.stream()
+                .map(TmdbContentResult::id)
+                .toList();
+
+        Map<Long, ContentLikeResponseDto> likesMap = contentLikeService.getLikesByContentIds(
+                contentIds, Content.ContentType.MOVIE);
+
         return response.results().stream()
                 .limit(10)
-                .map(movieMapper::toDto)
+                .map(r -> {
+                    ContentLikeResponseDto likes = likesMap.get(r.id());
+                    return movieMapper.toDto(r, likes.likes(),likes.dislikes());
+                })
                 .toList();
     }
 
@@ -97,7 +113,8 @@ public class MovieServiceImpl implements MovieService {
         if (response == null) {
             throw new EntityNotFoundException("Movie", id);
         }
-        return movieMapper.toDetailDto(response);
+        ContentLikeResponseDto likes = contentLikeService.getLikes(id, Content.ContentType.MOVIE);
+        return movieMapper.toDetailDto(response, likes.likes(), likes.dislikes());
     }
 
     private List<ContentDto> fetch(String uri) {
@@ -109,9 +126,19 @@ public class MovieServiceImpl implements MovieService {
         if (response == null || response.results() == null) {
             return List.of();
         }
+        List<TmdbContentResult> results = response.results();
+        List<Long> contentIds = results.stream()
+                .map(TmdbContentResult::id)
+                .toList();
+
+        Map<Long, ContentLikeResponseDto> likesMap = contentLikeService.getLikesByContentIds(
+                contentIds, Content.ContentType.MOVIE);
 
         return response.results().stream()
-                .map(movieMapper::toDto)
+                .map(r -> {
+                    ContentLikeResponseDto likes = likesMap.get(r.id());
+                    return movieMapper.toDto(r, likes.likes(),likes.dislikes());
+                })
                 .toList();
     }
 }

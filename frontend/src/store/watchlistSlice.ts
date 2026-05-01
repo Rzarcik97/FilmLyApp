@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { userService } from '../api/userService';
 import type { WatchlistRequest, WatchlistState } from '../types/watchlist';
+import type { Movie } from '../types';
 
 export const fetchWatchList = createAsyncThunk(
   'watchlist/fetch',
@@ -35,6 +36,7 @@ export const markAsWatched = createAsyncThunk(
 const initialState: WatchlistState = {
   items: [],
   watchedItems: [],
+  fullList: [],
   loading: false,
   error: null,
 };
@@ -46,6 +48,7 @@ const watchlistSlice = createSlice({
     clearWatchlist: (state) => {
       state.items = [];
       state.watchedItems = [];
+      state.fullList = [];
       state.error = null;
     }
   },
@@ -54,18 +57,41 @@ const watchlistSlice = createSlice({
       .addCase(fetchWatchList.pending, (state) => { state.loading = true })
       .addCase(fetchWatchList.fulfilled, (state, action) => {
         state.loading = false;
+
+        state.fullList = action.payload.map(item => ({
+          ...item,
+          id: item.contentId,
+          type: item.contentType || 'MOVIE',
+          contentType: item.contentType || 'MOVIE',
+
+          title: item.title || 'Unknown Title',
+          poster_path: item.posterPath || '',
+
+          overview: '',
+          release_date: item.releaseDate || '',
+          vote_average: item.voteAverage || 0,
+        })) as unknown as Movie[];
+
         state.items = action.payload.map(item => item.contentId);
         state.watchedItems = action.payload
           .filter(item => item.watchedAt !== null)
           .map(item => item.contentId);
       })
       .addCase(addToWatchlist.fulfilled, (state, action) => {
-        if (!state.items.includes(action.payload.contentId)) {
-          state.items.push(action.payload.contentId);
+        const { contentId } = action.meta.arg;
+        if (!state.items.includes(contentId)) {
+          state.items.push(contentId);
         }
       })
       .addCase(removeFromWatchlist.fulfilled, (state, action) => {
-        state.items = state.items.filter(id => id !== action.payload);
+        const removedId = action.payload;
+
+        state.items = state.items.filter(id => id !== removedId);
+        state.watchedItems = state.watchedItems.filter(id => id !== removedId);
+
+        state.fullList = state.fullList.filter(movie =>
+          movie.id !== removedId && movie.contentId !== removedId
+        );
       })
       .addCase(markAsWatched.fulfilled, (state, action) => {
         const { contentId } = action.payload;

@@ -23,8 +23,11 @@ export const userService = {
   markAsWatched: async (payload: WatchlistRequest): Promise<WatchlistRequest> => {
     const response = await apiClient.patch<WatchlistResponse>(
       '/users/watchlist/watched',
-      payload
+      {
+        ...payload,
+        contentType: payload.contentType.toUpperCase()
+      }
     );
     return response.data;
-  }
+  },
 }

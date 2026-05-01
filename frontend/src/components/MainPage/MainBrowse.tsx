@@ -13,9 +13,15 @@ export const MainBrowse = ({ genres }: MainBrowseProps) => {
 
   const displayedGenres = genres.filter(genre => featuredNames.includes(genre.name));
 
-  const handleGenreClick = (genreName: string) => {
-    const slug = genreName.toLowerCase().replace(/ /g, '-');
-    navigate(`/browse/${slug}`, { state: { from: location.pathname } });
+  const handleGenreClick = (genreId: number, genreName: string) => {
+    const slug = genreName.toLowerCase().replace(/[\s&]+/g, '-');
+    navigate(`/browse/${slug}`, {
+      state: {
+        genreId,
+        genreName,
+        from: location.pathname
+      }
+    });
   };
 
   return (
@@ -33,7 +39,7 @@ export const MainBrowse = ({ genres }: MainBrowseProps) => {
         {displayedGenres.map((genre, index) => (
           <button
             key={genre.id}
-            onClick={() => handleGenreClick(genre.name)}
+            onClick={() => handleGenreClick(genre.id, genre.name)}
             className={`flex justify-center items-center text-[14px] md:text-[16px] text-gray-30 font-nunito 
                         border-1 border-gray-30 rounded-[32px]
                         w-51 h-12 cursor-pointer

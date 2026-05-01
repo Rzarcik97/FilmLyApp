@@ -21,6 +21,12 @@ interface FiltersSideBarProps {
   titleSort: TitleSort;
   setTitleSort: React.Dispatch<React.SetStateAction<TitleSort>>;
   setIsSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  imdbRange: number[];
+  setImdbRange: React.Dispatch<React.SetStateAction<number[]>>;
+  isImdbActive: boolean;
+  setIsImdbActive: React.Dispatch<React.SetStateAction<boolean>>;
+  hideWatched: boolean;
+  setHideWatched: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const toggleItemInArray = <T,>(array: T[], item: T): T[] => {
@@ -70,11 +76,16 @@ export const FiltersSideBar = ({
   setDateSort,
   titleSort,
   setTitleSort,
-  setIsSidebarOpen
+  setIsSidebarOpen,
+  imdbRange,
+  setImdbRange,
+  isImdbActive,
+  setIsImdbActive,
+  hideWatched,
+  setHideWatched
 }: FiltersSideBarProps) => {
   const [openedSection, setOpenedSection] = useState<FilterSection[]>([]);
-  const [imdbRange, setImdbRange] = useState<RangeState>({ min: 7.7, max: 10 });
-  const [voteRange, setVoteRange] = useState<RangeState>({ min: 4.3, max: 5.9 });
+  const [voteRange, setVoteRange] = useState<RangeState>({ min: 0, max: 10 });
   const [allGenres, setAllGenres] = useState<Genre[]>([]);
 
   const allCountries = ['United States of America', 'South Korea', 'India', 'China', 'United Kingdom', 'France', 'Japan', 'Spain', 'Germany', 'Mexico'];
@@ -172,7 +183,8 @@ export const FiltersSideBar = ({
             <input
               type="checkbox"
               className="sr-only peer"
-            // onChange
+              checked={hideWatched}
+              onChange={(e) => setHideWatched(e.target.checked)}
             />
 
             <div className="
@@ -309,7 +321,7 @@ export const FiltersSideBar = ({
           ))}
         </div>
 
-        <div className="flex justify-between items-center px-2 h-14 mt-2 border-t border-gray-70 text-[16px] text-gray-0 leading-[1.35] font-bold font-nunito">
+        <div className="flex justify-between items-center px-2 h-14 text-[16px] text-gray-0 leading-[1.35] font-bold font-nunito">
           <p>{FilterSection.Rating}</p>
           <button
             className="cursor-pointer text-gray-70"
@@ -326,8 +338,16 @@ export const FiltersSideBar = ({
           <div>
             <RangeFilter
               label="IMDB"
-              range={imdbRange}
-              setRange={setImdbRange}
+              range={{ min: imdbRange[0] ?? 0, max: imdbRange[1] ?? 0 }}
+              setRange={(val: React.SetStateAction<RangeState>) => {
+                const newRange = typeof val === 'function'
+                  ? val({ min: imdbRange[0] ?? 0, max: imdbRange[1] ?? 10 })
+                  : val;
+
+                setImdbRange([newRange.min, newRange.max]);
+              }}
+              isActive={isImdbActive}
+              onToggle={() => setIsImdbActive(!isImdbActive)}
             />
             <RangeFilter
               label="Vote Rating"
