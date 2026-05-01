@@ -23,5 +23,7 @@ public record SeriesDetailDto(
         @JsonProperty("poster_path") String posterPath,
         @JsonProperty("backdrop_path") String backdropPath,
         @JsonProperty("production_countries") List<TmdbProductionCountryDto> productionCountries,
-        List<GenreDto> genres
+        List<GenreDto> genres,
+        Long likes,
+        Long dislikes
 ) {}

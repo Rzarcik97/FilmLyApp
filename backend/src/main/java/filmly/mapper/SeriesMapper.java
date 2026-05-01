@@ -21,24 +21,26 @@ public abstract class SeriesMapper {
     protected GenreService genreService;
 
     @Mapping(target = "type", constant = "SERIES")
-    @Mapping(source = "id", target = "contentId")
-    @Mapping(source = "genreIds", target = "genres")
-    @Mapping(source = "name", target = "title")
-    @Mapping(source = "firstAirDate", target = "releaseDate")
-    public abstract ContentDto toDto(TmdbContentResult result);
+    @Mapping(source = "result.id", target = "contentId")
+    @Mapping(source = "result.genreIds", target = "genres")
+    @Mapping(source = "result.name", target = "title")
+    @Mapping(source = "result.firstAirDate", target = "releaseDate")
+    public abstract ContentDto toDto(TmdbContentResult result, Long likes, Long dislikes);
 
     @Mapping(target = "type", constant = "SERIES")
-    @Mapping(source = "id", target = "contentId")
-    @Mapping(source = "name", target = "title")
-    @Mapping(source = "genreIds", target = "genres")
-    @Mapping(source = "firstAirDate", target = "releaseDate")
-    public abstract ContentDto fromContentResult(TmdbContentResult result);
+    @Mapping(source = "result.id", target = "contentId")
+    @Mapping(source = "result.name", target = "title")
+    @Mapping(source = "result.genreIds", target = "genres")
+    @Mapping(source = "result.firstAirDate", target = "releaseDate")
+    public abstract ContentDto fromContentResult(TmdbContentResult result,
+                                                 Long likes, Long dislikes);
 
     @Mapping(target = "type", constant = "SERIES")
-    @Mapping(source = "name", target = "title")
-    @Mapping(source = "firstAirDate",target = "releaseDate")
-    @Mapping(source = "videos", target = "trailerKey")
-    public abstract SeriesDetailDto toDetailDto(TmdbSeriesDetailResponse response);
+    @Mapping(source = "response.name", target = "title")
+    @Mapping(source = "response.firstAirDate",target = "releaseDate")
+    @Mapping(source = "response.videos", target = "trailerKey")
+    public abstract SeriesDetailDto toDetailDto(TmdbSeriesDetailResponse response,
+                                                Long likes, Long dislikes);
 
     protected String extractTrailerKey(TmdbVideosResponse videos) {
         if (videos == null || videos.results() == null) {

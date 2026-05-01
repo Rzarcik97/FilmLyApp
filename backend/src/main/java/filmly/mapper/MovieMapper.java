@@ -22,18 +22,21 @@ public abstract class MovieMapper {
     protected GenreService genreService;
 
     @Mapping(target = "type", constant = "MOVIE")
-    @Mapping(source = "id", target = "contentId")
-    @Mapping(source = "genreIds", target = "genres")
-    public abstract ContentDto toDto(TmdbContentResult result);
+    @Mapping(source = "result.id", target = "contentId")
+    @Mapping(source = "result.genreIds", target = "genres")
+    public abstract ContentDto toDto(TmdbContentResult result, Long likes, Long dislikes);
 
     @Mapping(target = "type", constant = "MOVIE")
-    @Mapping(source = "id", target = "contentId")
-    @Mapping(source = "genreIds", target = "genres")
-    public abstract ContentDto fromContentResult(TmdbContentResult result);
+    @Mapping(source = "result.id", target = "contentId")
+    @Mapping(source = "result.genreIds", target = "genres")
+    public abstract ContentDto fromContentResult(TmdbContentResult result,
+                                                 Long likes,
+                                                 Long dislikes);
 
     @Mapping(target = "type", constant = "MOVIE")
-    @Mapping(source = "videos", target = "trailerKey")
-    public abstract MovieDetailDto toDetailDto(TmdbMovieDetailResponse response);
+    @Mapping(source = "response.videos", target = "trailerKey")
+    public abstract MovieDetailDto toDetailDto(TmdbMovieDetailResponse response,
+                                               Long likes, Long dislikes);
 
     protected String extractTrailerKey(TmdbVideosResponse videos) {
         if (videos == null || videos.results() == null) {
