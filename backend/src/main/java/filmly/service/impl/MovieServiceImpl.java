@@ -11,7 +11,6 @@ import filmly.dto.tmdb.TmdbMovieDetailResponse;
 import filmly.exception.EntityNotFoundException;
 import filmly.mapper.MovieMapper;
 import filmly.model.Content;
-import filmly.repository.ContentLikeRepository;
 import filmly.service.ContentLikeService;
 import filmly.service.MovieService;
 import java.time.LocalDate;
@@ -29,7 +28,6 @@ public class MovieServiceImpl implements MovieService {
     private final RestClient restClient;
     private final MovieMapper movieMapper;
     private final ContentLikeService contentLikeService;
-    private final ContentLikeRepository contentLikeRepository;
 
     @Override
     public List<ContentDto> findPopular() {

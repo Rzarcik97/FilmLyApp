@@ -27,9 +27,11 @@ public abstract class MovieMapper {
     public abstract ContentDto toDto(TmdbContentResult result, Long likes, Long dislikes);
 
     @Mapping(target = "type", constant = "MOVIE")
-    @Mapping(source = "id", target = "contentId")
-    @Mapping(source = "genreIds", target = "genres")
-    public abstract ContentDto fromContentResult(TmdbContentResult result);
+    @Mapping(source = "result.id", target = "contentId")
+    @Mapping(source = "result.genreIds", target = "genres")
+    public abstract ContentDto fromContentResult(TmdbContentResult result,
+                                                 Long likes,
+                                                 Long dislikes);
 
     @Mapping(target = "type", constant = "MOVIE")
     @Mapping(source = "response.videos", target = "trailerKey")

@@ -28,11 +28,12 @@ public abstract class SeriesMapper {
     public abstract ContentDto toDto(TmdbContentResult result, Long likes, Long dislikes);
 
     @Mapping(target = "type", constant = "SERIES")
-    @Mapping(source = "id", target = "contentId")
-    @Mapping(source = "name", target = "title")
-    @Mapping(source = "genreIds", target = "genres")
-    @Mapping(source = "firstAirDate", target = "releaseDate")
-    public abstract ContentDto fromContentResult(TmdbContentResult result);
+    @Mapping(source = "result.id", target = "contentId")
+    @Mapping(source = "result.name", target = "title")
+    @Mapping(source = "result.genreIds", target = "genres")
+    @Mapping(source = "result.firstAirDate", target = "releaseDate")
+    public abstract ContentDto fromContentResult(TmdbContentResult result,
+                                                 Long likes, Long dislikes);
 
     @Mapping(target = "type", constant = "SERIES")
     @Mapping(source = "response.name", target = "title")
