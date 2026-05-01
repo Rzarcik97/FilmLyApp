@@ -13,5 +13,8 @@ public record ContentDto(
         List<GenreDto> genres,
         @JsonProperty("release_date")String releaseDate,
         @JsonProperty("vote_average")Double voteAverage,
-        @JsonProperty("vote_count")Integer voteCount) {}
+        @JsonProperty("vote_count")Integer voteCount,
+        Long likes,
+        Long dislikes
+) {}
 
