@@ -82,7 +82,8 @@ export const AboutUs = () => {
             bg-gray-80/10 backdrop-blur-[2px]
             rounded-full border border-gray-80/10
             before:content-[''] before:absolute before:inset-0
-            before:rounded-full before:border before:border-white/20"
+            before:rounded-full before:border before:border-white/20
+            hover:bg-gray-30/10 transition-all duration-300 ease-in-out"
             onClick={handleNext}
           >
             <ChevronRight size={24} />
