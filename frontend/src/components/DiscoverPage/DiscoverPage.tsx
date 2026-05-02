@@ -7,7 +7,7 @@ import type { Genre } from '../../types';
 import sort from '/icons/filter.png';
 import { useDispatch, useSelector } from 'react-redux';
 import { type AppDispatch, type RootState } from '../../store';
-import { toggleGenre } from '../../store/filtersSlice';
+import { resetFilters, toggleGenre } from '../../store/filtersSlice';
 
 export const DiscoverPage = () => {
   const [allGenres, setAllGenres] = useState<Genre[]>([]);
@@ -20,22 +20,29 @@ export const DiscoverPage = () => {
   const pageTitle = type ? type.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase()) : 'Discover';
 
   useEffect(() => {
-    const fetchGenres = async () => {
+    const initPage = async () => {
       const genres = await getGenres();
       setAllGenres(genres);
+
+      dispatch(resetFilters());
 
       if (type && genres.length > 0) {
         const matchedGenre = genres.find(
           (g) => g.name.toLowerCase().replace(/[\s&]+/g, '-') === type.toLowerCase()
         );
 
-        if (matchedGenre && !filters.selectedGenreIds.includes(matchedGenre.id)) {
+        if (matchedGenre) {
           dispatch(toggleGenre(matchedGenre.id));
         }
       }
     };
-    fetchGenres();
-  }, [type]);
+
+    initPage();
+
+    return () => {
+      dispatch(resetFilters());
+    };
+  }, [type, dispatch]);
 
   return (
     <div className="bg-gray-100 pt-35 flex min-h-screen relative z-50">
