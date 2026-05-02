@@ -6,8 +6,9 @@ import { AccountSecurity } from './AccountSecurity';
 import { UsernameField } from './UsernameField';
 import { useState } from 'react';
 import { Toast } from './Toast';
+import type { UserProfile } from '../../types/auth';
 
-export const ProfileSettings = ({ name, email }: { name: string, email: string }) => {
+export const ProfileSettings = ({ name, email, user }: { name: string, email: string, user: UserProfile }) => {
   const [showToast, setShowToast] = useState(false);
 
   const handleToast = () => {
@@ -37,7 +38,7 @@ export const ProfileSettings = ({ name, email }: { name: string, email: string }
 
           <div className="flex flex-col gap-1">
             <p className="text-gray-30 text-[14px] md:text-[20px] leading-[1.45]">User Name</p>
-            <UsernameField initialName={name} />
+            <UsernameField initialName={name} user={user} />
           </div>
         </div>
       </div>

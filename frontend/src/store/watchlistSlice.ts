@@ -108,7 +108,7 @@ const watchlistSlice = createSlice({
         );
       })
       .addCase(markAsWatched.fulfilled, (state, action) => {
-        const { contentId } = action.payload;
+        const { contentId, watchedAt } = action.payload;
 
         if (!state.watchedItems.includes(contentId)) {
           state.watchedItems.push(contentId);
@@ -116,6 +116,14 @@ const watchlistSlice = createSlice({
 
         if (!state.items.includes(contentId)) {
           state.items.push(contentId);
+        }
+
+        const movie = state.fullList.find(
+          (m) => m.id === contentId || m.contentId === contentId
+        );
+
+        if (movie) {
+          movie.watchedAt = watchedAt || new Date().toISOString();
         }
       })
   },

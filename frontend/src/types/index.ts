@@ -31,6 +31,7 @@ export interface Movie {
   production_countries: ProductionCountry[];
   numberOfEpisodes?: number;
   isWatched?: boolean;
+  watchedAt?: string | null;
   origin_country?: string;
 }
 
@@ -46,3 +47,10 @@ export interface RangeState {
 }
 
 export type BrowseGenres = string[];
+
+export interface User {
+  username: string;
+  firstName: string;
+  lastName: string;
+  avatarUrl: string;
+};

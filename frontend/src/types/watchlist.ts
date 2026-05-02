@@ -3,6 +3,7 @@ import type { Movie } from '.';
 export interface WatchlistRequest {
   contentId: number;
   contentType: string;
+  watchedAt?: string;
 }
 
 export interface WatchlistResponse {
