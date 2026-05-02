@@ -81,7 +81,11 @@ export const Profile = () => {
 
         {activeTab === 'settings' && (
           <div className="animate-in fade-in duration-300">
-            <ProfileSettings name={displayName} email={displayEmail} />
+            {user ? (
+              <ProfileSettings name={displayName} email={displayEmail} user={user} />
+            ) : (
+              <Loader />
+            )}
           </div>
         )}
       </div>
