@@ -3,9 +3,10 @@ import { GenericBrowseSection } from '../BrowsePage/GenericBrowseSection';
 import { getContentByGenre, getMoviesByRating, getPopularMovies, getRecentMovies, getSearchData, getTrendingMovies, getTrendingSeries, getUpcomingMovies } from '../../api/movieService';
 import { MovieCard } from '../MainPage/MovieCard';
 import type { Genre, Movie } from '../../types';
-import { useCallback } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import type { RootState } from '../../store';
+import { DiscoverByGenre } from './DiscoverByGenre';
 
 export type DateSort = 'newest' | 'oldest' | 'default';
 export type TitleSort = 'asc' | 'desc' | 'default';
@@ -23,10 +24,94 @@ export interface FilterState {
 export const DiscoverContent = ({ filters }: { filters: FilterState }) => {
   const { type } = useParams<{ type: string }>();
   const [searchParams] = useSearchParams();
+
+  const [genreMovies, setGenreMovies] = useState<Movie[]>([]);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [totalPages, setTotalPages] = useState(1);
+
   const searchQuery = searchParams.get('q') || '';
   const watchedIds = useSelector((state: RootState) => state.watchlist.watchedItems);
 
   const contentType = type?.includes('series') ? 'SERIES' : 'MOVIE';
+
+  const defaultRoutes = ['trending-movies', 'trending-series', 'popular-movies', 'recent-movies', 'upcoming-movies', 'search'];
+  const isGenreRoute = type && !defaultRoutes.includes(type);
+
+  const currentGenreId = useMemo(() => {
+    if (!type || defaultRoutes.includes(type)) return filters.selectedGenreIds[0];
+
+    const normalizedSlug = type.toLowerCase().replace(/[^a-z0-9]/g, '');
+
+    let matchingGenre = filters.allGenres.find(g => {
+      const normalizedName = g.name.toLowerCase().replace(/[^a-z0-9]/g, '');
+      return normalizedName === normalizedSlug && (g.type === contentType || g.type === 'BOTH');
+    });
+
+    if (!matchingGenre) {
+      const equivalents: Record<string, string[]> = {
+        'kids': ['family', 'animation'],
+        'scififantasy': ['sciencefiction', 'fantasy'],
+        'actionadventure': ['action', 'adventure']
+      };
+
+      const potentialMatches = equivalents[normalizedSlug] || [];
+
+      matchingGenre = filters.allGenres.find(g => {
+        const normalizedName = g.name.toLowerCase().replace(/[^a-z0-9]/g, '');
+        return potentialMatches.includes(normalizedName) && (g.type === contentType || g.type === 'BOTH');
+      });
+    }
+
+    return matchingGenre ? matchingGenre.id : filters.selectedGenreIds[0];
+  }, [type, contentType, filters.allGenres, filters.selectedGenreIds]);
+
+  const fetchGenrePage = useCallback(async (pageNum: number, isNew: boolean) => {
+    console.log("Fetching Genre:", { currentGenreId, contentType, pageNum });
+
+    if (!currentGenreId) {
+      console.warn("No currentGenreId found! The mapping might be broken.");
+      return;
+    }
+    setIsLoading(true);
+
+    try {
+      const data = await getContentByGenre(currentGenreId, contentType, pageNum);
+      const newItems = data.content || data.results || [];
+      const total = data.totalPages || 1;
+
+      setTotalPages(total);
+
+      setGenreMovies(prev => isNew ? [...prev, ...newItems] : newItems);
+      setHasMore(pageNum < total);
+    } catch (error) {
+      console.error("Genre fetch error:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [currentGenreId, contentType]);
+
+  useEffect(() => {
+    if (isGenreRoute && currentGenreId) {
+      console.log(`Route Active: ${type} | ID: ${currentGenreId} | Content: ${contentType}`);
+      setPage(1);
+      fetchGenrePage(1, false);
+    }
+  }, [currentGenreId, type, fetchGenrePage, isGenreRoute]);
+
+  const handleLoadMore = () => {
+    const nextPage = page + 1;
+    setPage(nextPage);
+    fetchGenrePage(nextPage, true);
+  };
+
+  const handleJumpToPage = (targetPage: number) => {
+    if (targetPage < 1 || targetPage > totalPages) return;
+    setPage(targetPage);
+    fetchGenrePage(targetPage, false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const universalFetcher = useCallback(async () => {
     if (filters.isImdbActive) {
@@ -85,7 +170,11 @@ export const DiscoverContent = ({ filters }: { filters: FilterState }) => {
     const matchesCountry = filters.selectedCountries.length === 0 ||
       itemCountries.some((c: string) => filters.selectedCountries.includes(c));
 
-    return matchesGenre && matchesCountry;
+    if (!matchesCountry) return false;
+
+    if (isGenreRoute) return true;
+
+    return matchesGenre;
   };
 
   const sortFn = (a: Movie, b: Movie) => {
@@ -115,6 +204,22 @@ export const DiscoverContent = ({ filters }: { filters: FilterState }) => {
 
     return 0;
   };
+
+  if (isGenreRoute) {
+    const filteredAndSorted = genreMovies.filter(applyFilters).sort(sortFn);
+
+    return (
+      <DiscoverByGenre
+        items={filteredAndSorted}
+        isLoading={isLoading}
+        page={page}
+        totalPages={totalPages}
+        hasMore={hasMore}
+        onLoadMore={handleLoadMore}
+        onJumpToPage={handleJumpToPage}
+      />
+    );
+  }
 
   switch (type) {
     case 'trending-movies':

@@ -30,7 +30,7 @@ export const AuthModal = () => {
       <div className="relative w-full max-w-[90%] sm:max-w-md bg-gray-100 border border-gray-80 rounded-2xl p-6 sm:p-10 shadow-2xl text-center transform transition-all animate-in fade-in zoom-in duration-300 overflow-y-auto max-h-[90vh]">
         <button
           onClick={handleClose}
-          className="absolute top-4 right-4 text-gray-50 hover:text-primary-0 transition-colors p-1"
+          className="cursor-pointer absolute top-4 right-4 text-gray-50 hover:text-primary-0 transition-colors p-1"
         >
           <X size={24} />
         </button>
