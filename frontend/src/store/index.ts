@@ -3,6 +3,7 @@ import watchlistReducer from './watchlistSlice';
 import userReducer from './userSlice';
 import uiReducer from './uiSlice';
 import filtersReducer from './filtersSlice';
+import likesReducer from './likesSlice';
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     ui: uiReducer,
     auth: userReducer,
     filters: filtersReducer,
+    likes: likesReducer,
   },
 });
 

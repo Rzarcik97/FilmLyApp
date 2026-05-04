@@ -34,6 +34,9 @@ export interface Movie {
   isWatched?: boolean;
   watchedAt?: string | null;
   origin_country?: string;
+  likes?: number;
+  dislikes?: number;
+  userReaction?: "LIKE" | "DISLIKE" | null;
 }
 
 export interface Actor {
