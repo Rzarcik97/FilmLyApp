@@ -2,6 +2,7 @@ import { ChevronRight } from 'lucide-react';
 import play from '../../../public/icons/play.png';
 import mute from '../../../public/icons/mute.png';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const heroSection = [
   {
@@ -39,10 +40,24 @@ const heroSection = [
 export const AboutUs = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const currentMovie = heroSection[currentIndex];
+  const isLoggedIn = !!localStorage.getItem('token');
+  const navigate = useNavigate();
 
   const handleNext = () => {
     setCurrentIndex((prev) => (prev + 1) % heroSection.length);
   };
+
+  const handleGetStarted = () => {
+    if (isLoggedIn) {
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth'
+      });
+    } else {
+      navigate('/sign-up');
+    }
+  }
 
   const heavyGradient = `linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(17,17,16,0.9) 100%)`;
   const lightGradient = `linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(17,17,16,0.4) 100%)`;
@@ -70,7 +85,10 @@ export const AboutUs = () => {
             that helps users quickly find what to watch, get personalized
             recommendations, and instantly see where the content is available.
           </p>
-          <button className="bg-gray-0 border-none w-full lg:w-full h-11 rounded-[32px] text-[16px] leading-[1.5] tracking-[-0.011em] font-bold font-nunito cursor-pointer">
+          <button 
+            onClick={() => handleGetStarted()}
+            className="bg-gray-0 border-none w-full lg:w-full h-11 rounded-[32px] text-[16px] leading-[1.5] tracking-[-0.011em] font-bold font-nunito cursor-pointer"
+          >
             Get started
           </button>
         </div>

@@ -68,12 +68,7 @@ export const DiscoverContent = ({ filters }: { filters: FilterState }) => {
   }, [type, contentType, filters.allGenres, filters.selectedGenreIds]);
 
   const fetchGenrePage = useCallback(async (pageNum: number, isNew: boolean) => {
-    console.log("Fetching Genre:", { currentGenreId, contentType, pageNum });
-
-    if (!currentGenreId) {
-      console.warn("No currentGenreId found! The mapping might be broken.");
-      return;
-    }
+    if (!currentGenreId) return;
     setIsLoading(true);
 
     try {
@@ -94,7 +89,6 @@ export const DiscoverContent = ({ filters }: { filters: FilterState }) => {
 
   useEffect(() => {
     if (isGenreRoute && currentGenreId) {
-      console.log(`Route Active: ${type} | ID: ${currentGenreId} | Content: ${contentType}`);
       setPage(1);
       fetchGenrePage(1, false);
     }
