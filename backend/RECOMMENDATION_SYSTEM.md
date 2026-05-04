@@ -22,7 +22,7 @@ Runs on-the-fly without storing results in the database — can be optimized lat
 | Source                 | Weight                                     |
 |------------------------|--------------------------------------------|
 | `VoteScore`            | interval between (MIN -20 pkt, MAX 20 pkt) |
-| `FavoriteGenreScore`   | interval between (MIN -12 pkt, MAX 15 pkt) |
+| `FavoriteGenreScore`   | interval between (MIN -12 pkt, MAX 20 pkt) |
 | `RealeseScore`         | interval between (MIN -10 pkt, MAX 10 pkt) |
 | `TMDDBPopularityScore` | interval between (MIN 0 pkt, MAX 10 pkt)   |
 
@@ -59,11 +59,19 @@ Each movie/series has a list of genres from TMDB. For each genre, the user's `Fa
 is mapped to a point value and averaged. Genres with 0 pts are excluded from the average to avoid
 penalizing movies with many neutral genres. If all genres have 0 pts, `genre_score = 0`.
 
+Additionally, a logarithmic multiplier is applied based on the number of positively matched genres
+(rating >= 6.0) to reward broader preference alignment.
 ```
-genre_score = (sum of points of genres (≠ 0) / count of genres (≠ 0)) × 3
+base_genre_score = (sum of points of genres (≠ 0) / count of genres (≠ 0)) × 3
+
+positive_genres = count of genres where rating >= 6.0
+
+multiplier = 1 + 0.25 × log2(positive_genres + 1)
+
+genre_score = base_genre_score × multiplier
 ```
 
-Interval: **-12 to +15 pts**
+Interval: **-12 to ~20 pts**
 
 **Rating to points mapping:**
 
@@ -83,7 +91,13 @@ Interval: **-12 to +15 pts**
 **Example:**
 Movie with genres: `Action (rating 8.5)`, `Comedy (rating 6.2)`, `Thriller (no rating = 5.0)`, `Drama (no rating = 5.0)`
 ```
-genre_score = ((4 + 2) / 2) × 3 = 9 pts
+base_genre_score = ((4 + 2) / 2) × 3 = 9
+
+positive_genres = 2
+
+multiplier = 1 + 0.25 × log2(3) ≈ 1.4
+
+genre_score = 9 × 1.4 = 12.6 pts
 ```
  
 ---
