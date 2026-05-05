@@ -29,6 +29,7 @@ public class RecommendationScorer {
     private static final double GENRE_WEIGHT = 3.0;
     private static final double RELEASE_WEIGHT = 1.0;
     private static final double POPULARITY_WEIGHT = 0.5;
+    private static final int VOTE_COUNT_THRESHOLD = 50;
 
     public double calculateFinalScore(
             TmdbContentResult movie,
@@ -45,7 +46,7 @@ public class RecommendationScorer {
                 + popularityScore;
 
         log.debug("[{}] genre={} vote={} release={} popularity={} final={}",
-                movie.title(),
+                movie.title() != null ? movie.title() : movie.name(),
                 String.format("%.2f", genreScore),
                 String.format("%.2f", voteScore),
                 String.format("%.2f", releaseScore),
@@ -91,11 +92,12 @@ public class RecommendationScorer {
     }
 
     public double calculateVoteScore(double voteAverage, int voteCount) {
-        if (voteCount < 50) {
+        if (voteCount < VOTE_COUNT_THRESHOLD) {
             return 0.0;
         }
 
-        double qualityScore = (voteAverage - 5.0) * Math.log10(voteCount - 49);
+        double qualityScore = (voteAverage - 5.0)
+                * Math.log10(voteCount - VOTE_COUNT_THRESHOLD - 1);
 
         return Math.clamp(qualityScore, -20.0, 20.0) * VOTE_WEIGHT;
     }
@@ -110,7 +112,7 @@ public class RecommendationScorer {
         long yearsAgo = ChronoUnit.YEARS.between(LocalDate.parse(releaseDate), now);
 
         if (monthsAgo < 3) {
-            return voteCount < 50 ? 5.0 : 10.0;
+            return voteCount < VOTE_COUNT_THRESHOLD ? 5.0 : 10.0;
         }
 
         return mapAgeToReleaseBonus(yearsAgo) * RELEASE_WEIGHT;

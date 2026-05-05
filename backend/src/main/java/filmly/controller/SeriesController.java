@@ -92,10 +92,10 @@ public class SeriesController {
 
     @GetMapping("/recommendations")
     @Operation(summary = "Get personalized movie recommendations",
-            description = "Returns top 20 series scored by genre preferences, vote rating, "
-                    + "release date and popularity. Works for both authenticated "
+            description = "Returns top 20 series scored by genre preferences, vote rating "
+                    + "and popularity. Works for both authenticated "
                     + "and anonymous users. Anonymous users get recommendations based "
-                    + "on popularity and release date only.")
+                    + "on popularity and vote rating.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK",
                     content = @Content(schema = @Schema(implementation = ContentDto.class)))

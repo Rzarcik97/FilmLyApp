@@ -1,5 +1,3 @@
-# Recommendation System Plan
-
 ## Overview
 Score-based recommendation system that combines user preferences with content quality.
 Runs on-the-fly without storing results in the database — can be optimized later with caching (Redis) or a `recommendation_scores` table.
@@ -9,8 +7,8 @@ Runs on-the-fly without storing results in the database — can be optimized lat
 ## Flow
 
 1. Calculate user's genre weights
-2. Take top 5 genres with the highest weight
-3. Fetch 3 pages from TMDB per genre (`/discover`) → ~300 movies/series
+2. Take top 4 genres with the highest weight (or 4 random genres for anonymous users)
+3. Fetch 2 pages from base endpoints (`/popular`, `/now_playing` or `/on_the_air`, `/trending`) + 2 pages from TMDB per genre (`/discover`) → ~200 movies/series
 4. Deduplicate by `contentId`
 5. Calculate `final_score` for each movie/series
 6. Return top 20
@@ -23,8 +21,26 @@ Runs on-the-fly without storing results in the database — can be optimized lat
 |------------------------|--------------------------------------------|
 | `VoteScore`            | interval between (MIN -20 pkt, MAX 20 pkt) |
 | `FavoriteGenreScore`   | interval between (MIN -12 pkt, MAX 20 pkt) |
-| `RealeseScore`         | interval between (MIN -10 pkt, MAX 10 pkt) |
-| `TMDDBPopularityScore` | interval between (MIN 0 pkt, MAX 10 pkt)   |
+| `ReleaseScore`         | interval between (MIN -10 pkt, MAX 10 pkt) |
+| `PopularityScore`      | interval between (MIN 0 pkt, MAX ~10 pkt)  |
+
+---
+
+## Tunable Parameters
+
+These parameters control the balance of the recommendation algorithm and can be adjusted to fine-tune results.
+
+| Parameter                       | Value | Description                                              |
+|---------------------------------|-------|----------------------------------------------------------|
+| `VOTE_WEIGHT`                   | 1.0   | Multiplier for vote score in final score                 |
+| `GENRE_WEIGHT`                  | 3.0   | Multiplier for genre score in final score                |
+| `RELEASE_WEIGHT`                | 1.0   | Multiplier for release score in final score              |
+| `POPULARITY_WEIGHT`             | 0.5   | Multiplier for popularity score in final score           |
+| `GENRE_MATCH_MULTIPLIER_FACTOR` | 0.25  | Controls how much matching multiple liked genres rewards | 
+| `VOTE_COUNT_THRESHOLD`          | 50    | Minimum vote count to consider vote score                |
+| `RESULTS_LIMIT`                 | 20    | Number of returned recommendations                       |
+
+---
 
 ### vote_Rating - quality_score
 Combines `vote_average` and `vote_count` into a single multiplier:
@@ -62,11 +78,11 @@ penalizing movies with many neutral genres. If all genres have 0 pts, `genre_sco
 Additionally, a logarithmic multiplier is applied based on the number of positively matched genres
 (rating >= 6.0) to reward broader preference alignment.
 ```
-base_genre_score = (sum of points of genres (≠ 0) / count of genres (≠ 0)) × 3
+base_genre_score = (sum of points of genres (≠ 0) / count of genres (≠ 0)) × GENRE_BASE_SCORE_MULTIPLIER
 
 positive_genres = count of genres where rating >= 6.0
 
-multiplier = 1 + 0.25 × log2(positive_genres + 1)
+multiplier = 1 + GENRE_MATCH_MULTIPLIER_FACTOR × log2(positive_genres + 1)
 
 genre_score = base_genre_score × multiplier
 ```
@@ -99,12 +115,15 @@ multiplier = 1 + 0.25 × log2(3) ≈ 1.4
 
 genre_score = 9 × 1.4 = 12.6 pts
 ```
- 
+
 ---
 
 ### release_bonus
 Rewards newer titles. Films released within the last 3 months get a reduced bonus if they have
 fewer than 50 votes — enough to appear in recommendations but not enough to dominate.
+
+> Note: release score is not applied to TV series, as `first_air_date` does not accurately reflect
+> how current a series is (a show airing its 8th season still has a premiere date from years ago).
 
 ```
 release_date < 3 months AND vote_count < 50  → release_bonus = +5 pts
@@ -127,34 +146,38 @@ Interval: **-10 to +10 pts**
 
 > Note: classics penalty (-3 to -10 pts) may be replaced with a user preference toggle in the future.
 
+---
+
 ### popularity_score
 Uses TMDB's own `popularity` metric which takes into account page views, user list additions, and rating trends.
-Raw value has no upper bound so it's normalized with a logarithm to prevent it from dominating the final score.
+Raw value is normalized using a square root to better preserve proportional differences in the typical
+popularity range (100–500) while preventing very high values from dominating the final score.
 
 ```
-popularity_score = log10(popularity + 1) × 2
+popularity_score = sqrt(popularity) × POPULARITY_SCORE_FACTOR
 ```
 
-**Examples:**
+**Examples (POPULARITY_SCORE_FACTOR = 0.45):**
 
-| popularity | popularity_score             |
-|------------|------------------------------|
-| 5          | `log10(6) × 2` = **1.56**    |
-| 50         | `log10(51) × 2` = **3.42**   |
-| 500        | `log10(501) × 2` = **5.40**  |
-| 5000       | `log10(5001) × 2` = **7.40** |
+| popularity | popularity_score               |
+|------------|--------------------------------|
+| 10         | `sqrt(10) × 0.45` = **1.42**   |
+| 100        | `sqrt(100) × 0.45` = **4.50**  |
+| 250        | `sqrt(250) × 0.45` = **7.12**  |
+| 500        | `sqrt(500) × 0.45` = **10.06** |
 
-Interval: **0 to ~8 pts**
+Interval: **0 to ~10 pts**
 
-## Tunable Parameters
+---
 
-| Parameter              | Value | Description                        |
-|------------------------|-------|------------------------------------|
-| `VOTE_COUNT_THRESHOLD` | 50    | Minimum vote count                 |
-| `VOTE_AVERAGE_NEUTRAL` | 5.0   | Neutral point for rating           |
-| `TOP_GENRES`           | 5     | Number of genres to query TMDB     |
-| `TMDB_PAGES_PER_GENRE` | 3     | Number of TMDB pages per genre     |
-| `RESULTS_LIMIT`        | 20    | Number of returned recommendations |
+## Final Score Formula
+
+```
+final_score = (genre_score × GENRE_WEIGHT)
+            + (vote_score × VOTE_WEIGHT)
+            + (release_score × RELEASE_WEIGHT)
+            + (popularity_score × POPULARITY_WEIGHT)
+```
 
 ---
 
