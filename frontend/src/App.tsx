@@ -18,6 +18,7 @@ import { fetchWatchList } from './store/watchlistSlice';
 import type { AppDispatch } from './store';
 import { AuthModal } from './components/Modals/AuthModal';
 import { LogoutModal } from './components/Modals/LogoutModal';
+import { ThemeProvider } from './context/ThemeContext';
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -57,30 +58,32 @@ function App() {
   };
 
   return (
-    <BrowserRouter>
-      <div className="app-container relative">
-        <ScrollToTop />
+    <ThemeProvider>
+      <BrowserRouter>
+        <div className="app-container relative">
+          <ScrollToTop />
 
-        <Header />
+          <Header />
 
-        <Routes>
-          <Route path="/" element={<MainPage />} />
-          <Route path="/sign-up" element={<SignUpPage />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/sign-up/password" element={<CreatePasswordPage />} />
-          <Route path="/:type/:id" element={<OverviewPage />} />
-          <Route path="/browse" element={<BrowsePage />} />
-          <Route path="/browse/:type?" element={<DiscoverPage />} />
-          <Route path="/discover/:type" element={<DiscoverPage />} />
-          <Route path="/actors" element={<ActorsPage />} />
-          <Route path="/profile" element={<Profile />} />
-        </Routes>
-        <AuthModal />
-        <LogoutModal />
+          <Routes>
+            <Route path="/" element={<MainPage />} />
+            <Route path="/sign-up" element={<SignUpPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/sign-up/password" element={<CreatePasswordPage />} />
+            <Route path="/:type/:id" element={<OverviewPage />} />
+            <Route path="/browse" element={<BrowsePage />} />
+            <Route path="/browse/:type?" element={<DiscoverPage />} />
+            <Route path="/discover/:type" element={<DiscoverPage />} />
+            <Route path="/actors" element={<ActorsPage />} />
+            <Route path="/profile" element={<Profile />} />
+          </Routes>
+          <AuthModal />
+          <LogoutModal />
 
-        <Footer />
-      </div>
-    </BrowserRouter>
+          <Footer />
+        </div>
+      </BrowserRouter>
+    </ThemeProvider>    
   )
 }
 

@@ -13,6 +13,14 @@ export const MainOverview = ({ movie }: MainOverviewProps) => {
   const backdropUrl = movie?.backdrop_path
     ? `https://image.tmdb.org/t/p/original${movie.backdrop_path}`
     : '';
+
+  const likes = movie?.likes ?? 0;
+  const dislikes = movie?.dislikes ?? 0;
+  const totalVotes = likes + dislikes;
+
+  const rating = totalVotes > 0
+    ? ((likes / totalVotes) * 100).toFixed(0)
+    : "0";
   
   return (
     <div
@@ -64,8 +72,8 @@ export const MainOverview = ({ movie }: MainOverviewProps) => {
               <img src={imdb} alt="Imdb Rating" className="w-6 h-5" />
             </div>
             <div className="flex justify-center items-center gap-2">
-              <p className="text-[16px] leading-[1.5] text-gray-0 font-bold">85%</p>
-              <img src={thumbsUp} alt="Filmly Rating" className="w-8 h-8" />
+              <p className="text-[16px] leading-[1.5] text-gray-0 font-bold">{rating}%</p>
+              <img src={thumbsUp} alt="Filmly Rating" className="w-7 h-7" />
             </div>
           </div>
         </div>

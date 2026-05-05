@@ -16,6 +16,14 @@
   animation: customFadeIn 0.8s ease-in-out;
 }
 
+:root {
+  --gray-100: #111110;
+}
+
+.light {
+  --gray-100: #EDE9D7;
+}
+
 @theme {
   --font-sans: "Sora", sans-serif;
   --font-nunito: "Nunito", sans-serif;
@@ -33,7 +41,7 @@
   --color-gray-70: #70716D;
   --color-gray-80: #4D4E4C;
   --color-gray-90: #2E2E2C;
-  --color-gray-100: #111110;
+  --color-gray-100: var(--gray-100);
   --color-gray-dark: #1E1E20;
   --color-signup-1: #9B9BA2;
   --color-signup-2: #D0D0D0;
