@@ -61,7 +61,7 @@ export const SearchBar = ({ onFocusChange, isFocused }: SearchBarProps) => {
       </button>
       <input
         type="text"
-        className={`py-3 w-full border-none bg-transparent focus:outline-none text-gray-30 text-[16px] font-bold`}
+        className={`py-3 w-full border-none bg-transparent focus:outline-none text-gray-70 text-[16px] font-bold`}
         placeholder="Search for movies, TV series, actors..."
         value={query}
         onChange={handleInputChange}

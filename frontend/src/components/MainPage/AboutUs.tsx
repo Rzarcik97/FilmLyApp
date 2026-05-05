@@ -3,37 +3,43 @@ import play from '../../../public/icons/play.png';
 import mute from '../../../public/icons/mute.png';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTheme } from '../../context/ThemeContext';
 
 const heroSection = [
   {
     id: 1,
     title: "All Of Us Strangers",
     info: "Drama  •  2023  •  1h 45m",
-    bg: "/backgrounds/All_Of_Us_Strangers.png"
+    bg: "/backgrounds/All_Of_Us_Strangers.png",
+    bgLight: "/backgrounds/light_bg.png"
   },
   {
     id: 2,
     title: "The Batman",
     info: "Action  •  2022  •  2h 56m",
-    bg: "/backgrounds/the_batman.jpg"
+    bg: "/backgrounds/the_batman.jpg",
+    bgLight: "/backgrounds/the_batman.jpg"
   },
   {
     id: 3,
     title: "The Departed",
     info: "Thriller  •  2006  •  2h 31m",
-    bg: "/backgrounds/departed.jpg"
+    bg: "/backgrounds/departed.jpg",
+    bgLight: "/backgrounds/departed.jpg"
   },
   {
     id: 4,
     title: "Interstellar",
     info: "Sci-Fi  •  2014  •  2h 49m",
-    bg: "/backgrounds/interstellar.jpg"
+    bg: "/backgrounds/interstellar.jpg",
+    bgLight: "/backgrounds/interstellar.jpg"
   },
   {
     id: 5,
     title: "Dune: Part Two",
     info: "Action  •  2024  •  2h 46m",
-    bg: "/backgrounds/dune.webp"
+    bg: "/backgrounds/dune.webp",
+    bgLight: "/backgrounds/dune.webp"
   }
 ];
 
@@ -59,8 +65,13 @@ export const AboutUs = () => {
     }
   }
 
-  const heavyGradient = `linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(17,17,16,0.9) 100%)`;
-  const lightGradient = `linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(17,17,16,0.4) 100%)`;
+  const heavyGradient = `var(--hero-gradient-heavy)`;
+  const lightGradient = `var(--hero-gradient-light)`;
+
+  const { theme } = useTheme();
+
+  const bgImage = theme === 'light' ? currentMovie?.bgLight : currentMovie?.bg;
+  
   return (
     <main 
       className="bg-gray-100 px-6 md:px-12 min-h-screen md:h-[672px] md:pb-8
@@ -71,7 +82,7 @@ export const AboutUs = () => {
         key={currentIndex}
         className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat animate-fade-in"
         style={{
-          backgroundImage: `${currentIndex === 0 ? lightGradient : heavyGradient}, url(${currentMovie?.bg})`
+          backgroundImage: `${currentIndex === 0 ? lightGradient : heavyGradient}, url(${bgImage})`
         }}
       />
 
@@ -87,7 +98,7 @@ export const AboutUs = () => {
           </p>
           <button 
             onClick={() => handleGetStarted()}
-            className="bg-gray-0 border-none w-full lg:w-full h-11 rounded-[32px] text-[16px] leading-[1.5] tracking-[-0.011em] font-bold font-nunito cursor-pointer"
+            className="bg-gray-0 border-none w-full lg:w-full h-11 rounded-[32px] text-[16px] leading-[1.5] tracking-[-0.011em] font-bold font-nunito cursor-pointer text-secondary-dark"
           >
             Get started
           </button>

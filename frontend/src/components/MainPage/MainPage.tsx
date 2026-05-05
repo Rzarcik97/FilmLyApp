@@ -84,7 +84,7 @@ export const MainPage = () => {
   }, []);
 
   return (
-    <main className="bg-gray-100">
+    <main className="bg-main-bg">
       <AboutUs />
       <MainBrowse genres={genres} />
       <ScrollSectionTrending

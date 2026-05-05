@@ -67,7 +67,7 @@ export const ScrollSectionTrending = ({ title, items, viewAllPath }: ScrollSecti
               <span className="
                 absolute -left-12 top-3/4 -translate-y-1/2 
                 text-[200px] font-bold leading-none
-                text-primary-0/20
+                text-featured/20
                 select-none z-0
                 tracking-tighter
                 opacity-80 blur-[0.5px]"

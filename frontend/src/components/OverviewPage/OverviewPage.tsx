@@ -9,6 +9,7 @@ import { type Actor, type Movie } from '../../types';
 import { Loader } from '../Utilities/Loader';
 import { NotFoundPage } from '../Utilities/NotFoundPage';
 import { ReviewCards } from './ReviewCards';
+import { UserReview } from './UserReview';
 
 export const OverviewPage = () => {
   const { id, type } = useParams<{ id: string, type: string }>();
@@ -70,7 +71,7 @@ export const OverviewPage = () => {
   }
 
   return (
-    <div className="bg-gray-100">
+    <div className="bg-main-bg">
       <MainOverview movie={movie} />
       <MoreDetails movie={movie} />
       <ScrollActors title="Cast" items={cast} />
@@ -79,6 +80,7 @@ export const OverviewPage = () => {
         items={similarItems} 
         viewAllPath='/actors'
       />
+      <UserReview title={movie.title}/>
       <ReviewCards />
     </div>
   )
