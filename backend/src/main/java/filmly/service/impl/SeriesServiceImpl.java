@@ -112,7 +112,7 @@ public class SeriesServiceImpl implements TmdbContentService<ContentDto, SeriesD
         }
 
         List<Long> genreIds = userRatings.isEmpty()
-                ? favoriteGenreService.getRandomGenreIds(GenreType.MOVIE)
+                ? favoriteGenreService.getRandomGenreIds(GenreType.SERIES)
                 : userRatings.entrySet().stream()
                 .sorted(Map.Entry.<Long, Double>comparingByValue().reversed())
                 .limit(4)
