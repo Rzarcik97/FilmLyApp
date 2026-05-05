@@ -13,7 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -90,13 +90,19 @@ public class SeriesController {
         return seriesService.findCast(id);
     }
 
-    @Deprecated
-    @GetMapping("/recommendation")
-    @Operation(summary = "Get series recommendations, source FilmLy")
-    public ResponseEntity<?> getRecommendations() {
-        // TODO: resolve current user from SecurityContext
-        // TODO: implement
-        return ResponseEntity.ok().build();
+    @GetMapping("/recommendations")
+    @Operation(summary = "Get personalized movie recommendations",
+            description = "Returns top 20 series scored by genre preferences, vote rating, "
+                    + "release date and popularity. Works for both authenticated "
+                    + "and anonymous users. Anonymous users get recommendations based "
+                    + "on popularity and release date only.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK",
+                    content = @Content(schema = @Schema(implementation = ContentDto.class)))
+    })
+    public List<ContentDto> getRecommendations(Authentication authentication) {
+        String email = authentication != null ? authentication.getName() : null;
+        return seriesService.findRecommendations(email);
     }
 
 }

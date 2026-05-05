@@ -6,8 +6,10 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
+@Log4j2
 @Service
 @RequiredArgsConstructor
 public class RecommendationScorer {
@@ -26,7 +28,7 @@ public class RecommendationScorer {
     private static final double VOTE_WEIGHT = 1.0;
     private static final double GENRE_WEIGHT = 3.0;
     private static final double RELEASE_WEIGHT = 1.0;
-    private static final double POPULARITY_WEIGHT = 2.0;
+    private static final double POPULARITY_WEIGHT = 0.5;
 
     public double calculateFinalScore(
             TmdbContentResult movie,
@@ -37,10 +39,20 @@ public class RecommendationScorer {
         double releaseScore = calculateReleaseScore(movie.releaseDate(), movie.voteCount());
         double popularityScore = calculatePopularityScore(movie.popularity());
 
-        return genreScore * GENRE_WEIGHT
-                + voteScore * VOTE_WEIGHT
-                + releaseScore * RELEASE_WEIGHT
-                + popularityScore * POPULARITY_WEIGHT;
+        double finalScore = genreScore
+                + voteScore
+                + releaseScore
+                + popularityScore;
+
+        log.debug("[{}] genre={} vote={} release={} popularity={} final={}",
+                movie.title(),
+                String.format("%.2f", genreScore),
+                String.format("%.2f", voteScore),
+                String.format("%.2f", releaseScore),
+                String.format("%.2f", popularityScore),
+                String.format("%.2f", finalScore));
+
+        return finalScore;
     }
 
     public double calculateGenreScore(
@@ -75,7 +87,7 @@ public class RecommendationScorer {
         double multiplier = 1.0 + GENRE_MATCH_MULTIPLIER_FACTOR
                 * (Math.log(positiveGenres + 1) / Math.log(2));
 
-        return avg * multiplier;
+        return avg * multiplier * GENRE_WEIGHT;
     }
 
     public double calculateVoteScore(double voteAverage, int voteCount) {
@@ -85,7 +97,7 @@ public class RecommendationScorer {
 
         double qualityScore = (voteAverage - 5.0) * Math.log10(voteCount - 49);
 
-        return Math.clamp(qualityScore, -20.0, 20.0);
+        return Math.clamp(qualityScore, -20.0, 20.0) * VOTE_WEIGHT;
     }
 
     public double calculateReleaseScore(String releaseDate, int voteCount) {
@@ -101,11 +113,12 @@ public class RecommendationScorer {
             return voteCount < 50 ? 5.0 : 10.0;
         }
 
-        return mapAgeToReleaseBonus(yearsAgo);
+        return mapAgeToReleaseBonus(yearsAgo) * RELEASE_WEIGHT;
     }
 
     public double calculatePopularityScore(double popularity) {
-        return Math.log10(popularity + 1);
+        // return Math.log10(popularity + 1);
+        return Math.sqrt(popularity) * POPULARITY_WEIGHT;
     }
 
     private double mapRatingToPoints(double rating) {

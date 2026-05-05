@@ -13,7 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -108,8 +108,8 @@ public class MoviesController {
             @ApiResponse(responseCode = "200", description = "OK",
                     content = @Content(schema = @Schema(implementation = ContentDto.class)))
     })
-    public List<ContentDto> getRecommendations(
-            @AuthenticationPrincipal String email) {
+    public List<ContentDto> getRecommendations(Authentication authentication) {
+        String email = authentication != null ? authentication.getName() : null;
         return movieService.findRecommendations(email);
     }
 }

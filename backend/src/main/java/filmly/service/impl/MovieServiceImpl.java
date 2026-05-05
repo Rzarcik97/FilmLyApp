@@ -9,6 +9,7 @@ import filmly.dto.tmdb.TmdbContentResponse;
 import filmly.dto.tmdb.TmdbContentResult;
 import filmly.dto.tmdb.TmdbCreditsResponse;
 import filmly.dto.tmdb.TmdbMovieDetailResponse;
+import filmly.enums.GenreType;
 import filmly.exception.EntityNotFoundException;
 import filmly.mapper.MovieMapper;
 import filmly.model.Content;
@@ -108,7 +109,7 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public List<ContentDto> findRecommendations(String email) {
 
-        Map<Long, Double> userRatings = (email != null && !email.equals("anonymousUser"))
+        Map<Long, Double> userRatings = (email != null)
                 ? favoriteGenreService.getUserGenreRatings(email)
                 : Map.of();
 
@@ -121,7 +122,7 @@ public class MovieServiceImpl implements MovieService {
         }
 
         List<Long> genreIds = userRatings.isEmpty()
-                ? favoriteGenreService.getRandomMovieGenreIds()
+                ? favoriteGenreService.getRandomGenreIds(GenreType.MOVIE)
                 : userRatings.entrySet().stream()
                 .sorted(Map.Entry.<Long, Double>comparingByValue().reversed())
                 .limit(4)
@@ -139,7 +140,6 @@ public class MovieServiceImpl implements MovieService {
         return unique.values().stream()
                 .map(r -> {
                     double finalScore = scorer.calculateFinalScore(r, userRatings);
-                    log.info("{} -> {}", r.title(), finalScore);
                     return new ScoreContent(r, finalScore);
                 })
                 .sorted(Comparator.comparingDouble(ScoreContent::score).reversed())

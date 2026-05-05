@@ -2,6 +2,7 @@ package filmly.service;
 
 import filmly.dto.favoritegenres.FavoriteGenreDto;
 import filmly.dto.favoritegenres.FavoriteGenreResponseDto;
+import filmly.enums.GenreType;
 import java.util.List;
 import java.util.Map;
 
@@ -19,5 +20,5 @@ public interface FavoriteGenreService {
 
     Map<Long, Double> getUserGenreRatings(String email);
 
-    List<Long> getRandomMovieGenreIds();
+    List<Long> getRandomGenreIds(GenreType type);
 }

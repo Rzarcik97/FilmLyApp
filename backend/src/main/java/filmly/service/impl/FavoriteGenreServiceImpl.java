@@ -2,6 +2,7 @@ package filmly.service.impl;
 
 import filmly.dto.favoritegenres.FavoriteGenreDto;
 import filmly.dto.favoritegenres.FavoriteGenreResponseDto;
+import filmly.enums.GenreType;
 import filmly.exception.EntityAlreadyExistsException;
 import filmly.exception.EntityNotFoundException;
 import filmly.mapper.FavoriteGenreMapper;
@@ -14,6 +15,7 @@ import filmly.repository.UserRepository;
 import filmly.service.FavoriteGenreService;
 import jakarta.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -130,7 +132,9 @@ public class FavoriteGenreServiceImpl implements FavoriteGenreService {
     }
 
     @Override
-    public List<Long> getRandomMovieGenreIds() {
-        return genreRepository.findRandomMovieGenreIds();
+    public List<Long> getRandomGenreIds(GenreType type) {
+        List<Long> all = new ArrayList<>(genreRepository.findAllGenreIdsByType(type));
+        Collections.shuffle(all);
+        return all.subList(0, Math.min(4, all.size()));
     }
 }
