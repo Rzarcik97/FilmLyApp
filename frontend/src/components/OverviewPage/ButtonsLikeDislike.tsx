@@ -7,6 +7,8 @@ import type { RootState } from '../../store';
 import { toggleLike } from '../../api/movieService';
 import { updateStats } from '../../store/likesSlice';
 import { useEffect, useState } from 'react';
+import { AuthModal } from '../Modals/AuthModal';
+import { openAuthModal } from '../../store/uiSlice';
 
 interface ButtonsLikeDislikeProps {
   contentId: number | string;
@@ -24,7 +26,7 @@ export const ButtonsLikeDislike = ({ contentId, contentType }: ButtonsLikeDislik
 
   const handleToggle = async (isLike: boolean) => {
     if (!isLoggedIn) {
-      setIsAuthModalOpen(true);
+      dispatch(openAuthModal());
       return;
     }
 
@@ -79,6 +81,8 @@ export const ButtonsLikeDislike = ({ contentId, contentType }: ButtonsLikeDislik
         />
         <span className="text-white text-[12px] font-semibold font-nunito">{itemData?.dislikes ?? 0}</span>
       </button>
+
+      <AuthModal />
     </div>
   )
 }

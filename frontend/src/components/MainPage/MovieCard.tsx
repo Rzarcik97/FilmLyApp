@@ -53,7 +53,7 @@ export const MovieCard = ({ movie }: { movie: Movie }) => {
                 <img src={imdb} alt="IMDB" className="w-5 h-4" />
               </div>
               <div className="flex gap-2 items-center">
-                <p>2.1k</p>
+                <p>{movie.likes}</p>
                 <img src={thumbUp} alt="Filmly" className="w-6 h-6" />
               </div>
             </div>
