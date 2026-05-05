@@ -107,7 +107,7 @@ public class SeriesServiceImpl implements TmdbContentService<ContentDto, SeriesD
 
         for (int page = 1; page <= 2; page++) {
             fetchRaw("/tv/popular?page=" + page).forEach(r -> unique.put(r.id(), r));
-            fetchRaw("/tv/now_playing?page=" + page).forEach(r -> unique.put(r.id(), r));
+            fetchRaw("/tv/on_the_air?page=" + page).forEach(r -> unique.put(r.id(), r));
             fetchRaw("/trending/tv/day?page=" + page).forEach(r -> unique.put(r.id(), r));
         }
 
