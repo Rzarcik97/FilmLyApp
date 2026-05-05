@@ -14,5 +14,6 @@ public record TmdbContentResult(
         @JsonProperty("release_date") String releaseDate,
         @JsonProperty("first_air_date") String firstAirDate,
         String overview,
-        @JsonProperty("media_type") String mediaType
+        @JsonProperty("media_type") String mediaType,
+        @JsonProperty("popularity") Double popularity
 ) {}

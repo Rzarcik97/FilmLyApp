@@ -89,7 +89,7 @@ public class SeriesServiceImpl implements TmdbContentService<ContentDto, SeriesD
     }
 
     @Override
-    public List<ContentDto> findRecommendations(Long userId) {
+    public List<ContentDto> findRecommendations(String email) {
 
         return List.of();
     }

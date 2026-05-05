@@ -15,6 +15,8 @@ import filmly.service.FavoriteGenreService;
 import jakarta.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
@@ -110,5 +112,25 @@ public class FavoriteGenreServiceImpl implements FavoriteGenreService {
         );
         favoriteGenresRepository.deleteByUserIdAndGenre(user.getId(), genre);
         log.info("Deleted favorite genre '{}' for user {}", genre.getName(), email);
+    }
+
+    @Override
+    public Map<Long, Double> getUserGenreRatings(String email) {
+
+        User user = userRepository.findByEmail(email).orElseThrow(
+                () -> new EntityNotFoundException("User", email)
+        );
+
+        return favoriteGenresRepository.findByUser_Id(user.getId())
+                .stream()
+                .collect(Collectors.toMap(
+                        fg -> fg.getGenre().getId(),
+                        fg -> fg.getRating().doubleValue()
+                ));
+    }
+
+    @Override
+    public List<Long> getRandomMovieGenreIds() {
+        return genreRepository.findRandomMovieGenreIds();
     }
 }
