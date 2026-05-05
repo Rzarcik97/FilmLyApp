@@ -12,6 +12,6 @@ public interface GenreRepository extends JpaRepository<Genre, Long> {
 
     List<Genre> findAllByNameIn(Collection<String> names);
 
-    @Query("SELECT g.id FROM Genre g WHERE g.type IN ('MOVIE', 'BOTH') ORDER BY RANDOM() LIMIT 4")
+    @Query("SELECT g.id FROM Genre g WHERE g.type IN ('MOVIE', 'BOTH') ORDER BY RAND() LIMIT 4")
     List<Long> findRandomMovieGenreIds();
 }
