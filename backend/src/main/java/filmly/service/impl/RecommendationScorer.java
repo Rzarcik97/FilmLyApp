@@ -14,10 +14,8 @@ public class RecommendationScorer {
     /**
      * This value controls how much we reward movies for matching multiple genres
      * the user likes.
-     *
      * More matching genres = better score, but each next genre matters a bit less
      * (diminishing returns using a logarithm).
-     *
      * Recommended range:
      * - 0.10 → very subtle effect (almost no impact)
      * - 0.25 → balanced (recommended default)
