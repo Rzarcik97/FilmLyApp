@@ -58,7 +58,7 @@ public class SearchServiceImpl implements SearchService {
 
         Map<Long, ContentLikeResponseDto> movieLikes = contentLikeService
                 .getLikesByContentIds(
-                        results.stream().filter(r ->  !"tv".equals(
+                        results.stream().filter(r -> !"tv".equals(
                                 r.mediaType()))
                                 .map(TmdbContentResult::id).toList(),
                         Content.ContentType.MOVIE);
