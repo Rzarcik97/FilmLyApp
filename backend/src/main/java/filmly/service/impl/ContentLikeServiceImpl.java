@@ -79,6 +79,9 @@ public class ContentLikeServiceImpl implements ContentLikeService {
     @Override
     public Map<Long, ContentLikeResponseDto> getLikesByContentIds(
             List<Long> contentIds, Content.ContentType contentType) {
+        if (contentIds.isEmpty()) {
+            return new HashMap<>();
+        }
         List<ContentLikeCountProjection> projections =
                 contentLikeRepository.countLikesAndDislikesByContentIds(contentIds, contentType);
         Map<Long, ContentLikeResponseDto> likesMap = new HashMap<>(projections.stream()

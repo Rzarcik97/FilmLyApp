@@ -14,7 +14,7 @@ public interface TmdbContentService<T, D> {
 
     List<T> findSimilar(Long id);
 
-    List<T> findRecommendations(Long userId);
+    List<T> findRecommendations(String email);
 
     D findById(Long id);
 }
