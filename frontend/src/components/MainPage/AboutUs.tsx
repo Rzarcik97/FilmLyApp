@@ -3,7 +3,10 @@ import play from '../../../public/icons/play.png';
 import mute from '../../../public/icons/mute.png';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+<<<<<<< HEAD
 import { useTheme } from '../../context/ThemeContext';
+=======
+>>>>>>> 56cf4a9618909840aee94b88bb90fef4fdce6ef6
 
 const heroSection = [
   {
@@ -65,6 +68,7 @@ export const AboutUs = () => {
     }
   }
 
+<<<<<<< HEAD
   const heavyGradient = `var(--hero-gradient-heavy)`;
   const lightGradient = `var(--hero-gradient-light)`;
 
@@ -72,6 +76,10 @@ export const AboutUs = () => {
 
   const bgImage = theme === 'light' ? currentMovie?.bgLight : currentMovie?.bg;
   
+=======
+  const heavyGradient = `linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(17,17,16,0.9) 100%)`;
+  const lightGradient = `linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(17,17,16,0.4) 100%)`;
+>>>>>>> 56cf4a9618909840aee94b88bb90fef4fdce6ef6
   return (
     <main 
       className="bg-gray-100 px-6 md:px-12 min-h-screen md:h-[672px] md:pb-8
@@ -98,7 +106,11 @@ export const AboutUs = () => {
           </p>
           <button 
             onClick={() => handleGetStarted()}
+<<<<<<< HEAD
             className="bg-gray-0 border-none w-full lg:w-full h-11 rounded-[32px] text-[16px] leading-[1.5] tracking-[-0.011em] font-bold font-nunito cursor-pointer text-secondary-dark"
+=======
+            className="bg-gray-0 border-none w-full lg:w-full h-11 rounded-[32px] text-[16px] leading-[1.5] tracking-[-0.011em] font-bold font-nunito cursor-pointer"
+>>>>>>> 56cf4a9618909840aee94b88bb90fef4fdce6ef6
           >
             Get started
           </button>
