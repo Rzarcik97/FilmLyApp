@@ -12,9 +12,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,21 +24,38 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "content")
+@Table(name = "content", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"external_id", "type"})
+})
 public class Content {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    private Long externalId; // ID z TMDB
+    private Long externalId;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private ContentType type; // MOVIE, SERIES
+    private ContentType type;
+
+    @Column(nullable = false)
+    private String title;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
+
+    @Column(name = "poster_path")
+    private String posterPath;
+
+    @Column(name = "release_date")
+    private String releaseDate;
+
+    @Column(name = "vote_average")
+    private Double voteAverage;
+
+    @Column(name = "vote_count")
+    private Integer voteCount;
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
@@ -45,7 +63,7 @@ public class Content {
             joinColumns = @JoinColumn(name = "content_id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id")
     )
-    private Set<Genre> genres = new HashSet<>();
+    private List<Genre> genres = new ArrayList<>();
 
     public enum ContentType {
         MOVIE,

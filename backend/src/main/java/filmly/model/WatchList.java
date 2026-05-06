@@ -2,20 +2,15 @@ package filmly.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import java.time.LocalDateTime;
-import java.util.List;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -25,7 +20,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Table(name = "watchlist", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"user_id", "content_id", "content_type"})
+        @UniqueConstraint(columnNames = {"user_id", "content_id"})
 })
 public class WatchList {
 
@@ -33,38 +28,12 @@ public class WatchList {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "content_id", nullable = false)
-    private Long contentId;
-
-    @Column(nullable = false)
-    private String title;
-
-    @Column(nullable = false)
-    private String posterPath;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "content_id", nullable = false)
+    private Content content;
 
     @Column
     private LocalDateTime watchedAt;
-
-    @Column
-    private String releaseDate;
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "watchlist_genres",
-            joinColumns = @JoinColumn(name = "watchlist_id"),
-            inverseJoinColumns = @JoinColumn(name = "genre_id")
-    )
-    private List<Genre> genres;
-
-    @Column
-    private Double voteAverage;
-
-    @Column
-    private Integer voteCount;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Content.ContentType contentType;
 
     @Column(nullable = false)
     private LocalDateTime addedAt;
