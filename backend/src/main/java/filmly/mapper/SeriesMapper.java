@@ -40,7 +40,9 @@ public abstract class SeriesMapper {
     @Mapping(source = "response.firstAirDate",target = "releaseDate")
     @Mapping(source = "response.videos", target = "trailerKey")
     public abstract SeriesDetailDto toDetailDto(TmdbSeriesDetailResponse response,
-                                                Long likes, Long dislikes);
+                                                Long likes,
+                                                Long dislikes,
+                                                Boolean isLiked);
 
     protected String extractTrailerKey(TmdbVideosResponse videos) {
         if (videos == null || videos.results() == null) {

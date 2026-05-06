@@ -13,7 +13,6 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
@@ -41,9 +40,6 @@ public class Content {
 
     @Column(nullable = false)
     private String title;
-
-    @Column(nullable = false)
-    private LocalDateTime createdAt;
 
     @Column(name = "poster_path")
     private String posterPath;

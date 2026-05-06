@@ -64,8 +64,10 @@ public class MoviesController {
             @ApiResponse(responseCode = "429", description = "Too many requests to TMDB",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    public MovieDetailDto getMovieById(@PathVariable Long id) {
-        return movieService.findById(id);
+    public MovieDetailDto getMovieById(@PathVariable Long id,
+                                       Authentication authentication) {
+        String email = authentication != null ? authentication.getName() : null;
+        return movieService.findById(id, email);
     }
 
     @GetMapping("/{id}/cast")

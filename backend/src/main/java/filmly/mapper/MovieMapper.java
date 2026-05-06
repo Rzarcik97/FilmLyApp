@@ -36,7 +36,9 @@ public abstract class MovieMapper {
     @Mapping(target = "type", constant = "MOVIE")
     @Mapping(source = "response.videos", target = "trailerKey")
     public abstract MovieDetailDto toDetailDto(TmdbMovieDetailResponse response,
-                                               Long likes, Long dislikes);
+                                               Long likes,
+                                               Long dislikes,
+                                               Boolean isLiked);
 
     protected String extractTrailerKey(TmdbVideosResponse videos) {
         if (videos == null || videos.results() == null) {

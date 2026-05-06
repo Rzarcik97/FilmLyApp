@@ -56,8 +56,10 @@ public class SeriesController {
             @ApiResponse(responseCode = "429", description = "Too many requests to TMDB",
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
-    public SeriesDetailDto getSeriesById(@PathVariable Long id) {
-        return seriesService.findById(id);
+    public SeriesDetailDto getSeriesById(@PathVariable Long id,
+                                         Authentication authentication) {
+        String email = authentication != null ? authentication.getName() : null;
+        return seriesService.findById(id, email);
     }
 
     @GetMapping("/{id}/similar")
