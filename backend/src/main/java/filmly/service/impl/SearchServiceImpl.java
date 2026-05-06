@@ -69,15 +69,17 @@ public class SearchServiceImpl implements SearchService {
                                 .map(TmdbContentResult::id).toList(),
                         Content.ContentType.SERIES);
 
-        return new PagedResponse<>(response.results().stream()
+        return new PagedResponse<>(results.stream()
                 .filter(result -> !"person".equals(result.mediaType()))
                 .map(result -> {
                     if (type == Content.ContentType.SERIES || "tv".equals(result.mediaType())) {
-                        ContentLikeResponseDto likes = seriesLikes.get(result.id());
+                        ContentLikeResponseDto likes = seriesLikes.getOrDefault(
+                                result.id(), new ContentLikeResponseDto(0L, 0L));
                         return seriesMapper.fromContentResult(result,
                                 likes.likes(), likes.dislikes());
                     }
-                    ContentLikeResponseDto likes = movieLikes.get(result.id());
+                    ContentLikeResponseDto likes = movieLikes.getOrDefault(
+                            result.id(), new ContentLikeResponseDto(0L, 0L));
                     return movieMapper.fromContentResult(result,
                             likes.likes(), likes.dislikes());
                 })

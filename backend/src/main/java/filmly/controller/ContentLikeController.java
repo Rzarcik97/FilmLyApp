@@ -31,6 +31,7 @@ public class ContentLikeController {
                     + " clicking the opposite switches it")
     public ContentLikeResponseDto toggleLike(@RequestBody @Valid ContentLikeRequestDto dto,
                                              Authentication authentication) {
-        return contentLikeService.toggleLike(authentication.getName(), dto);
+        String email = authentication.getName();
+        return contentLikeService.toggleLike(email, dto);
     }
 }
