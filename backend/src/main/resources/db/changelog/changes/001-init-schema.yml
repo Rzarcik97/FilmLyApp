@@ -458,7 +458,7 @@ databaseChangeLog:
       author: filmly
       changes:
         - createTable:
-            tableName: verificationTokens
+            tableName: verification_tokens
             columns:
               - column:
                   name: id
@@ -485,7 +485,7 @@ databaseChangeLog:
                   name: type
                   type: VARCHAR(50)
         - addForeignKeyConstraint:
-            baseTableName: verificationTokens
+            baseTableName: verification_tokens
             baseColumnNames: user_id
             referencedTableName: users
             referencedColumnNames: id
