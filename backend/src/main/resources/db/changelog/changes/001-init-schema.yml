@@ -1,0 +1,492 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-users
+      author: filmly
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: username
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: password
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: first_name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: last_name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: avatar_url
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: deleted_at
+                  type: TIMESTAMP
+
+  - changeSet:
+      id: 002-create-genres
+      author: filmly
+      changes:
+        - createTable:
+            tableName: genres
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: image_path
+                  type: VARCHAR(255)
+              - column:
+                  name: type
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 003-create-content
+      author: filmly
+      changes:
+        - createTable:
+            tableName: content
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: external_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: type
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: title
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: poster_path
+                  type: VARCHAR(255)
+              - column:
+                  name: release_date
+                  type: VARCHAR(50)
+              - column:
+                  name: vote_average
+                  type: DOUBLE
+              - column:
+                  name: vote_count
+                  type: INTEGER
+        - addUniqueConstraint:
+            tableName: content
+            columnNames: external_id, type
+            constraintName: uq_content_external_id_type
+
+  - changeSet:
+      id: 004-create-content-genres
+      author: filmly
+      changes:
+        - createTable:
+            tableName: content_genres
+            columns:
+              - column:
+                  name: content_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: genre_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+        - addPrimaryKey:
+            tableName: content_genres
+            columnNames: content_id, genre_id
+        - addForeignKeyConstraint:
+            baseTableName: content_genres
+            baseColumnNames: content_id
+            referencedTableName: content
+            referencedColumnNames: id
+            constraintName: fk_content_genres_content
+        - addForeignKeyConstraint:
+            baseTableName: content_genres
+            baseColumnNames: genre_id
+            referencedTableName: genres
+            referencedColumnNames: id
+            constraintName: fk_content_genres_genre
+
+  - changeSet:
+      id: 005-create-content-likes
+      author: filmly
+      changes:
+        - createTable:
+            tableName: content_likes
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: content_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: liked
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+        - addUniqueConstraint:
+            tableName: content_likes
+            columnNames: user_id, content_id
+            constraintName: uq_content_likes_user_content
+        - addForeignKeyConstraint:
+            baseTableName: content_likes
+            baseColumnNames: content_id
+            referencedTableName: content
+            referencedColumnNames: id
+            constraintName: fk_content_likes_content
+        - addForeignKeyConstraint:
+            baseTableName: content_likes
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_content_likes_user
+
+  - changeSet:
+      id: 006-create-content-rating
+      author: filmly
+      changes:
+        - createTable:
+            tableName: content_rating
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: content_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: content_type
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: rating
+                  type: FLOAT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: review
+                  type: VARCHAR(1000)
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+        - addUniqueConstraint:
+            tableName: content_rating
+            columnNames: user_id, content_id, content_type
+            constraintName: uq_content_rating_user_content_type
+        - addForeignKeyConstraint:
+            baseTableName: content_rating
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_content_rating_user
+
+  - changeSet:
+      id: 007-create-watchlist
+      author: filmly
+      changes:
+        - createTable:
+            tableName: watchlist
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: content_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: watched_at
+                  type: TIMESTAMP
+              - column:
+                  name: added_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+        - addUniqueConstraint:
+            tableName: watchlist
+            columnNames: user_id, content_id
+            constraintName: uq_watchlist_user_content
+        - addForeignKeyConstraint:
+            baseTableName: watchlist
+            baseColumnNames: content_id
+            referencedTableName: content
+            referencedColumnNames: id
+            constraintName: fk_watchlist_content
+        - addForeignKeyConstraint:
+            baseTableName: watchlist
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_watchlist_user
+
+  - changeSet:
+      id: 008-create-favorite-genres
+      author: filmly
+      changes:
+        - createTable:
+            tableName: favorite_genres
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: genre_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: rating
+                  type: FLOAT
+                  constraints:
+                    nullable: false
+        - addUniqueConstraint:
+            tableName: favorite_genres
+            columnNames: user_id, genre_id
+            constraintName: uq_favorite_genres_user_genre
+        - addForeignKeyConstraint:
+            baseTableName: favorite_genres
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_favorite_genres_user
+        - addForeignKeyConstraint:
+            baseTableName: favorite_genres
+            baseColumnNames: genre_id
+            referencedTableName: genres
+            referencedColumnNames: id
+            constraintName: fk_favorite_genres_genre
+
+  - changeSet:
+      id: 009-create-review
+      author: filmly
+      changes:
+        - createTable:
+            tableName: review
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: content_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: review_text
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseTableName: review
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_review_user
+
+  - changeSet:
+      id: 010-create-session-info
+      author: filmly
+      changes:
+        - createTable:
+            tableName: session_info
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: session_start
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: last_seen
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: country
+                  type: VARCHAR(255)
+              - column:
+                  name: device_type
+                  type: VARCHAR(255)
+              - column:
+                  name: browser
+                  type: VARCHAR(255)
+              - column:
+                  name: language
+                  type: VARCHAR(255)
+        - addUniqueConstraint:
+            tableName: session_info
+            columnNames: user_id
+            constraintName: uq_session_info_user
+        - addForeignKeyConstraint:
+            baseTableName: session_info
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_session_info_user
+
+  - changeSet:
+      id: 011-create-verification-tokens
+      author: filmly
+      changes:
+        - createTable:
+            tableName: verificationTokens
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: verification_code
+                  type: VARCHAR(255)
+              - column:
+                  name: new_value
+                  type: VARCHAR(255)
+              - column:
+                  name: expiration_time
+                  type: TIMESTAMP
+              - column:
+                  name: type
+                  type: VARCHAR(50)
+        - addForeignKeyConstraint:
+            baseTableName: verificationTokens
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_verification_tokens_user
