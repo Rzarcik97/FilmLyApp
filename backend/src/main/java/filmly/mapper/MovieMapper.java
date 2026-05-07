@@ -5,6 +5,7 @@ import filmly.dto.content.ContentDto;
 import filmly.dto.content.MovieDetailDto;
 import filmly.dto.genre.GenreDto;
 import filmly.dto.tmdb.TmdbContentResult;
+import filmly.dto.tmdb.TmdbGenreDto;
 import filmly.dto.tmdb.TmdbMovieDetailResponse;
 import filmly.dto.tmdb.TmdbVideoResult;
 import filmly.dto.tmdb.TmdbVideosResponse;
@@ -60,5 +61,14 @@ public abstract class MovieMapper {
         List<GenreDto> result = new ArrayList<>();
         genreIds.forEach(id -> result.add(genreService.getGenreById(id)));
         return result;
+    }
+
+    protected List<GenreDto> tmdbGenresToGenreDtos(List<TmdbGenreDto> genres) {
+        if (genres == null) {
+            return List.of();
+        }
+        return genres.stream()
+                .map(g -> genreService.getGenreById(g.id()))
+                .toList();
     }
 }
