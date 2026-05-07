@@ -24,5 +24,6 @@ public record MovieDetailDto(
         @JsonProperty("production_countries") List<TmdbProductionCountryDto> productionCountries,
         List<GenreDto> genres,
         Long likes,
-        Long dislikes
+        Long dislikes,
+        Boolean isLiked
 ) {}

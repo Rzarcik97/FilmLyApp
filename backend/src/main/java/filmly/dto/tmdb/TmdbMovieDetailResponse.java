@@ -1,7 +1,6 @@
 package filmly.dto.tmdb;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import filmly.dto.genre.GenreDto;
 import java.util.List;
 
 public record TmdbMovieDetailResponse(
@@ -18,7 +17,7 @@ public record TmdbMovieDetailResponse(
         @JsonProperty("poster_path") String posterPath,
         @JsonProperty("backdrop_path") String backdropPath,
         @JsonProperty("production_countries") List<TmdbProductionCountryDto> productionCountries,
-        List<GenreDto> genres,
+        List<TmdbGenreDto> genres,
         TmdbCreditsResponse credits,
         TmdbVideosResponse videos
 ) {}

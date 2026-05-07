@@ -79,6 +79,7 @@ public class GenreServiceImpl implements GenreService {
                 .map(g -> {
                     Genre genre = genreMapper.toEntity(g);
                     genre.setType(type);
+                    genre.setImagePath("/images/genres/" + genre.getName() + ".png");
                     return genre;
                 })
                 .toList();
