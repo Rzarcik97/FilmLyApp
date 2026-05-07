@@ -16,5 +16,5 @@ public interface TmdbContentService<T, D> {
 
     List<T> findRecommendations(String email);
 
-    D findById(Long id);
+    D findById(Long id, String email);
 }

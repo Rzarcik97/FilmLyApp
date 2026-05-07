@@ -139,7 +139,14 @@ public class SeriesServiceImpl implements TmdbContentService<ContentDto, SeriesD
     }
 
     @Override
-    public SeriesDetailDto findById(Long id) {
+    public SeriesDetailDto findById(Long id, String email) {
+
+        Boolean isLiked = null;
+
+        if (email != null) {
+            isLiked = contentLikeService.isLiked(email, id, Content.ContentType.MOVIE);
+        }
+
         TmdbSeriesDetailResponse response = restClient.get()
                 .uri("/tv/{id}?append_to_response=videos", id)
                 .retrieve()
@@ -148,7 +155,7 @@ public class SeriesServiceImpl implements TmdbContentService<ContentDto, SeriesD
             throw new EntityNotFoundException("Series", id);
         }
         ContentLikeResponseDto likes = contentLikeService.getLikes(id, Content.ContentType.SERIES);
-        return seriesMapper.toDetailDto(response, likes.likes(), likes.dislikes());
+        return seriesMapper.toDetailDto(response, likes.likes(), likes.dislikes(), isLiked);
     }
 
     private List<ContentDto> fetch(String uri) {

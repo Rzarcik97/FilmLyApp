@@ -1,7 +1,9 @@
 package filmly.controller;
 
+import filmly.dto.content.ContentDto;
 import filmly.dto.watchlist.WatchListRequestDto;
 import filmly.dto.watchlist.WatchListResponseDto;
+import filmly.model.Content;
 import filmly.service.WatchListService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -33,11 +35,12 @@ public class WatchListController {
             description = "Retrieve watchlist of the authenticated user. "
                     + "Pass watched=false to get only unwatched content, "
                     + "watched=true or no param returns all")
-    public List<WatchListResponseDto> getWatchList(
+    public List<ContentDto> getWatchList(
+            @RequestParam Content.ContentType type,
             @RequestParam(defaultValue = "true") Boolean showWatched,
             Authentication authentication) {
         String email = authentication.getName();
-        return watchListService.getWatchList(email, showWatched);
+        return watchListService.getWatchList(email, showWatched, type);
     }
 
     @PostMapping

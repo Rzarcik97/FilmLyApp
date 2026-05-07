@@ -149,7 +149,14 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public MovieDetailDto findById(Long id) {
+    public MovieDetailDto findById(Long id, String email) {
+
+        Boolean isLiked = null;
+
+        if (email != null) {
+            isLiked = contentLikeService.isLiked(email, id, Content.ContentType.MOVIE);
+        }
+
         TmdbMovieDetailResponse response = restClient.get()
                 .uri("/movie/{id}?append_to_response=videos", id)
                 .retrieve()
@@ -158,7 +165,7 @@ public class MovieServiceImpl implements MovieService {
             throw new EntityNotFoundException("Movie", id);
         }
         ContentLikeResponseDto likes = contentLikeService.getLikes(id, Content.ContentType.MOVIE);
-        return movieMapper.toDetailDto(response, likes.likes(), likes.dislikes());
+        return movieMapper.toDetailDto(response, likes.likes(), likes.dislikes(), isLiked);
     }
 
     private List<ContentDto> fetch(String uri) {
