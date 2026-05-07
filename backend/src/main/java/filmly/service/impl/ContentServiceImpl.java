@@ -1,6 +1,6 @@
 package filmly.service.impl;
 
-import filmly.dto.genre.GenreDto;
+import filmly.dto.tmdb.TmdbGenreDto;
 import filmly.dto.tmdb.TmdbMovieDetailResponse;
 import filmly.dto.tmdb.TmdbSeriesDetailResponse;
 import filmly.exception.EntityNotFoundException;
@@ -44,7 +44,7 @@ public class ContentServiceImpl implements ContentService {
             content.setVoteAverage(movie.voteAverage());
             content.setVoteCount(movie.voteCount());
             content.setGenres(resolveGenres(
-                    movie.genres().stream().map(GenreDto::name).toList()));
+                    movie.genres().stream().map(TmdbGenreDto::name).toList()));
         } else {
             TmdbSeriesDetailResponse series = findSeriesDetails(content.getExternalId());
             content.setTitle(series.name());
@@ -53,7 +53,7 @@ public class ContentServiceImpl implements ContentService {
             content.setVoteAverage(series.voteAverage());
             content.setVoteCount(series.voteCount());
             content.setGenres(resolveGenres(
-                    series.genres().stream().map(GenreDto::name).toList()));
+                    series.genres().stream().map(TmdbGenreDto::name).toList()));
         }
         return content;
     }
