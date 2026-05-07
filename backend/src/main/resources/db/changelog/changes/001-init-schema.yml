@@ -187,7 +187,7 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: liked
-                  type: BOOLEAN
+                  type: TINYINT(1)
                   constraints:
                     nullable: false
               - column:
