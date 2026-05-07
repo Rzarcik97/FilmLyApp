@@ -98,7 +98,7 @@ export const AboutUs = () => {
           </div>
         </div>
 
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-[3px] z-20">
+        <div className="absolute bottom-2 lg:bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-[3px] z-20">
           {heroSection.map((_, index) => (
             <button
               key={index}

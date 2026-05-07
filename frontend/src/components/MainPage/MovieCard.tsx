@@ -2,11 +2,13 @@ import type { Movie } from '../../types';
 import { Link, useLocation } from 'react-router-dom';
 import imdb from '../../../public/icons/imdb.png';
 import thumbUp from '../../../public/icons/thumbUp.png';
-import { UserStar } from 'lucide-react';
 import empty_img from '../../../public/icons/empty-img.png';
+import { ButtonsWatchlistSeen } from '../OverviewPage/ButtonsWatchlistSeen';
 
 export const MovieCard = ({ movie }: { movie: Movie }) => {
   const location = useLocation();
+
+  const isProfilePage = location.pathname.includes('/profile');
 
   const contentType = movie.type.toLowerCase();
   const basePath = contentType === 'movie' ? 'movies' : 'series';
@@ -16,42 +18,60 @@ export const MovieCard = ({ movie }: { movie: Movie }) => {
     : empty_img;
 
   return (
-    <div className="w-[175px] md:w-[203px] h-auto flex flex-col shrink-0 rounded-[16px] overflow-hidden 
+    <div className="group w-[175px] md:w-[203px] h-auto flex flex-col shrink-0 rounded-[16px] overflow-hidden 
           border border-gray-30/10 backdrop-blur-[2px]
           before:content-[''] before:absolute before:inset-0
           before:rounded-[16px] before:border before:border-gray-80/20
           before:pointer-events-none
-          cursor-pointer
+          cursor-pointer relative
     ">
       <Link
         to={`/${basePath}/${movie.contentId}`}
         state={{ from: location.pathname }}
       >
-        <div className="h-[328px] flex-1 flex justify-center items-center">
+        <div className="h-[328px] relative flex justify-center items-center overflow-hidden">
           <img
             src={posterUrl}
             alt={movie.title || "Movie Poster"}
-            className={`w-full h-full ${posterUrl === empty_img ? 'object-contain p-8' : 'object-cover'}`}
+            className={`w-full h-full transition-transform duration-500 group-hover:scale-105 ${posterUrl === empty_img ? 'object-contain p-8' : 'object-cover'
+              }`}
+          />
+
+          <div className="absolute inset-0 z-10 
+                        bg-black/40 backdrop-blur-[2px] 
+                        opacity-0 transition-opacity duration-300 
+                        group-hover:opacity-100"
           />
         </div>
-        <div className="p-2 bg-gray-100 h-28 shrink-0 text-gray-30 text-[16px] font-bold">
-          <div className="flex items-center justify-between">
-            <div className="flex gap-2 items-center">
-              <p className="">
-                {movie.voteAverage || movie.vote_average
-                  ? Number(movie.voteAverage || movie.vote_average).toFixed(1)
-                  : '0.0'}
-              </p>
-              <img src={imdb} alt="IMDB Rating" className="w-6 h-5" />
+
+        <div className="relative h-28 bg-gray-100 overflow-hidden">
+
+          <div className="p-2 flex flex-col h-full transition-all duration-300 group-hover:translate-y-[-100%] group-hover:opacity-0">
+            <div className="flex items-center justify-between text-gray-0 text-[16px] font-bold">
+              <div className="flex gap-2 items-center">
+                <p>{Number(movie.voteAverage || movie.vote_average || 0).toFixed(1)}</p>
+                <img src={imdb} alt="IMDB" className="w-5 h-4" />
+              </div>
+              <div className="flex gap-2 items-center">
+                <p>2.1k</p>
+                <img src={thumbUp} alt="Filmly" className="w-6 h-6" />
+              </div>
             </div>
-            <div className="flex gap-2 items-center">
-              <p className="">2.1k</p>
-              <img src={thumbUp} alt="Filmly Rating" className="w-8 h-8" />
-            </div>
+            <p className="pt-[13px] leading-[1.5] text-gray-0 text-[16px] font-bold truncate">
+              {movie.title || 'Movie Title'}
+            </p>
           </div>
-          <p className="pt-[13px] leading-[1.5]">{movie.title || 'Movie Title'}</p>
+
+          <div className="absolute inset-0 z-20 translate-y-[100%] opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 bg-gray-100 flex items-center">
+            <ButtonsWatchlistSeen
+              contentId={movie.id || Number(movie.contentId)}
+              contentType={movie.type}
+              variant={isProfilePage ? 'remove' : 'compact'}
+            />
+          </div>
+
         </div>
       </Link>
     </div>
-  )
-}
+  );
+};

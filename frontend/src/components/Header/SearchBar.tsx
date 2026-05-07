@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import type { Movie } from '../../types';
 import { getSearchData } from '../../api/movieService';
 import { Loader2 } from 'lucide-react';
+import { useSearchLogic } from './useSearchLogic';
 
 interface SearchBarProps {
   onFocusChange: (focused: boolean) => void;
@@ -12,36 +13,18 @@ interface SearchBarProps {
 }
 
 export const SearchBar = ({ onFocusChange, isFocused }: SearchBarProps) => {
-  const [query, setQuery] = useState('');
-  const [results, setResults] = useState<Movie[]>([]);
-  const [allResults, setAllResults] = useState(0);
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+  const {
+    query,
+    setQuery,
+    results,
+    allResults,
+    loading,
+    handleSearchSubmit,
+    navigate,
+    formatType
+  } = useSearchLogic(() => onFocusChange(false));
+
   const showDropdown = isFocused && query.trim().length >= 0;
-  
-
-  useEffect(() => {
-    if (query.trim().length < 0) {
-      setResults([]);
-      setAllResults(0);
-      return;
-    }
-
-    const timer = setTimeout(async () => {
-      setLoading(true);
-      try {
-        const data = await getSearchData(query);
-        setResults(data.slice(0, 5));
-        setAllResults(data.length);
-      } catch (err) {
-        console.error('Autocompletion error: ', err);
-      } finally {
-        setLoading(false);
-      }
-    }, 300);
-
-    return () => clearTimeout(timer);
-  }, [query]);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value);
@@ -64,26 +47,15 @@ export const SearchBar = ({ onFocusChange, isFocused }: SearchBarProps) => {
     const rawType = item.type?.toLowerCase() || 'movie';
     const typePath = rawType === 'movie' ? 'movies' : 'series';
 
-    if (!id) {
-      console.error("Could not find an ID for this item:", item);
-      return;
-    }
+    if (!id) return;
 
     const path = `/${typePath}/${id}`;
-    console.log('Navigating to correct plural path:', path);
 
     navigate(path);
-    onFocusChange(false);
     setQuery('');
-  };
-
-  const formatType = (type: string) => {
-    const types: Record<string, string> = {
-      MOVIE: 'Movie',
-      SERIES: 'TV-Series',
-    };
-
-    return types[type.toUpperCase()] || type;
+    onFocusChange(false);
+    
+    (document.activeElement as HTMLElement)?.blur();
   };
 
   return (
@@ -117,7 +89,7 @@ export const SearchBar = ({ onFocusChange, isFocused }: SearchBarProps) => {
                   onMouseDown={handleItemClick(item)}
                   className="px-4 py-3 border-b border-secondary-dark hover:bg-gray-100 cursor-pointer text-gray-30 transition-colors"
                 >
-                  <span className="font-medium">{item.title}</span>
+                  <span className="font-semibold">{item.title}</span>
                   <span className="text-gray-30 ml-2">({formatType(item.type)})</span>
                 </li>
               ))

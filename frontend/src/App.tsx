@@ -12,6 +12,12 @@ import { ActorsPage } from './components/BrowsePage/ActorsBrowse';
 import { SignUpPage } from './components/SignUp/SignUpPage';
 import { CreatePasswordPage } from './components/SignUp/CreatePasswordPage';
 import { LoginPage } from './components/SignUp/LoginPage';
+import { Profile } from './components/Profile/Profile';
+import { Provider, useDispatch } from 'react-redux';
+import { fetchWatchList } from './store/watchlistSlice';
+import type { AppDispatch } from './store';
+import { AuthModal } from './components/Modals/AuthModal';
+import { LogoutModal } from './components/Modals/LogoutModal';
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -31,6 +37,14 @@ function App() {
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [step, setStep] = useState(StepEnum.Email);
   const [userData, setUserData] = useState({ email: '', password: '' });
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      dispatch(fetchWatchList());
+    }
+  }, [dispatch]);
 
   const handleAuthOpen = () => {
     setStep(StepEnum.Email);
@@ -56,9 +70,13 @@ function App() {
           <Route path="/sign-up/password" element={<CreatePasswordPage />} />
           <Route path="/:type/:id" element={<OverviewPage />} />
           <Route path="/browse" element={<BrowsePage />} />
+          <Route path="/browse/:type?" element={<DiscoverPage />} />
           <Route path="/discover/:type" element={<DiscoverPage />} />
           <Route path="/actors" element={<ActorsPage />} />
+          <Route path="/profile" element={<Profile />} />
         </Routes>
+        <AuthModal />
+        <LogoutModal />
 
         <Footer />
       </div>
