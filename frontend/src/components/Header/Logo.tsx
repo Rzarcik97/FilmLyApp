@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import logo from '../../../public/icons/logo.svg';
+import logo from '../../../public/icons/logo_dark.png';
 import logo_light from '../../../public/icons/Logo.png';
 import { useTheme } from '../../context/ThemeContext';
 

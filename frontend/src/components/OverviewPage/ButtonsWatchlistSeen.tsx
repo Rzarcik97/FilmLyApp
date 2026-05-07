@@ -90,10 +90,10 @@ export const ButtonsWatchlistSeen = ({ contentId, contentType, variant = 'defaul
         <button
           onClick={handleWatchlistToggle}
           className={`cursor-pointer w-full h-10 flex justify-center items-center gap-2 border-1 rounded-[9px] transition-all
-            ${isAdded ? 'bg-primary-0 border-primary-10' : 'bg-gray-100 border-primary-0'}`}
+            ${isAdded ? 'bg-primary-0-button border-primary-10' : 'bg-gray-100-button border-primary-0-button'}`}
         >
           <img src={watchlist} alt="icon" className="w-4 h-4" />
-          <span className={`${isAdded ? 'text-black' : 'text-primary-0'} text-[11px]`}>
+          <span className={`${isAdded ? 'text-black' : 'text-primary-0-button'} text-[11px]`}>
             {isAdded ? 'Added to your Watchlist' : 'Add to Watchlist'}
           </span>
         </button>
@@ -101,10 +101,10 @@ export const ButtonsWatchlistSeen = ({ contentId, contentType, variant = 'defaul
         <button
           onClick={handleMarkWatched}
           className={`cursor-pointer w-full h-10 flex justify-center items-center gap-2 border-1 rounded-[9px] transition-all
-            ${isWatched ? 'bg-secondary-dark border-gray-80' : 'bg-gray-100 border-primary-0'}`}
+            ${isWatched ? 'bg-secondary-dark-button border-gray-80' : 'bg-gray-100-button border-primary-0-button'}`}
         >
-          {isWatched ? <Check size={10} className="text-primary-0" /> : null}
-          <span className={`${isWatched ? 'text-gray-30' : 'text-primary-0'} text-[11px]`}>
+          {isWatched ? <Check size={10} className="text-featured" /> : null}
+          <span className={`${isWatched ? 'text-gray-30-button' : 'text-primary-0-button'} text-[11px]`}>
             {isWatched ? 'Seen it' : 'Mark as watched'}
           </span>
         </button>

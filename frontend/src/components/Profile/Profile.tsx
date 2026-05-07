@@ -7,6 +7,7 @@ import { fetchCurrentUser } from '../../store/userSlice';
 import { ProfileSettings } from './ProfileSettings';
 import { Loader } from '../Utilities/Loader';
 import type { Movie } from '../../types';
+import { YourGenres } from './YourGenres';
 
 export const Profile = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -72,9 +73,10 @@ export const Profile = () => {
       <div>
         {activeTab === 'watchlist' && (
           <div className="animate-in fade-in duration-300">
+            <YourGenres />
             <ScrollSection title="To watch" items={toWatch} viewAllPath='' />
-            <ScrollSection title="Top Picks for You" items={[]} viewAllPath='' />
-            <ScrollSection title="Your Favorites" items={[]} viewAllPath='' />
+            {/* <ScrollSection title="Top Picks for You" items={[]} viewAllPath='' /> */}
+            {/* <ScrollSection title="Your Favorites" items={[]} viewAllPath='' /> */}
             <ScrollSection title="Already Discovered" items={alreadyWatched} viewAllPath='' />
           </div>
         )}
