@@ -1,0 +1,454 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-test-data-users
+      author: filmly
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: username
+                  value: john_doe
+              - column:
+                  name: password
+                  value: REPLACE_WITH_HASH
+              - column:
+                  name: email
+                  value: john@test.com
+              - column:
+                  name: first_name
+                  value: John
+              - column:
+                  name: last_name
+                  value: Doe
+              - column:
+                  name: avatar_url
+                  value: https://api.dicebear.com/7.x/avataaars/svg?seed=john
+              - column:
+                  name: created_at
+                  valueDate: now()
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: username
+                  value: jane_doe
+              - column:
+                  name: password
+                  value: REPLACE_WITH_HASH
+              - column:
+                  name: email
+                  value: jane@test.com
+              - column:
+                  name: first_name
+                  value: Jane
+              - column:
+                  name: last_name
+                  value: Doe
+              - column:
+                  name: avatar_url
+                  value: https://api.dicebear.com/7.x/avataaars/svg?seed=jane
+              - column:
+                  name: created_at
+                  valueDate: now()
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: username
+                  value: bob_smith
+              - column:
+                  name: password
+                  value: REPLACE_WITH_HASH
+              - column:
+                  name: email
+                  value: bob@test.com
+              - column:
+                  name: first_name
+                  value: Bob
+              - column:
+                  name: last_name
+                  value: Smith
+              - column:
+                  name: avatar_url
+                  value: https://api.dicebear.com/7.x/avataaars/svg?seed=bob
+              - column:
+                  name: created_at
+                  valueDate: now()
+
+  - changeSet:
+      id: 003-test-data-content
+      author: filmly
+      changes:
+        - insert:
+            tableName: content
+            columns:
+              - column:
+                  name: external_id
+                  valueNumeric: 16304234
+              - column:
+                  name: type
+                  value: MOVIE
+              - column:
+                  name: title
+                  value: My Dearest Assassin
+              - column:
+                  name: poster_path
+                  value: /ul4dQcA68mtSx8J56N5gEcaCCtP.jpg
+              - column:
+                  name: release_date
+                  value: "2026-05-06"
+              - column:
+                  name: vote_average
+                  valueNumeric: 8.2
+              - column:
+                  name: vote_count
+                  valueNumeric: 5
+        - insert:
+            tableName: content
+            columns:
+              - column:
+                  name: external_id
+                  valueNumeric: 1007757
+              - column:
+                  name: type
+                  value: MOVIE
+              - column:
+                  name: title
+                  value: Swapped
+              - column:
+                  name: poster_path
+                  value: /tHhxWxge06goXU6ZQH1hj7vK8Hd.jpg
+              - column:
+                  name: release_date
+                  value: "2026-05-01"
+              - column:
+                  name: vote_average
+                  valueNumeric: 7.93
+              - column:
+                  name: vote_count
+                  valueNumeric: 93
+        - insert:
+            tableName: content
+            columns:
+              - column:
+                  name: external_id
+                  valueNumeric: 1226863
+              - column:
+                  name: type
+                  value: MOVIE
+              - column:
+                  name: title
+                  value: The Super Mario Galaxy Movie
+              - column:
+                  name: poster_path
+                  value: /eJGWx219ZcEMVQJhAgMiqo8tYY.jpg
+              - column:
+                  name: release_date
+                  value: "2026-04-01"
+              - column:
+                  name: vote_average
+                  valueNumeric: 6.728
+              - column:
+                  name: vote_count
+                  valueNumeric: 753
+
+  - changeSet:
+      id: 004-test-data-content-genres
+      author: filmly
+      changes:
+        # My Dearest Assassin (content id 1): Action, Drama, Romance
+        - insert:
+            tableName: content_genres
+            columns:
+              - column:
+                  name: content_id
+                  valueNumeric: 1
+              - column:
+                  name: genre_id
+                  valueNumeric: 28
+        - insert:
+            tableName: content_genres
+            columns:
+              - column:
+                  name: content_id
+                  valueNumeric: 1
+              - column:
+                  name: genre_id
+                  valueNumeric: 18
+        - insert:
+            tableName: content_genres
+            columns:
+              - column:
+                  name: content_id
+                  valueNumeric: 1
+              - column:
+                  name: genre_id
+                  valueNumeric: 10749
+        # Swapped (content id 2): Adventure, Animation, Family, Fantasy
+        - insert:
+            tableName: content_genres
+            columns:
+              - column:
+                  name: content_id
+                  valueNumeric: 2
+              - column:
+                  name: genre_id
+                  valueNumeric: 12
+        - insert:
+            tableName: content_genres
+            columns:
+              - column:
+                  name: content_id
+                  valueNumeric: 2
+              - column:
+                  name: genre_id
+                  valueNumeric: 16
+        - insert:
+            tableName: content_genres
+            columns:
+              - column:
+                  name: content_id
+                  valueNumeric: 2
+              - column:
+                  name: genre_id
+                  valueNumeric: 10751
+        - insert:
+            tableName: content_genres
+            columns:
+              - column:
+                  name: content_id
+                  valueNumeric: 2
+              - column:
+                  name: genre_id
+                  valueNumeric: 14
+        # Super Mario Galaxy Movie (content id 3): Family, Comedy, Adventure, Fantasy, Animation
+        - insert:
+            tableName: content_genres
+            columns:
+              - column:
+                  name: content_id
+                  valueNumeric: 3
+              - column:
+                  name: genre_id
+                  valueNumeric: 10751
+        - insert:
+            tableName: content_genres
+            columns:
+              - column:
+                  name: content_id
+                  valueNumeric: 3
+              - column:
+                  name: genre_id
+                  valueNumeric: 35
+        - insert:
+            tableName: content_genres
+            columns:
+              - column:
+                  name: content_id
+                  valueNumeric: 3
+              - column:
+                  name: genre_id
+                  valueNumeric: 12
+        - insert:
+            tableName: content_genres
+            columns:
+              - column:
+                  name: content_id
+                  valueNumeric: 3
+              - column:
+                  name: genre_id
+                  valueNumeric: 14
+        - insert:
+            tableName: content_genres
+            columns:
+              - column:
+                  name: content_id
+                  valueNumeric: 3
+              - column:
+                  name: genre_id
+                  valueNumeric: 16
+
+  - changeSet:
+      id: 005-test-data-watchlist
+      author: filmly
+      changes:
+        # john: My Dearest Assassin (not watched), Swapped (watched)
+        - insert:
+            tableName: watchlist
+            columns:
+              - column:
+                  name: user_id
+                  valueNumeric: 1
+              - column:
+                  name: content_id
+                  valueNumeric: 1
+              - column:
+                  name: added_at
+                  valueDate: now()
+        - insert:
+            tableName: watchlist
+            columns:
+              - column:
+                  name: user_id
+                  valueNumeric: 1
+              - column:
+                  name: content_id
+                  valueNumeric: 2
+              - column:
+                  name: added_at
+                  valueDate: now()
+              - column:
+                  name: watched_at
+                  valueDate: now()
+        # jane: all 3, Super Mario watched
+        - insert:
+            tableName: watchlist
+            columns:
+              - column:
+                  name: user_id
+                  valueNumeric: 2
+              - column:
+                  name: content_id
+                  valueNumeric: 1
+              - column:
+                  name: added_at
+                  valueDate: now()
+        - insert:
+            tableName: watchlist
+            columns:
+              - column:
+                  name: user_id
+                  valueNumeric: 2
+              - column:
+                  name: content_id
+                  valueNumeric: 2
+              - column:
+                  name: added_at
+                  valueDate: now()
+        - insert:
+            tableName: watchlist
+            columns:
+              - column:
+                  name: user_id
+                  valueNumeric: 2
+              - column:
+                  name: content_id
+                  valueNumeric: 3
+              - column:
+                  name: added_at
+                  valueDate: now()
+              - column:
+                  name: watched_at
+                  valueDate: now()
+        # bob: Super Mario only
+        - insert:
+            tableName: watchlist
+            columns:
+              - column:
+                  name: user_id
+                  valueNumeric: 3
+              - column:
+                  name: content_id
+                  valueNumeric: 3
+              - column:
+                  name: added_at
+                  valueDate: now()
+
+  - changeSet:
+      id: 006-test-data-likes
+      author: filmly
+      changes:
+        # john: likes My Dearest Assassin, dislikes Super Mario
+        - insert:
+            tableName: content_likes
+            columns:
+              - column:
+                  name: user_id
+                  valueNumeric: 1
+              - column:
+                  name: content_id
+                  valueNumeric: 1
+              - column:
+                  name: liked
+                  valueBoolean: true
+              - column:
+                  name: created_at
+                  valueDate: now()
+        - insert:
+            tableName: content_likes
+            columns:
+              - column:
+                  name: user_id
+                  valueNumeric: 1
+              - column:
+                  name: content_id
+                  valueNumeric: 3
+              - column:
+                  name: liked
+                  valueBoolean: false
+              - column:
+                  name: created_at
+                  valueDate: now()
+        # jane: likes Swapped and Super Mario
+        - insert:
+            tableName: content_likes
+            columns:
+              - column:
+                  name: user_id
+                  valueNumeric: 2
+              - column:
+                  name: content_id
+                  valueNumeric: 2
+              - column:
+                  name: liked
+                  valueBoolean: true
+              - column:
+                  name: created_at
+                  valueDate: now()
+        - insert:
+            tableName: content_likes
+            columns:
+              - column:
+                  name: user_id
+                  valueNumeric: 2
+              - column:
+                  name: content_id
+                  valueNumeric: 3
+              - column:
+                  name: liked
+                  valueBoolean: true
+              - column:
+                  name: created_at
+                  valueDate: now()
+        # bob: likes My Dearest Assassin and Swapped
+        - insert:
+            tableName: content_likes
+            columns:
+              - column:
+                  name: user_id
+                  valueNumeric: 3
+              - column:
+                  name: content_id
+                  valueNumeric: 1
+              - column:
+                  name: liked
+                  valueBoolean: true
+              - column:
+                  name: created_at
+                  valueDate: now()
+        - insert:
+            tableName: content_likes
+            columns:
+              - column:
+                  name: user_id
+                  valueNumeric: 3
+              - column:
+                  name: content_id
+                  valueNumeric: 2
+              - column:
+                  name: liked
+                  valueBoolean: true
+              - column:
+                  name: created_at
+                  valueDate: now()

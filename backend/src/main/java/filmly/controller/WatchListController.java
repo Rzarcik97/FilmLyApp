@@ -1,6 +1,5 @@
 package filmly.controller;
 
-import filmly.dto.content.ContentDto;
 import filmly.dto.watchlist.WatchListRequestDto;
 import filmly.dto.watchlist.WatchListResponseDto;
 import filmly.model.Content;
@@ -35,7 +34,7 @@ public class WatchListController {
             description = "Retrieve watchlist of the authenticated user. "
                     + "Pass watched=false to get only unwatched content, "
                     + "watched=true or no param returns all")
-    public List<ContentDto> getWatchList(
+    public List<WatchListResponseDto> getWatchList(
             @RequestParam Content.ContentType type,
             @RequestParam(defaultValue = "true") Boolean showWatched,
             Authentication authentication) {
