@@ -1,6 +1,5 @@
 package filmly.service;
 
-import filmly.dto.content.ContentDto;
 import filmly.dto.watchlist.WatchListRequestDto;
 import filmly.dto.watchlist.WatchListResponseDto;
 import filmly.model.Content;
@@ -8,7 +7,7 @@ import java.util.List;
 
 public interface WatchListService {
 
-    List<ContentDto> getWatchList(String email,
+    List<WatchListResponseDto> getWatchList(String email,
                                   Boolean watched,
                                   Content.ContentType type);
 

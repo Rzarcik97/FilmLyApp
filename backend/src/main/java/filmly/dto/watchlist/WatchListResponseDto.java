@@ -15,6 +15,8 @@ public record WatchListResponseDto(
         String releaseDate,
         Double voteAverage,
         Integer voteCount,
+        Long likes,
+        Long dislikes,
         LocalDateTime watchedAt,
         LocalDateTime addedAt
 ) {}

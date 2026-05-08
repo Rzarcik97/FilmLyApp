@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
             throw new AuthenticationException("Invalid current password");
         }
 
-        if (userRepository.existsByEmail(email)) {
+        if (userRepository.existsByEmail(newEmail)) {
             throw new RegistrationException("Email already exists");
         }
         return verificationTokenService.createToken(user,
