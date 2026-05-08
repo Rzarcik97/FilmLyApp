@@ -1,6 +1,8 @@
 export interface Genre {
   id: number;
   name: string;
+  type?: 'MOVIE' | 'SERIES' | 'BOTH';
+  imagePath?: string;
 }
 
 export interface ProductionCountry {
@@ -30,7 +32,11 @@ export interface Movie {
   production_countries: ProductionCountry[];
   numberOfEpisodes?: number;
   isWatched?: boolean;
+  watchedAt?: string | null;
   origin_country?: string;
+  likes?: number;
+  dislikes?: number;
+  userReaction?: "LIKE" | "DISLIKE" | null;
 }
 
 export interface Actor {
@@ -45,3 +51,10 @@ export interface RangeState {
 }
 
 export type BrowseGenres = string[];
+
+export interface User {
+  username: string;
+  firstName: string;
+  lastName: string;
+  avatarUrl: string;
+};

@@ -47,9 +47,12 @@ export const authService = {
     return response.data;
   },
 
-  updateUserName: async (newUsername: string) => {
+  updateUserName: async (newUsername: string, currentUser: UserProfile) => {
     const response = await apiClient.patch('/users/me', {
-      username: newUsername
+      username: newUsername,
+      firstName: currentUser.firstName,
+      lastName: currentUser.lastName,
+      avatarUrl: currentUser.avatarUrl
     });
     return response.data;
   }

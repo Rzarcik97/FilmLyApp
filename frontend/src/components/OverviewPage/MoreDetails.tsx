@@ -1,17 +1,33 @@
+import { useEffect } from 'react';
 import type { Movie } from '../../types';
 import { ButtonsLikeDislike } from './ButtonsLikeDislike';
 import { ButtonsWatchlistSeen } from './ButtonsWatchlistSeen';
+import { useDispatch } from 'react-redux';
+import { updateStats } from '../../store/likesSlice';
 
 interface MoreDetailsProps {
   movie: Movie;
 }
 
 export const MoreDetails = ({ movie }: MoreDetailsProps) => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (movie) {
+      dispatch(updateStats({
+        id: String(movie.id),
+        likes: movie.likes || 0,
+        dislikes: movie.dislikes || 0,
+        reaction: movie.userReaction || null
+      }));
+    }
+  }, [movie, dispatch]);
+  
   return (
     <div className="px-4 md:px-12 pt-8 bg-gray-100">
       <div className="flex justify-center md:justify-between items-center pb-[42px]">
         <ButtonsWatchlistSeen contentId={movie.id} contentType={movie.type} />
-        <ButtonsLikeDislike />
+        <ButtonsLikeDislike contentId={movie.id} contentType={movie.type} />
       </div>
 
       <div className="py-6 border-b border-secondary-light flex flex-col gap-8">

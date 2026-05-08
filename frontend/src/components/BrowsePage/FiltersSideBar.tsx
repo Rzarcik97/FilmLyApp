@@ -3,30 +3,17 @@ import { FilterSection } from '../../types/enums';
 import { ChevronDown, ChevronUp, ChevronRight } from 'lucide-react';
 import { RangeFilter } from './RangeFilter';
 import type { Genre, RangeState } from '../../types';
-import filter from '../../../public/icons/filter.png';
+import filter from '/icons/filter.png';
 import { getGenres } from '../../api/movieService';
 import { Checkbox } from '../../assets/CheckBox';
-import type { DateSort, TitleSort } from '../DiscoverPage/DiscoverContent';
-import X from '../../../public/icons/mobile/x.svg';
+import X from '/icons/mobile/x.svg';
+import { useDispatch, useSelector } from 'react-redux';
+import { type AppDispatch, type RootState } from '../../store';
+import { setDateSort, setHideWatched, setImdbRange, setTitleSort, toggleCountry, toggleGenre, toggleImdbActive } from '../../store/filtersSlice';
 
 interface FiltersSideBarProps {
   title: string;
-  selectedGenreIds: number[];
-  setSelectedGenreIds: React.Dispatch<React.SetStateAction<number[]>>;
-  selectedCountries: string[];
-  setSelectedCountries: React.Dispatch<React.SetStateAction<string[]>>;
-  allGenres: Genre[];
-  dateSort: DateSort;
-  setDateSort: React.Dispatch<React.SetStateAction<DateSort>>;
-  titleSort: TitleSort;
-  setTitleSort: React.Dispatch<React.SetStateAction<TitleSort>>;
-  setIsSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  imdbRange: number[];
-  setImdbRange: React.Dispatch<React.SetStateAction<number[]>>;
-  isImdbActive: boolean;
-  setIsImdbActive: React.Dispatch<React.SetStateAction<boolean>>;
-  hideWatched: boolean;
-  setHideWatched: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsSidebarOpen: (open: boolean) => void;
 }
 
 export const toggleItemInArray = <T,>(array: T[], item: T): T[] => {
@@ -68,22 +55,11 @@ const titleSortOptions = [
 
 export const FiltersSideBar = ({
   title,
-  selectedGenreIds,
-  setSelectedGenreIds,
-  selectedCountries,
-  setSelectedCountries,
-  dateSort,
-  setDateSort,
-  titleSort,
-  setTitleSort,
-  setIsSidebarOpen,
-  imdbRange,
-  setImdbRange,
-  isImdbActive,
-  setIsImdbActive,
-  hideWatched,
-  setHideWatched
+  setIsSidebarOpen
 }: FiltersSideBarProps) => {
+  const dispatch = useDispatch<AppDispatch>();
+  const filters = useSelector((state: RootState) => state.filters);
+
   const [openedSection, setOpenedSection] = useState<FilterSection[]>([]);
   const [voteRange, setVoteRange] = useState<RangeState>({ min: 0, max: 10 });
   const [allGenres, setAllGenres] = useState<Genre[]>([]);
@@ -109,14 +85,8 @@ export const FiltersSideBar = ({
     fetchGenres();
   }, []);
 
-  const toggleGenre = (id: number) =>
-    setSelectedGenreIds(prev => toggleItemInArray(prev, id));
-
-  const toggleCountry = (name: string) =>
-    setSelectedCountries(prev => toggleItemInArray(prev, name));
-
   const getGenresLabel = () => {
-    const selectedGenres = allGenres.filter(g => selectedGenreIds.includes(g.id));
+    const selectedGenres = allGenres.filter(g => filters.selectedGenreIds.includes(g.id));
 
     return getListLabel(
       selectedGenres,
@@ -126,18 +96,18 @@ export const FiltersSideBar = ({
 
   const getCountriesLabel = () => {
     return getListLabel(
-      selectedCountries,
+      filters.selectedCountries,
       (country) => COUNTRY_SHORT_NAMES[country] || country
     );
   };
 
   const getDateLabel = () => {
-    const activeOption = dateSortOptions.find(opt => opt.value === dateSort);
+    const activeOption = dateSortOptions.find(opt => opt.value === filters.dateSort);
     return activeOption ? activeOption.display : 'Default';
   };
 
   const getTitleLabel = () => {
-    const active = titleSortOptions.find(opt => opt.value === titleSort);
+    const active = titleSortOptions.find(opt => opt.value === filters.titleSort);
     return active ? active.display : 'Default';
   };
 
@@ -183,8 +153,8 @@ export const FiltersSideBar = ({
             <input
               type="checkbox"
               className="sr-only peer"
-              checked={hideWatched}
-              onChange={(e) => setHideWatched(e.target.checked)}
+              checked={filters.hideWatched}
+              onChange={(e) => dispatch(setHideWatched(e.target.checked))}
             />
 
             <div className="
@@ -229,7 +199,7 @@ export const FiltersSideBar = ({
               {section === FilterSection.Genres && isSectionOpened(section) && (
                 <div className="flex flex-col py-4 gap-4 animate-in fade-in slide-in-from-top-2">
                   {allGenres.map((genre) => {
-                    const isSelected = selectedGenreIds.includes(genre.id);
+                    const isSelected = filters.selectedGenreIds.includes(genre.id);
 
                     return (
                       <label
@@ -241,7 +211,7 @@ export const FiltersSideBar = ({
                         </span>
                         <Checkbox
                           checked={isSelected}
-                          onChange={() => toggleGenre(genre.id)}
+                          onChange={() => dispatch(toggleGenre(genre.id))}
                         />
                       </label>
                     );
@@ -252,7 +222,7 @@ export const FiltersSideBar = ({
               {section === FilterSection.Country && isSectionOpened(section) && (
                 <div className="flex flex-col py-4 gap-4 animate-in fade-in slide-in-from-top-2">
                   {allCountries.map((country) => {
-                    const isSelected = selectedCountries.includes(country);
+                    const isSelected = filters.selectedCountries.includes(country);
 
                     return (
                       <label
@@ -264,7 +234,7 @@ export const FiltersSideBar = ({
                         </span>
                         <Checkbox
                           checked={isSelected}
-                          onChange={() => toggleCountry(country)}
+                          onChange={() => dispatch(toggleCountry(country))}
                         />
                       </label>
                     );
@@ -275,7 +245,7 @@ export const FiltersSideBar = ({
               {section === FilterSection.Year && isSectionOpened(section) && (
                 <div className="flex flex-col py-4 gap-4 animate-in fade-in slide-in-from-top-2">
                   {dateSortOptions.map((option) => {
-                    const isSelected = dateSort === option.value;
+                    const isSelected = filters.dateSort === option.value;
 
                     return (
                       <label
@@ -287,7 +257,7 @@ export const FiltersSideBar = ({
                         </span>
                         <Checkbox
                           checked={isSelected}
-                          onChange={() => setDateSort(option.value)}
+                          onChange={() => dispatch(setDateSort(option.value))}
                         />
                       </label>
                     );
@@ -298,7 +268,7 @@ export const FiltersSideBar = ({
               {section === FilterSection.Title && isSectionOpened(section) && (
                 <div className="flex flex-col py-4 gap-4 animate-in fade-in slide-in-from-top-2">
                   {titleSortOptions.map((option) => {
-                    const isSelected = titleSort === option.value;
+                    const isSelected = filters.titleSort === option.value;
 
                     return (
                       <label
@@ -310,7 +280,7 @@ export const FiltersSideBar = ({
                         </span>
                         <Checkbox
                           checked={isSelected}
-                          onChange={() => setTitleSort(option.value)}
+                          onChange={() => dispatch(setTitleSort(option.value))}
                         />
                       </label>
                     );
@@ -338,16 +308,16 @@ export const FiltersSideBar = ({
           <div>
             <RangeFilter
               label="IMDB"
-              range={{ min: imdbRange[0] ?? 0, max: imdbRange[1] ?? 0 }}
+              range={{ min: filters.imdbRange[0] ?? 0, max: filters.imdbRange[1] ?? 0 }}
               setRange={(val: React.SetStateAction<RangeState>) => {
                 const newRange = typeof val === 'function'
-                  ? val({ min: imdbRange[0] ?? 0, max: imdbRange[1] ?? 10 })
+                  ? val({ min: filters.imdbRange[0] ?? 0, max: filters.imdbRange[1] ?? 10 })
                   : val;
 
-                setImdbRange([newRange.min, newRange.max]);
+                dispatch(setImdbRange([newRange.min, newRange.max]));
               }}
-              isActive={isImdbActive}
-              onToggle={() => setIsImdbActive(!isImdbActive)}
+              isActive={filters.isImdbActive}
+              onToggle={() => dispatch(toggleImdbActive())}
             />
             <RangeFilter
               label="Vote Rating"

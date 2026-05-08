@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { Movie } from '../../types'
 import { MovieCard } from './MovieCard';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
@@ -12,6 +12,22 @@ interface ScrollSectionProps {
 
 export const ScrollSection = ({ title, items, viewAllPath }: ScrollSectionProps) => {
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  const [showButtons, setShowButtons] = useState(false);
+
+  const checkOverflow = () => {
+    if (scrollRef.current) {
+      const { scrollWidth, clientWidth } = scrollRef.current;
+      setShowButtons(scrollWidth > clientWidth);
+    }
+  };
+
+  useEffect(() => {
+    checkOverflow();
+
+    window.addEventListener('resize', checkOverflow);
+    return () => window.removeEventListener('resize', checkOverflow);
+  }, [items]);
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
@@ -34,7 +50,7 @@ export const ScrollSection = ({ title, items, viewAllPath }: ScrollSectionProps)
           <h2 className="text-[24px] md:text-[36px] leading-[1.2] font-bold text-secondary-light">{title}</h2>
         </div>
 
-        <Link 
+        <Link
           to={viewAllPath}
           className="cursor-pointer text-[16px] text-secondary-light font-nunito font-bold">
           View all
@@ -42,40 +58,44 @@ export const ScrollSection = ({ title, items, viewAllPath }: ScrollSectionProps)
       </div>
 
       <div className="flex justify-center items-center gap-2">
-        <button
-          onClick={() => scroll('left')}
-          className="text-primary-0 cursor-pointer
+        {showButtons && (
+          <button
+            onClick={() => scroll('left')}
+            className="text-primary-0 cursor-pointer
           w-12 h-12 flex justify-center items-center
           bg-gray-80/10 backdrop-blur-[2px]
           rounded-full border border-gray-80/10
           before:content-[''] before:absolute before:inset-0
           before:rounded-full before:border before:border-gray-80/20
-          "
-        >
-          <ChevronLeft size={24} />
-        </button>
+          hover:bg-gray-30/10 transition-all duration-300 ease-in-out"
+          >
+            <ChevronLeft size={24} />
+          </button>
+        )}
         <div
           ref={scrollRef}
           className="flex flex-nowrap w-full gap-2 md:gap-10 overflow-x-hidden scroll-smooth py-4"
         >
           {items.map((item) => (
             <div className="relative z-10">
-              <MovieCard key={item.contentId} movie={item}/>
-            </div>            
+              <MovieCard key={item.contentId} movie={item} />
+            </div>
           ))}
         </div>
-        <button
-          onClick={() => scroll('right')}
-          className="text-primary-0 cursor-pointer
+        {showButtons && (
+          <button
+            onClick={() => scroll('right')}
+            className="text-primary-0 cursor-pointer
           w-12 h-12 flex justify-center items-center
           bg-gray-80/10 backdrop-blur-[2px]
           rounded-full border border-gray-80/10
           before:content-[''] before:absolute before:inset-0
           before:rounded-full before:border before:border-gray-80/20
-          "
-        >
-          <ChevronRight size={24} />
-        </button>
+          hover:bg-gray-30/10 transition-all duration-300 ease-in-out"
+          >
+            <ChevronRight size={24} />
+          </button>
+        )}
       </div>
     </section>
   )

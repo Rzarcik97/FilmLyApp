@@ -2,50 +2,84 @@ import { ChevronRight } from 'lucide-react';
 import play from '../../../public/icons/play.png';
 import mute from '../../../public/icons/mute.png';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+<<<<<<< HEAD
+import { useTheme } from '../../context/ThemeContext';
+=======
+>>>>>>> 56cf4a9618909840aee94b88bb90fef4fdce6ef6
 
 const heroSection = [
   {
     id: 1,
     title: "All Of Us Strangers",
     info: "Drama  •  2023  •  1h 45m",
-    bg: "/backgrounds/All_Of_Us_Strangers.png"
+    bg: "/backgrounds/All_Of_Us_Strangers.png",
+    bgLight: "/backgrounds/light_bg.png"
   },
   {
     id: 2,
     title: "The Batman",
     info: "Action  •  2022  •  2h 56m",
-    bg: "/backgrounds/the_batman.jpg"
+    bg: "/backgrounds/the_batman.jpg",
+    bgLight: "/backgrounds/the_batman.jpg"
   },
   {
     id: 3,
     title: "The Departed",
     info: "Thriller  •  2006  •  2h 31m",
-    bg: "/backgrounds/departed.jpg"
+    bg: "/backgrounds/departed.jpg",
+    bgLight: "/backgrounds/departed.jpg"
   },
   {
     id: 4,
     title: "Interstellar",
     info: "Sci-Fi  •  2014  •  2h 49m",
-    bg: "/backgrounds/interstellar.jpg"
+    bg: "/backgrounds/interstellar.jpg",
+    bgLight: "/backgrounds/interstellar.jpg"
   },
   {
     id: 5,
     title: "Dune: Part Two",
     info: "Action  •  2024  •  2h 46m",
-    bg: "/backgrounds/dune.webp"
+    bg: "/backgrounds/dune.webp",
+    bgLight: "/backgrounds/dune.webp"
   }
 ];
 
 export const AboutUs = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const currentMovie = heroSection[currentIndex];
+  const isLoggedIn = !!localStorage.getItem('token');
+  const navigate = useNavigate();
 
   const handleNext = () => {
     setCurrentIndex((prev) => (prev + 1) % heroSection.length);
   };
 
+  const handleGetStarted = () => {
+    if (isLoggedIn) {
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: 'smooth'
+      });
+    } else {
+      navigate('/sign-up');
+    }
+  }
+
+<<<<<<< HEAD
+  const heavyGradient = `var(--hero-gradient-heavy)`;
+  const lightGradient = `var(--hero-gradient-light)`;
+
+  const { theme } = useTheme();
+
+  const bgImage = theme === 'light' ? currentMovie?.bgLight : currentMovie?.bg;
+  
+=======
   const heavyGradient = `linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(17,17,16,0.9) 100%)`;
   const lightGradient = `linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(17,17,16,0.4) 100%)`;
+>>>>>>> 56cf4a9618909840aee94b88bb90fef4fdce6ef6
   return (
     <main 
       className="bg-gray-100 px-6 md:px-12 min-h-screen md:h-[672px] md:pb-8
@@ -56,7 +90,7 @@ export const AboutUs = () => {
         key={currentIndex}
         className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat animate-fade-in"
         style={{
-          backgroundImage: `${currentIndex === 0 ? lightGradient : heavyGradient}, url(${currentMovie?.bg})`
+          backgroundImage: `${currentIndex === 0 ? lightGradient : heavyGradient}, url(${bgImage})`
         }}
       />
 
@@ -70,7 +104,14 @@ export const AboutUs = () => {
             that helps users quickly find what to watch, get personalized
             recommendations, and instantly see where the content is available.
           </p>
-          <button className="bg-gray-0 border-none w-full lg:w-full h-11 rounded-[32px] text-[16px] leading-[1.5] tracking-[-0.011em] font-bold font-nunito cursor-pointer">
+          <button 
+            onClick={() => handleGetStarted()}
+<<<<<<< HEAD
+            className="bg-gray-0 border-none w-full lg:w-full h-11 rounded-[32px] text-[16px] leading-[1.5] tracking-[-0.011em] font-bold font-nunito cursor-pointer text-secondary-dark"
+=======
+            className="bg-gray-0 border-none w-full lg:w-full h-11 rounded-[32px] text-[16px] leading-[1.5] tracking-[-0.011em] font-bold font-nunito cursor-pointer"
+>>>>>>> 56cf4a9618909840aee94b88bb90fef4fdce6ef6
+          >
             Get started
           </button>
         </div>
@@ -82,7 +123,8 @@ export const AboutUs = () => {
             bg-gray-80/10 backdrop-blur-[2px]
             rounded-full border border-gray-80/10
             before:content-[''] before:absolute before:inset-0
-            before:rounded-full before:border before:border-white/20"
+            before:rounded-full before:border before:border-white/20
+            hover:bg-gray-30/10 transition-all duration-300 ease-in-out"
             onClick={handleNext}
           >
             <ChevronRight size={24} />

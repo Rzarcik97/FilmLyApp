@@ -20,6 +20,8 @@ export const MainPage = () => {
   const [genres, setGenres] = useState<Genre[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const isLoggedIn = !!localStorage.getItem('token');
+
   useEffect(() => {
     const fetchAllData = async () => {
       try {
@@ -82,7 +84,7 @@ export const MainPage = () => {
   }, []);
 
   return (
-    <main className="bg-gray-100">
+    <main className="bg-main-bg">
       <AboutUs />
       <MainBrowse genres={genres} />
       <ScrollSectionTrending
@@ -90,7 +92,9 @@ export const MainPage = () => {
         items={trending}
         viewAllPath='/discover/trending-movies'
       />
-      <WhatShouldIWatch />
+      {!isLoggedIn && (
+        <WhatShouldIWatch />
+      )}      
       <ScrollSection
         title="Critics’ Choice"
         items={popular}
