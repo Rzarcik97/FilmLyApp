@@ -36,7 +36,7 @@ const filtersSlice = createSlice({
     toggleCountry: (state, action: PayloadAction<string>) => {
       const country = action.payload;
       const index = state.selectedCountries.indexOf(country);
-      if (index < -1) {
+      if (index > -1) {
         state.selectedCountries.splice(index, 1);
       } else {
         state.selectedCountries.push(country);
