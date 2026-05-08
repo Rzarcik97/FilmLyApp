@@ -1,6 +1,5 @@
 package filmly.service.impl;
 
-import filmly.dto.content.ContentDto;
 import filmly.dto.contentlikes.ContentLikeResponseDto;
 import filmly.dto.watchlist.WatchListRequestDto;
 import filmly.dto.watchlist.WatchListResponseDto;
@@ -35,7 +34,7 @@ public class WatchListServiceImpl implements WatchListService {
     private final ContentService contentService;
 
     @Override
-    public List<ContentDto> getWatchList(
+    public List<WatchListResponseDto> getWatchList(
             String email,
             Boolean showWatched,
             Content.ContentType type) {
@@ -81,9 +80,13 @@ public class WatchListServiceImpl implements WatchListService {
         watchList.setContent(content);
         watchList.setAddedAt(LocalDateTime.now());
 
+        ContentLikeResponseDto likes = contentLikeService.getLikes(
+                requestDto.contentId(), requestDto.contentType());
+
         log.info("User {} added {} with id: {} to watchlist",
                 email, requestDto.contentType(), requestDto.contentId());
-        return watchListMapper.toDto(watchListRepository.save(watchList));
+        return watchListMapper.toDtoWithLikes(
+                watchListRepository.save(watchList), likes.likes(), likes.dislikes());
     }
 
     @Override
@@ -96,9 +99,14 @@ public class WatchListServiceImpl implements WatchListService {
                 .orElseThrow(() -> new EntityNotFoundException(
                         "WatchList", requestDto.contentId()));
         watchList.setWatchedAt(LocalDateTime.now());
+
+        ContentLikeResponseDto likes = contentLikeService.getLikes(
+                requestDto.contentId(), requestDto.contentType());
+
         log.debug("User {} marked {} with id: {} as watched",
                 email, requestDto.contentType(), requestDto.contentId());
-        return watchListMapper.toDto(watchListRepository.save(watchList));
+        return watchListMapper.toDtoWithLikes(
+                watchListRepository.save(watchList), likes.likes(), likes.dislikes());
     }
 
     @Override
@@ -114,7 +122,7 @@ public class WatchListServiceImpl implements WatchListService {
                     requestDto.contentId(), email);
             return;
         }
-        watchListRepository.deleteByUser_IdAndContentIdAndContentType(
+        watchListRepository.deleteByUser_IdAndContent_ExternalIdAndContent_Type(
                 user.getId(), requestDto.contentId(), requestDto.contentType());
         log.debug("Content {} removed from watchlist for user {}",
                 requestDto.contentId(), email);

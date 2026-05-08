@@ -169,7 +169,13 @@ public class MovieServiceImpl implements MovieService {
     }
 
     private List<ContentDto> fetch(String uri) {
+
         List<TmdbContentResult> results = fetchRaw(uri);
+
+        if (results.isEmpty()) {
+            return List.of();
+        }
+
         List<Long> contentIds = results.stream()
                 .map(TmdbContentResult::id)
                 .toList();

@@ -45,8 +45,6 @@ public class GenreServiceImpl implements GenreService {
         List<Genre> movieGenres = fetchGenres("/genre/movie/list", GenreType.MOVIE);
         List<Genre> tvGenres = fetchGenres("/genre/tv/list", GenreType.SERIES);
 
-        genreRepository.saveAll(movieGenres);
-
         Map<Long, Genre> tvGenreMap = tvGenres.stream()
                 .collect(Collectors.toMap(Genre::getId, g -> g));
 

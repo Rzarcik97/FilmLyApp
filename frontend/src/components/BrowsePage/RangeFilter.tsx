@@ -1,6 +1,7 @@
 import * as Slider from '@radix-ui/react-slider';
 import type { RangeState } from '../../types';
 import { Checkbox } from '../../assets/CheckBox';
+import { useRef, useState } from 'react';
 
 interface RangeFilterProps {
   label: string;
@@ -11,9 +12,18 @@ interface RangeFilterProps {
 }
 
 export const RangeFilter = ({ label, range, setRange, isActive, onToggle }: RangeFilterProps) => {
+  const minInputRef = useRef<HTMLInputElement>(null);
+  const maxInputRef = useRef<HTMLInputElement>(null);
+
+  const [activeSide, setActiveSide] = useState<'min' | 'max' | null>(null);
+
   const handleRangeChange = (val: number[]) => {
-    const [min = 0, max = 10] = val;
-    setRange({ min, max });
+    const [newMin, newMax] = val;
+
+    if (newMin !== range.min) setActiveSide('min');
+    else if (newMax !== range.max) setActiveSide('max');
+
+    setRange({ min: newMin ?? 0, max: newMax ?? 10 });
   };
 
   const handleInputChange = (
@@ -24,6 +34,7 @@ export const RangeFilter = ({ label, range, setRange, isActive, onToggle }: Rang
     if (isNaN(val)) val = 0;
     val = Math.max(0, Math.min(10, val));
 
+    setActiveSide(type);
     setRange(prev => ({ ...prev, [type]: val }));
   };
 
@@ -34,7 +45,7 @@ export const RangeFilter = ({ label, range, setRange, isActive, onToggle }: Rang
           <span className="text-[16px] text-gray-0 leading-[1.35] font-bold font-nunito">{label}</span>
           <label className="flex items-center gap-2 cursor-pointer group">
             <span className="text-[16px] text-gray-70 leading-[1.35] font-nunito">Sort by</span>
-            <Checkbox 
+            <Checkbox
               checked={isActive}
               onChange={onToggle}
             />
@@ -43,25 +54,29 @@ export const RangeFilter = ({ label, range, setRange, isActive, onToggle }: Rang
 
         <div className="flex items-center gap-0 px-[7px]">
           <input
+            ref={minInputRef}
             type="number"
-            placeholder="7.7"
             min="0"
             max="10"
             step="0.1"
             value={range.min}
             onChange={(e) => handleInputChange(e, 'min')}
-            className="flex-1 min-w-0 h-[34px] rounded-[8px] border border-gray-30 bg-transparent text-left text-[16px] text-gray-30 leading-[1.5] font-nunito py-[5px] px-[10px] focus:outline-none focus:border-primary-0 focus:border-2"
+            onFocus={() => setActiveSide('min')}
+            className={`flex-1 min-w-0 h-[34px] rounded-[8px] border bg-transparent text-left text-[16px] leading-[1.5] font-nunito py-[5px] px-[10px] focus:outline-none transition-colors ${activeSide === 'min' ? 'border-primary-0 border-2 text-white' : 'border-gray-30 text-gray-30'
+              }`}
           />
           <div className="h-[1px] w-[35px] bg-gray-30"></div>
           <input
+            ref={maxInputRef}
             type="number"
-            placeholder="10"
             min="0"
             max="10"
             step="0.1"
             value={range.max}
             onChange={(e) => handleInputChange(e, 'max')}
-            className="flex-1 min-w-0 h-[34px] rounded-[8px] border border-gray-30 bg-transparent text-left text-[16px] text-gray-30 leading-[1.5] font-nunito py-[5px] px-[10px] focus:outline-none focus:border-primary-0 focus:border-2"
+            onFocus={() => setActiveSide('max')}
+            className={`flex-1 min-w-0 h-[34px] rounded-[8px] border bg-transparent text-left text-[16px] leading-[1.5] font-nunito py-[5px] px-[10px] focus:outline-none transition-colors ${activeSide === 'max' ? 'border-primary-0 border-2 text-white' : 'border-gray-30 text-gray-30'
+              }`}
           />
         </div>
 
@@ -76,9 +91,17 @@ export const RangeFilter = ({ label, range, setRange, isActive, onToggle }: Rang
             <Slider.Range className="absolute bg-primary-0 rounded-full h-full" />
           </Slider.Track>
 
-          <Slider.Thumb className="block w-5 h-5 bg-secondary-light border-2 border-primary-0 rounded-full cursor-pointer hover:scale-110 transition-transform focus:outline-none shadow-sm" />
+          <Slider.Thumb
+            onPointerDown={() => minInputRef.current?.focus()}
+            className={`block w-5 h-5 border-2 border-primary-0 rounded-full cursor-pointer hover:scale-110 transition-all focus:outline-none shadow-sm ${activeSide === 'min' ? 'bg-secondary-light' : 'bg-primary-0'
+              }`}
+          />
 
-          <Slider.Thumb className="block w-5 h-5 bg-primary-0 border-2 border-primary-0 rounded-full cursor-pointer hover:scale-110 transition-transform focus:outline-none shadow-sm" />
+          <Slider.Thumb
+            onPointerDown={() => maxInputRef.current?.focus()}
+            className={`block w-5 h-5 border-2 border-primary-0 rounded-full cursor-pointer hover:scale-110 transition-all focus:outline-none shadow-sm ${activeSide === 'max' ? 'bg-secondary-light' : 'bg-primary-0'
+              }`}
+          />
         </Slider.Root>
       </div>
     </div>

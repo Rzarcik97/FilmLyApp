@@ -1,9 +1,10 @@
 import { Link, useNavigate } from 'react-router-dom';
 import popcorn from '../../../public/icons/mobile/popcorn.svg';
 import popcorn_focus from '../../../public/icons/mobile/popcorn_focus.svg';
-import { Bell, Earth, Power, UserRound } from 'lucide-react';
+import { Power, UserRound, Sun, Moon } from 'lucide-react';
 import { useDispatch } from 'react-redux';
 import { openAuthModal } from '../../store/uiSlice';
+import { useTheme } from '../../context/ThemeContext';
 
 interface MobileNavProps {
   onClose: () => void;
@@ -22,6 +23,8 @@ export const MobileNav = ({ onClose, isLoggedIn, onLogout }: MobileNavProps) => 
       dispatch(openAuthModal());
     }
   }
+
+  const { theme, toggleTheme } = useTheme();
 
   return (
     <nav
@@ -44,13 +47,16 @@ export const MobileNav = ({ onClose, isLoggedIn, onLogout }: MobileNavProps) => 
         />
       </button>
 
-      {/* <Link to='/' onClick={onClose} className="group w-8 h-8 flex items-center justify-center">
-        <Bell size={24} className="text-gray-50 group-active:text-primary-0 transition-colors" />
-      </Link> */}
-
-      <Link to='/' onClick={onClose} className="group w-8 h-8 flex items-center justify-center group">
-        <Earth size={24} className="text-gray-50 group-active:text-primary-0 transition-colors" />
-      </Link>
+      <button
+        onClick={toggleTheme}
+        className="group w-8 h-8 flex items-center justify-center group"
+      >
+        {theme === 'dark' ? (
+          <Sun className="text-gray-50 group-active:text-primary-0 transition-colors" size={24} />
+        ) : (
+            <Moon className="text-gray-50 group-active:text-primary-0 transition-colors" size={24} />
+        )}
+      </button>
 
       {isLoggedIn ? (
         <Power onClick={onLogout} size={24} className="text-gray-50 group-active:text-primary-0 transition-colors" />

@@ -1,9 +1,6 @@
-import { useEffect, useState } from 'react';
 import search from '../../../public/icons/search.svg';
 import mic from '../../../public/icons/mic.svg';
-import { useNavigate } from 'react-router-dom';
 import type { Movie } from '../../types';
-import { getSearchData } from '../../api/movieService';
 import { Loader2 } from 'lucide-react';
 import { useSearchLogic } from './useSearchLogic';
 
@@ -19,7 +16,6 @@ export const SearchBar = ({ onFocusChange, isFocused }: SearchBarProps) => {
     results,
     allResults,
     loading,
-    handleSearchSubmit,
     navigate,
     formatType
   } = useSearchLogic(() => onFocusChange(false));
@@ -59,13 +55,13 @@ export const SearchBar = ({ onFocusChange, isFocused }: SearchBarProps) => {
   };
 
   return (
-    <div className="flex justify-between items-center gap-[30px] px-2 py-2 rounded-lg bg-gray-90 border border-gray-80 lg:w-[536px] h-10">
+    <div className="flex justify-between items-center gap-[30px] px-2 py-2 rounded-lg bg-gray-90 border border-gray-80 focus-within:border-primary-0 lg:w-[536px] h-10">
       <button className="flex justify-center items-center bg-none cursor-pointer">
         <img src={search} alt="Search button" className="w-6 h-6" />
       </button>
       <input
         type="text"
-        className={`py-3 w-full border-none bg-transparent focus:outline-none text-gray-30 text-[16px] font-bold`}
+        className={`py-3 w-full border-none bg-transparent focus:outline-none text-gray-70 text-[16px] font-bold`}
         placeholder="Search for movies, TV series, actors..."
         value={query}
         onChange={handleInputChange}
@@ -107,7 +103,7 @@ export const SearchBar = ({ onFocusChange, isFocused }: SearchBarProps) => {
                   onFocusChange(false);
                   setQuery('');
                 }}
-                className="w-full h-[42px] border border-primary-20 py-3 bg-secondary-dark text-primary-0 rounded-[32px] font-semibold text-sm hover:bg-gray-100 transition-all"
+                className="cursor-pointer w-full h-[42px] border border-primary-20 py-3 bg-secondary-dark text-primary-0 rounded-[32px] font-semibold text-sm hover:bg-gray-100 transition-all"
               >
                 View all results ({allResults})
               </button>

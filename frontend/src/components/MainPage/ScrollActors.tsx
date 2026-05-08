@@ -50,6 +50,7 @@ export const ScrollActors = ({ title, items }: ScrollActorsProps) => {
           rounded-full border border-gray-80/10
           before:content-[''] before:absolute before:inset-0
           before:rounded-full before:border before:border-gray-80/20
+          hover:bg-gray-30/10 transition-all duration-300 ease-in-out
           "
         >
           <ChevronLeft size={24} />
@@ -74,6 +75,7 @@ export const ScrollActors = ({ title, items }: ScrollActorsProps) => {
           rounded-full border border-gray-80/10
           before:content-[''] before:absolute before:inset-0
           before:rounded-full before:border before:border-gray-80/20
+          hover:bg-gray-30/10 transition-all duration-300 ease-in-out
           "
         >
           <ChevronRight size={24} />

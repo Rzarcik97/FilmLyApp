@@ -1,11 +1,10 @@
-
 import { useState } from 'react';
-import search from '../../../public/icons/search.svg';
+import search from '/icons/search.svg';
 import { Menu } from 'lucide-react';
 import { Logo } from './Logo';
 import { NavBar } from './NavBar';
 import { BackButton } from './BackButton';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { SearchBar } from './SearchBar';
 import { MobileSearch } from './MobileSearch';
 import { MobileNav } from './MobileNav';
@@ -13,7 +12,6 @@ import { useDispatch } from 'react-redux';
 import { openLogoutModal } from '../../store/uiSlice';
 
 export const Header = ({ hasBackButton = false }) => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [isFocused, setIsFocused] = useState(false);

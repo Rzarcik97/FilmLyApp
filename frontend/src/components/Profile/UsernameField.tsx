@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { authService } from '../../api/authService';
+import type { UserProfile } from '../../types/auth';
 
-export const UsernameField = ({ initialName }: { initialName: string }) => {
+export const UsernameField = ({ initialName, user }: { initialName: string, user: UserProfile }) => {
   const [name, setName] = useState(initialName);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -13,7 +14,7 @@ export const UsernameField = ({ initialName }: { initialName: string }) => {
     setError(null);
 
     try {
-      await authService.updateUserName(name);
+      await authService.updateUserName(name, user);
       console.log("Username updated!");
     } catch (error: any) {
       setError(error.response?.data?.message || 'Failed to update username');

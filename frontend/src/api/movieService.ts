@@ -74,18 +74,28 @@ export const getMoviesByRating = async (min: number, max: number, contentType: '
       page: 1
     }
   });
-  
+
   return response.data;
 }
 
-export const getContentByGenre = async (genreId: number, type: 'MOVIE' | 'SERIES' = 'MOVIE') => {
+export const getContentByGenre = async (genreId: number, type: 'MOVIE' | 'SERIES' = 'MOVIE', pageNum = 1) => {
   const response = await apiClient.get('/search/discover', {
     params: {
-      genreIds: [genreId],
+      genreIds: genreId,
       type: type,
       sortBy: 'POPULARITY_DESC',
-      page: 1
+      page: pageNum
     }
+  });
+
+  return response.data;
+}
+
+export const toggleLike = async (contentId: number | string, contentType: string, isLike: boolean) => {
+  const response = await apiClient.post('/likes', {
+    contentId: Number(contentId),
+    contentType: contentType,
+    isLike: isLike
   });
 
   return response.data;

@@ -2,9 +2,11 @@ import { Link, useLocation } from 'react-router-dom';
 import telegram from '../../../public/icons/telegram.png';
 import youtube from '../../../public/icons/youtube.png';
 import fb from '../../../public/icons/facebook.png';
+import { useTheme } from '../../context/ThemeContext';
 
 export const Footer = () => {
-  const baseColor = 'rgba(17, 17, 16, 1)';
+  const { theme } = useTheme();
+  const baseColor = theme === 'light' ? 'rgba(255, 255, 255, 1)' : 'rgba(17, 17, 16, 1)';
   const location = useLocation();
 
   const handleScrollToTop = (e: React.MouseEvent) => {
@@ -17,7 +19,7 @@ export const Footer = () => {
   };
 
   return (
-    <footer className="relative w-full md:h-[700px] bg-gray-100 overflow-hidden">
+    <footer className="relative w-full md:h-[700px] bg-main-bg overflow-hidden">
       <div
         className="absolute inset-0 z-0 bg-cover md:bg-center bg-no-repeat brightness-[0.4] saturate-[0.5]"
         style={{ backgroundImage: "url('/backgrounds/footer_bg_img.webp')" }}

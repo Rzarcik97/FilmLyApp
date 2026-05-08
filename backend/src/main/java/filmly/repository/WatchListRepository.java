@@ -19,7 +19,7 @@ public interface WatchListRepository extends JpaRepository<WatchList, Long> {
             @Param("userId") Long userId,
             @Param("type") Content.ContentType type);
 
-    void deleteByUser_IdAndContentIdAndContentType(
+    void deleteByUser_IdAndContent_ExternalIdAndContent_Type(
             Long userId, Long contentId, Content.ContentType contentType);
 
     @Query("SELECT w FROM WatchList w "

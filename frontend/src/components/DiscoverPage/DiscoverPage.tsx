@@ -1,29 +1,30 @@
 import { useParams } from 'react-router-dom'
 import { FiltersSideBar } from '../BrowsePage/FiltersSideBar'
-import { DiscoverContent, type FilterState, type DateSort, type TitleSort } from './DiscoverContent';
+import { DiscoverContent } from './DiscoverContent';
 import { useEffect, useState } from 'react';
 import { getGenres } from '../../api/movieService';
 import type { Genre } from '../../types';
-import sort from '../../../public/icons/filter.png';
+import sort from '/icons/filter.png';
+import { useDispatch, useSelector } from 'react-redux';
+import { type AppDispatch, type RootState } from '../../store';
+import { resetFilters, toggleGenre } from '../../store/filtersSlice';
 
 export const DiscoverPage = () => {
-  const [selectedGenreIds, setSelectedGenreIds] = useState<number[]>([]);
-  const [selectedCountries, setSelectedCountries] = useState<string[]>([]);
   const [allGenres, setAllGenres] = useState<Genre[]>([]);
-  const [dateSort, setDateSort] = useState<DateSort>('default');
-  const [titleSort, setTitleSort] = useState<TitleSort>('default');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [imdbRange, setImdbRange] = useState<number[]>([0, 10]);
-  const [isImdbActive, setIsImdbActive] = useState(false);
-  const [hideWatched, setHideWatched] = useState(false);
+
+  const dispatch = useDispatch<AppDispatch>();
+  const filters = useSelector((state: RootState) => state.filters);
 
   const { type } = useParams<{ type: string }>();
   const pageTitle = type ? type.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase()) : 'Discover';
 
   useEffect(() => {
-    const fetchGenres = async () => {
+    const initPage = async () => {
       const genres = await getGenres();
       setAllGenres(genres);
+
+      dispatch(resetFilters());
 
       if (type && genres.length > 0) {
         const matchedGenre = genres.find(
@@ -31,23 +32,17 @@ export const DiscoverPage = () => {
         );
 
         if (matchedGenre) {
-          setSelectedGenreIds([matchedGenre.id]);
+          dispatch(toggleGenre(matchedGenre.id));
         }
       }
     };
-    fetchGenres();
-  }, [type]);
 
-  const filters: FilterState = {
-    selectedGenreIds,
-    selectedCountries,
-    allGenres,
-    dateSort: dateSort,
-    titleSort: titleSort,
-    imdbRange,
-    isImdbActive,
-    hideWatched
-  };
+    initPage();
+
+    return () => {
+      dispatch(resetFilters());
+    };
+  }, [type, dispatch]);
 
   return (
     <div className="bg-gray-100 pt-35 flex min-h-screen relative z-50">
@@ -61,22 +56,7 @@ export const DiscoverPage = () => {
         />
         <FiltersSideBar
           title={pageTitle}
-          selectedGenreIds={selectedGenreIds}
-          setSelectedGenreIds={setSelectedGenreIds}
-          selectedCountries={selectedCountries}
-          setSelectedCountries={setSelectedCountries}
-          allGenres={allGenres}
-          dateSort={dateSort}
-          setDateSort={setDateSort}
-          titleSort={titleSort}
-          setTitleSort={setTitleSort}
           setIsSidebarOpen={setIsSidebarOpen}
-          imdbRange={imdbRange}
-          setImdbRange={setImdbRange}
-          isImdbActive={isImdbActive}
-          setIsImdbActive={setIsImdbActive}
-          hideWatched={hideWatched}
-          setHideWatched={setHideWatched}
         />
       </aside>
 
@@ -98,7 +78,10 @@ export const DiscoverPage = () => {
 
         <div className="flex flex-col items-center md:block">
           <DiscoverContent
-            filters={filters}
+            filters={{
+              ...filters,
+              allGenres: allGenres
+            }}
           />
         </div>
 

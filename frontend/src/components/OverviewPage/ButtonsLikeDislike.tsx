@@ -1,28 +1,88 @@
-import thumbsUp from '../../../public/icons/like.svg';
-import thumbsUpPrimary from '../../../public/icons/thumbUp-primary.png';
-import thumbsDown from '../../../public/icons/dislike.svg';
+import thumbsUp from '../../../public/icons/likes/like.svg';
+import thumbsUpPrimary from '../../../public/icons/likes/likePrimary.svg';
+import thumbsDown from '../../../public/icons/likes/dislike.svg';
+import thumbsDownPrimary from '../../../public/icons/likes/dislikePrimary.svg';
+import { useDispatch, useSelector } from 'react-redux';
+import type { RootState } from '../../store';
+import { toggleLike } from '../../api/movieService';
+import { updateStats } from '../../store/likesSlice';
+import { useEffect, useState } from 'react';
+import { AuthModal } from '../Modals/AuthModal';
+import { openAuthModal } from '../../store/uiSlice';
 
-export const ButtonsLikeDislike = () => {
+interface ButtonsLikeDislikeProps {
+  contentId: number | string;
+  contentType: string;
+}
+
+export const ButtonsLikeDislike = ({ contentId, contentType }: ButtonsLikeDislikeProps) => {
+  const dispatch = useDispatch();
+  const idKey = String(contentId);
+
+  const itemData = useSelector((state: RootState) => state.likes.items[idKey]);
+
+  const isLoggedIn = !!localStorage.getItem('token');
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+
+  const handleToggle = async (isLike: boolean) => {
+    if (!isLoggedIn) {
+      dispatch(openAuthModal());
+      return;
+    }
+
+    try {
+      const data = await toggleLike(contentId, contentType, isLike);
+
+      const currentReaction = itemData?.userReaction;
+      const nextReaction = (isLike && currentReaction === 'LIKE') || (!isLike && currentReaction === 'DISLIKE')
+        ? null
+        : (isLike ? 'LIKE' : 'DISLIKE');
+
+      dispatch(updateStats({
+        id: idKey,
+        likes: data.likes,
+        dislikes: data.dislikes,
+        reaction: nextReaction
+      }));
+    } catch (error) {
+      console.error("Redux Like Error:", error);
+    }
+  };
+
   return (
     <div className="hidden md:flex justify-center items-center gap-6">
-      <button className="cursor-pointer w-16 h-16 flex justify-center items-center gap-1
+      <button
+        onClick={() => handleToggle(true)}
+        className="cursor-pointer w-16 h-16 flex justify-center items-center gap-1
           bg-gray-80/10 backdrop-blur-[2px]
           rounded-full border border-gray-80/10
           before:content-[''] before:absolute before:inset-0
           before:rounded-full before:border before:border-gray-80/20
           ">
-        <img src={thumbsUp} alt="Likes" className="w-6 h-6 object-cover" />
-        <span className="text-white text-[12px] font-semibold font-nunito">82k</span>
+        <img
+          src={itemData?.userReaction === 'LIKE' ? thumbsUpPrimary : thumbsUp}
+          alt="Likes"
+          className="w-6 h-6 object-cover"
+        />
+        <span className="text-white text-[12px] font-semibold font-nunito">{itemData?.likes ?? 0}</span>
       </button>
-      <button className="cursor-pointer w-16 h-16 flex justify-center items-center gap-1
+      <button
+        onClick={() => handleToggle(false)}
+        className="cursor-pointer w-16 h-16 flex justify-center items-center gap-1
           bg-gray-80/10 backdrop-blur-[2px]
           rounded-full border border-gray-80/10
           before:content-[''] before:absolute before:inset-0
           before:rounded-full before:border before:border-gray-80/20
           ">
-        <img src={thumbsDown} alt="Dislikes" className="w-6 h-6 object-cover" />
-        <span className="text-white text-[12px] font-semibold font-nunito">2.8k</span>
+        <img
+          src={itemData?.userReaction === 'DISLIKE' ? thumbsDownPrimary : thumbsDown}
+          alt="Dislikes"
+          className="w-6 h-6 object-cover"
+        />
+        <span className="text-white text-[12px] font-semibold font-nunito">{itemData?.dislikes ?? 0}</span>
       </button>
+
+      <AuthModal />
     </div>
   )
 }
