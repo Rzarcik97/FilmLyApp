@@ -43,7 +43,8 @@ function App() {
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
-      dispatch(fetchWatchList());
+      dispatch(fetchWatchList('MOVIE'));
+      dispatch(fetchWatchList('SERIES'));
     }
   }, [dispatch]);
 

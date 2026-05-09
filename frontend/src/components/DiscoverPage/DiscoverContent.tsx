@@ -92,7 +92,7 @@ export const DiscoverContent = ({ filters }: { filters: FilterState }) => {
       setPage(1);
       fetchGenrePage(1, false);
     }
-  }, [currentGenreId, type, fetchGenrePage, isGenreRoute]);
+  }, [currentGenreId, type, isGenreRoute]);
 
   const handleLoadMore = () => {
     const nextPage = page + 1;
@@ -108,24 +108,15 @@ export const DiscoverContent = ({ filters }: { filters: FilterState }) => {
   };
 
   const universalFetcher = useCallback(async () => {
-    if (filters.isImdbActive) {
-      const response = await getMoviesByRating(
-        filters.imdbRange[0] ?? 0,
-        filters.imdbRange[1] ?? 0,
-        contentType
-      );
-      const results = response.results || response.content || response;
-      return Array.isArray(results) ? results : [];
+    if (type === 'search') {
+      const data = await getSearchData(searchQuery);
+      return Array.isArray(data) ? data : ((data as any).results || (data as any).content || []);
     }
-
-    const currentGenreId = filters.selectedGenreIds[0];
-
-    const defaultRoutes = ['trending-movies', 'trending-series', 'popular-movies', 'recent-movies', 'upcoming-movies', 'search'];
-    const isGenreRoute = type && !defaultRoutes.includes(type);
 
     if (isGenreRoute && currentGenreId) {
       const data = await getContentByGenre(currentGenreId, contentType);
-      return data.results || data.content || data;
+      const results = data.results || data.content || data;
+      return Array.isArray(results) ? results : [];
     }
 
     const defaultFetchers: Record<string, () => Promise<any>> = {
@@ -134,41 +125,40 @@ export const DiscoverContent = ({ filters }: { filters: FilterState }) => {
       'popular-movies': getPopularMovies,
       'recent-movies': getRecentMovies,
       'upcoming-movies': getUpcomingMovies,
-      'search': () => getSearchData(searchParams.get('q') || ''),
     };
 
-    const activeDefaultFetch = defaultFetchers[type || ''] || getPopularMovies;
-    const defaultData = await activeDefaultFetch();
-    return defaultData.results || defaultData.content || defaultData;
-
-  }, [filters.isImdbActive, filters.selectedGenreIds, type, contentType, searchParams]);
+    const fetcher = defaultFetchers[type || ''] || getPopularMovies;
+    const res = await fetcher();
+    return Array.isArray(res) ? res : (res.results || res.content || res);
+  }, [type, searchQuery, currentGenreId, isGenreRoute, contentType]);
 
   const applyFilters = (item: Movie) => {
     if (filters.hideWatched) {
-      const isThisWatched = watchedIds.includes(item.id) || watchedIds.includes(Number(item.contentId));
+      const isInWatchedList = watchedIds.includes(item.id) ||
+        watchedIds.includes(Number(item.contentId));
 
-      if (isThisWatched) {
+      const hasWatchedTimestamp = !!(item as Movie).watchedAt;
+
+      if (isInWatchedList || hasWatchedTimestamp) {
         return false;
       }
     }
 
+    if (filters.isImdbActive) {
+      const itemRating = item.vote_average || 0;
+      const [min, max] = filters.imdbRange;
+      if (itemRating < (min ?? 0) || itemRating > (max ?? 10)) return false;
+    }
+
     const matchesGenre = filters.selectedGenreIds.length === 0 ||
-      item.genres?.some((genreObj: Genre) =>
-        filters.selectedGenreIds.includes(genreObj.id)
-      );
+      item.genres?.some((g: Genre) => filters.selectedGenreIds.includes(g.id));
 
-    const itemCountries = Array.isArray(item.origin_country)
-      ? item.origin_country
-      : [item.origin_country];
-
+    const itemCountries = Array.isArray(item.origin_country) ? item.origin_country : [item.origin_country];
     const matchesCountry = filters.selectedCountries.length === 0 ||
       itemCountries.some((c: string) => filters.selectedCountries.includes(c));
 
     if (!matchesCountry) return false;
-
-    if (isGenreRoute) return true;
-
-    return matchesGenre;
+    return isGenreRoute ? true : matchesGenre;
   };
 
   const sortFn = (a: Movie, b: Movie) => {
@@ -234,7 +224,7 @@ export const DiscoverContent = ({ filters }: { filters: FilterState }) => {
     case 'search':
       return (
         <GenericBrowseSection<Movie>
-          key={searchQuery}
+          key={`search-${searchQuery}`}
           fetchFn={() => getSearchData(searchQuery)}
           filterFn={applyFilters}
           sortFn={sortFn}

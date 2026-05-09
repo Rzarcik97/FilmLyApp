@@ -43,7 +43,7 @@ export const Login = () => {
 
       if (token) {
         localStorage.setItem('token', token);
-        await dispatch(fetchWatchList());
+        await dispatch(fetchWatchList({ type: 'MOVIE' }));
         navigate(from, { replace: true });
       } else {
         setServerError('No token received from the server');

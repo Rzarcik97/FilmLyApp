@@ -6,19 +6,15 @@ import { type AppDispatch, type RootState } from '../../store';
 import { fetchCurrentUser } from '../../store/userSlice';
 import { ProfileSettings } from './ProfileSettings';
 import { Loader } from '../Utilities/Loader';
-import type { Movie } from '../../types';
 import { YourGenres } from './YourGenres';
 
 export const Profile = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { user } = useSelector((state: RootState) => state.auth);
-  const { fullList, loading } = useSelector((state: RootState) => state.watchlist);
+  const { user, loading } = useSelector((state: RootState) => state.auth);
+  const movies = useSelector((state: RootState) => state.watchlist.movies);
 
-  const toWatch = (fullList as (Movie & { watchedAt?: string | null })[])
-    .filter(item => !item.watchedAt);
-
-  const alreadyWatched = (fullList as (Movie & { watchedAt?: string | null })[])
-    .filter(item => item.watchedAt);
+  const toWatch = movies.filter(m => !m.watchedAt);
+  const alreadyWatched = movies.filter(m => m.watchedAt);
 
   useEffect(() => {
     if (!user) {

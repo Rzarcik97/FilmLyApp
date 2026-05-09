@@ -12,7 +12,7 @@ export const MovieCard = ({ movie }: { movie: Movie }) => {
 
   const isProfilePage = location.pathname.includes('/profile');
 
-  const contentType = movie.type.toLowerCase();
+  const contentType = (movie.type || movie.contentType || '').toLowerCase();
   const basePath = contentType === 'movie' ? 'movies' : 'series';
 
   const posterUrl = (movie.posterPath || movie.poster_path)
@@ -73,7 +73,7 @@ export const MovieCard = ({ movie }: { movie: Movie }) => {
           <div className="absolute inset-0 z-20 translate-y-[100%] opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 bg-gray-100 flex items-center">
             <ButtonsWatchlistSeen
               contentId={movie.id || Number(movie.contentId)}
-              contentType={movie.type}
+              contentType={movie.type || movie.contentType || 'MOVIE'}
               variant={isProfilePage ? 'remove' : 'compact'}
             />
           </div>

@@ -14,10 +14,14 @@ interface ButtonsProps {
 
 export const ButtonsWatchlistSeen = ({ contentId, contentType, variant = 'default' }: ButtonsProps) => {
   const dispatch = useDispatch<AppDispatch>();
-  const watchlistIds = useSelector((state: RootState) => state.watchlist.items);
-  const watchedIds = useSelector((state: RootState) => state.watchlist.watchedItems);
-  const isWatched = watchedIds.includes(contentId);
-  const isAdded = watchlistIds.includes(contentId);
+  const list = useSelector((state: RootState) =>
+    contentType.toUpperCase() === 'MOVIE' ? state.watchlist.movies : state.watchlist.series
+  );
+
+  const itemInList = list.find(m => m.id === contentId);
+  const isAdded = !!itemInList;
+  const isWatched = !!itemInList?.watchedAt;
+
   const isLoggedIn = !!localStorage.getItem('token');
 
   const handleRemove = async (e: React.MouseEvent) => {
@@ -26,9 +30,8 @@ export const ButtonsWatchlistSeen = ({ contentId, contentType, variant = 'defaul
 
     try {
       await dispatch(removeFromWatchlist({ contentId, contentType })).unwrap();
-
     } catch (error) {
-      console.error("Failed to remove movie:", error);
+      console.error("Failed to remove:", error);
     }
   };
 
@@ -40,8 +43,6 @@ export const ButtonsWatchlistSeen = ({ contentId, contentType, variant = 'defaul
       dispatch(openAuthModal());
       return;
     }
-
-    const payload = { contentId, contentType };
 
     if (!isAdded) {
       dispatch(addToWatchlist({ contentId, contentType }));
@@ -59,16 +60,15 @@ export const ButtonsWatchlistSeen = ({ contentId, contentType, variant = 'defaul
 
     if (isWatched) return;
 
-    const payload = { contentId, contentType };
-
     try {
       if (!isAdded) {
-        await dispatch(addToWatchlist(payload)).unwrap();
+        await dispatch(addToWatchlist({ contentId, contentType })).unwrap();
       }
 
-      await dispatch(markAsWatched(payload)).unwrap();
+      await dispatch(markAsWatched({ contentId, contentType })).unwrap();
+      console.log("Server confirmed watched status!");
     } catch (error: any) {
-      console.error('Failed to add into watched, ', error);
+      console.error('Failed to mark as watched:', error);
     }
   };
 
