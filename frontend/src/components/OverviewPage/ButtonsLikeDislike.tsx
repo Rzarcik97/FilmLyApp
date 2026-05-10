@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '../../store';
 import { toggleLike } from '../../api/movieService';
 import { updateStats } from '../../store/likesSlice';
-import { useEffect, useState } from 'react';
 import { AuthModal } from '../Modals/AuthModal';
 import { openAuthModal } from '../../store/uiSlice';
 
@@ -22,7 +21,6 @@ export const ButtonsLikeDislike = ({ contentId, contentType }: ButtonsLikeDislik
   const itemData = useSelector((state: RootState) => state.likes.items[idKey]);
 
   const isLoggedIn = !!localStorage.getItem('token');
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
   const handleToggle = async (isLike: boolean) => {
     if (!isLoggedIn) {
@@ -64,7 +62,7 @@ export const ButtonsLikeDislike = ({ contentId, contentType }: ButtonsLikeDislik
           alt="Likes"
           className="w-6 h-6 object-cover"
         />
-        <span className="text-white text-[12px] font-semibold font-nunito">{itemData?.likes ?? 0}</span>
+        <span className="text-gray-0 text-[12px] font-semibold font-nunito">{itemData?.likes ?? 0}</span>
       </button>
       <button
         onClick={() => handleToggle(false)}
@@ -79,7 +77,7 @@ export const ButtonsLikeDislike = ({ contentId, contentType }: ButtonsLikeDislik
           alt="Dislikes"
           className="w-6 h-6 object-cover"
         />
-        <span className="text-white text-[12px] font-semibold font-nunito">{itemData?.dislikes ?? 0}</span>
+        <span className="text-gray-0 text-[12px] font-semibold font-nunito">{itemData?.dislikes ?? 0}</span>
       </button>
 
       <AuthModal />

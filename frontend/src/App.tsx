@@ -13,12 +13,13 @@ import { SignUpPage } from './components/SignUp/SignUpPage';
 import { CreatePasswordPage } from './components/SignUp/CreatePasswordPage';
 import { LoginPage } from './components/SignUp/LoginPage';
 import { Profile } from './components/Profile/Profile';
-import { Provider, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { fetchWatchList } from './store/watchlistSlice';
 import type { AppDispatch } from './store';
 import { AuthModal } from './components/Modals/AuthModal';
 import { LogoutModal } from './components/Modals/LogoutModal';
 import { ThemeProvider } from './context/ThemeContext';
+import { useSyncLikes } from './hooks/useSyncLikes';
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -57,6 +58,15 @@ function App() {
     setUserData(prev => ({ ...prev, email }));
     setStep(StepEnum.Password);
   };
+
+  const syncLikes = useSyncLikes();
+  const token = localStorage.getItem('token');
+
+  useEffect(() => {
+    if (token) {
+      syncLikes();
+    }
+  }, [token, syncLikes]);
 
   return (
     <ThemeProvider>

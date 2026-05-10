@@ -100,3 +100,14 @@ export const toggleLike = async (contentId: number | string, contentType: string
 
   return response.data;
 }
+
+export const getUserLikes = async (type: 'MOVIE' | 'SERIES', liked: boolean) => {
+  const response = await apiClient.get('/likes', {
+    params: {
+      type,
+      liked,
+    }
+  });
+
+  return response.data;
+}

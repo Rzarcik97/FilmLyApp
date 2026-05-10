@@ -123,9 +123,9 @@ export const ButtonsWatchlistSeen = ({ contentId, contentType, variant = 'defaul
       >
         <img src={watchlist} alt="Add to watchlist" className="w-6 h-6" />
         {isAdded ? (
-          <span className="text-black text-[13px]">Added to your Watchlist</span>
+          <span className="text-gray-100-button text-[13px]">Added to your Watchlist</span>
         ) : (
-          <span className="text-primary-0 text-[13px]">Add to Watchlist</span>
+          <span className="text-featured text-[13px]">Add to Watchlist</span>
         )}
 
       </button>
@@ -138,11 +138,11 @@ export const ButtonsWatchlistSeen = ({ contentId, contentType, variant = 'defaul
       >
         {isWatched ? (
           <>
-            <Check size={12} className="text-primary-0" />
+            <Check size={12} className="text-featured" />
             <span className="text-gray-30 text-[13px]">Seen it</span>
           </>
         ) : (
-            <span className="text-primary-0 text-[13px]">Mark as watched</span>
+            <span className="text-featured text-[13px]">Mark as watched</span>
         )}
 
       </button>

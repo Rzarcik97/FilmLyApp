@@ -65,7 +65,7 @@ export const UserReview = ({ title }: { title: string | null }) => {
           <div className="flex justify-start animate-fade-in">
             <button
               onClick={handleAddReview}
-              className="bg-primary-0 text-secondary-dark font-bold px-8 py-2 rounded-[9px] cursor-pointer hover:opacity-90 transition-all w-full md:w-78 h-10 md:h-14"
+              className="bg-featured text-secondary-dark font-bold px-8 py-2 rounded-[9px] cursor-pointer hover:opacity-90 transition-all w-full md:w-78 h-10 md:h-14"
             >
               Add
             </button>

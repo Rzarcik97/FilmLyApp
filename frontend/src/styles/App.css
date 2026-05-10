@@ -30,8 +30,11 @@
   --dynamic-secondary-dark-button: #33322D;
 
   --dynamic-gray-0: #F5F5F5;
+  --dynamic-gray-0-text: #F5F5F5;
   --dynamic-gray-30: #BABCB6;
+  --dynamic-gray-30-text: #BABCB6;
   --dynamic-gray-50: #949691;
+  --dynamic-gray-50-text: #949691;
   --dynamic-gray-80: #4D4E4C;
   --dynamic-gray-80-footer: #4D4E4C;
   --dynamic-gray-80-button: #4D4E4C;
@@ -59,8 +62,11 @@
   --dynamic-secondary-dark-button: #EFEFEF;
 
   --dynamic-gray-0: #33322D;
+  --dynamic-gray-0-text: #F5F5F5;
+  --dynamic-gray-30-text: #F5F5F5;
   --dynamic-gray-30: #33322D;
   --dynamic-gray-50: #D3F138;
+  --dynamic-gray-50-text: #33322D;
   --dynamic-gray-80: #C4C4C4;
   --dynamic-gray-80-footer: #4D4E4C;
   --dynamic-gray-80-button: #33322D;
@@ -88,8 +94,11 @@
   --color-secondary-dark-button: var(--dynamic-secondary-dark-button);
 
   --color-gray-0: var(--dynamic-gray-0);
+  --color-gray-0-text: var(--dynamic-gray-0-text);
   --color-gray-30: var(--dynamic-gray-30);
+  --color-gray-30-text: var(--dynamic-gray-30-text);
   --color-gray-50: var(--dynamic-gray-50);
+  --color-gray-50-text: var(--dynamic-gray-50-text);
   --color-gray-80: var(--dynamic-gray-80);
   --color-gray-80-footer: var(--dynamic-gray-80-footer);
   --color-gray-80-button: var(--dynamic-gray-80-button);

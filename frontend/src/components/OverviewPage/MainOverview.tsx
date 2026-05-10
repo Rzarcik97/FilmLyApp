@@ -24,7 +24,7 @@ export const MainOverview = ({ movie }: MainOverviewProps) => {
   
   return (
     <div
-      className="bg-gray-100 px-10 min-h-screen bg-cover bg-center bg-no-repeat relative flex flex-col"
+      className="bg-main-bg px-10 min-h-screen bg-cover bg-center bg-no-repeat relative flex flex-col"
       style={{
         backgroundImage: `linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.3) 40%, transparent 100%), url(${backdropUrl})`
       }}
@@ -37,22 +37,22 @@ export const MainOverview = ({ movie }: MainOverviewProps) => {
             <img src={play} alt="Play Button" className="cursor-pointer w-8 h-8" />
             <img src={mute} alt="Play Button" className="cursor-pointer w-8 h-8" />
           </div>
-          <h1 className="text-[36px] md:text-[48px] text-gray-0 font-bold text-center font-nunito leading-[1]">{movie?.title || 'Movie Title'}</h1>
+          <h1 className="text-[36px] md:text-[48px] text-gray-0-text font-bold text-center font-nunito leading-[1]">{movie?.title || 'Movie Title'}</h1>
           {movie?.tagLine && (
-            <p className="text-[20px] leading-[1.45] text-gray-0 font-semibold text-center font-nunito">{`"${movie?.tagLine}"`}</p>
+            <p className="text-[20px] leading-[1.45] text-gray-0-text font-semibold text-center font-nunito">{`"${movie?.tagLine}"`}</p>
           )}
 
           <div className="flex flex-wrap justify-center items-center gap-2">
             {genres?.map((genre) => (
               <span
                 key={genre.id}
-                className="px-[10px] py-[2.5px] pb-[5px] text-gray-30 text-[16px] border border-gray-30 rounded-[32px]"
+                className="px-[10px] py-[2.5px] pb-[5px] text-gray-30-text text-[16px] border border-gray-30-text rounded-[32px]"
               >
                 {genre.name}
               </span>
             ))}
           </div>
-          <p className="text-[20px] text-gray-30 text-center leading-[1.45]">
+          <p className="text-[20px] text-gray-30-text text-center leading-[1.45]">
             {movie?.release_date?.split('-')[0] || 'YYYY'} • {' '}
 
             {movie?.type === 'MOVIE' ? (
@@ -68,11 +68,11 @@ export const MainOverview = ({ movie }: MainOverviewProps) => {
 
           <div className="flex justify-evenly items-center">
             <div className="flex justify-center items-center gap-2">
-              <p className="text-[16px] leading-[1.5] text-gray-0 font-bold">{Number(movie.voteAverage || movie.vote_average || 0).toFixed(1) || '0.0'}</p>
+              <p className="text-[16px] leading-[1.5] text-gray-0-text font-bold">{Number(movie.voteAverage || movie.vote_average || 0).toFixed(1) || '0.0'}</p>
               <img src={imdb} alt="Imdb Rating" className="w-6 h-5" />
             </div>
             <div className="flex justify-center items-center gap-2">
-              <p className="text-[16px] leading-[1.5] text-gray-0 font-bold">{rating}%</p>
+              <p className="text-[16px] leading-[1.5] text-gray-0-text font-bold">{rating}%</p>
               <img src={thumbsUp} alt="Filmly Rating" className="w-7 h-7" />
             </div>
           </div>
