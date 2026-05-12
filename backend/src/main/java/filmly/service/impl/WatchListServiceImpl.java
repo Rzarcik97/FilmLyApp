@@ -11,6 +11,7 @@ import filmly.model.User;
 import filmly.model.WatchList;
 import filmly.repository.UserRepository;
 import filmly.repository.WatchListRepository;
+import filmly.service.ContentLikeService;
 import filmly.service.ContentService;
 import filmly.service.WatchListService;
 import java.time.LocalDateTime;
@@ -30,7 +31,7 @@ public class WatchListServiceImpl implements WatchListService {
     private final WatchListRepository watchListRepository;
     private final UserRepository userRepository;
     private final WatchListMapper watchListMapper;
-    private final ContentLikeServiceImpl contentLikeService;
+    private final ContentLikeService contentLikeService;
     private final ContentService contentService;
 
     @Override
@@ -122,8 +123,7 @@ public class WatchListServiceImpl implements WatchListService {
                     requestDto.contentId(), email);
             return;
         }
-        watchListRepository.deleteByUser_IdAndContent_ExternalIdAndContent_Type(
-                user.getId(), requestDto.contentId(), requestDto.contentType());
+        watchListRepository.delete(watchList.get());
         log.debug("Content {} removed from watchlist for user {}",
                 requestDto.contentId(), email);
     }

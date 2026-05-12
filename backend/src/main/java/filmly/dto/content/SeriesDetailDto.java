@@ -26,5 +26,5 @@ public record SeriesDetailDto(
         List<GenreDto> genres,
         Long likes,
         Long dislikes,
-        boolean isLiked
+        Boolean isLiked
 ) {}

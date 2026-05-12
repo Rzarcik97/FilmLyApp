@@ -144,7 +144,7 @@ public class SeriesServiceImpl implements TmdbContentService<ContentDto, SeriesD
         Boolean isLiked = null;
 
         if (email != null) {
-            isLiked = contentLikeService.isLiked(email, id, Content.ContentType.MOVIE);
+            isLiked = contentLikeService.isLiked(email, id, Content.ContentType.SERIES);
         }
 
         TmdbSeriesDetailResponse response = restClient.get()
@@ -161,6 +161,10 @@ public class SeriesServiceImpl implements TmdbContentService<ContentDto, SeriesD
     private List<ContentDto> fetch(String uri) {
 
         List<TmdbContentResult> results = fetchRaw(uri);
+
+        if (results.isEmpty()) {
+            return List.of();
+        }
 
         List<Long> contentIds = results.stream()
                 .map(TmdbContentResult::id)

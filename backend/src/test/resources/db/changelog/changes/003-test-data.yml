@@ -27,6 +27,9 @@ databaseChangeLog:
               - column:
                   name: created_at
                   valueDate: now()
+              - column:
+                  name: deleted_at
+                  value: null
         - insert:
             tableName: users
             columns:
@@ -51,6 +54,9 @@ databaseChangeLog:
               - column:
                   name: created_at
                   valueDate: now()
+              - column:
+                  name: deleted_at
+                  value: null
         - insert:
             tableName: users
             columns:
@@ -75,6 +81,9 @@ databaseChangeLog:
               - column:
                   name: created_at
                   valueDate: now()
+              - column:
+                  name: deleted_at
+                  value: null
 
   - changeSet:
       id: 003-test-data-content
@@ -85,7 +94,7 @@ databaseChangeLog:
             columns:
               - column:
                   name: external_id
-                  valueNumeric: 16304234
+                  valueNumeric: 1630423
               - column:
                   name: type
                   value: MOVIE
