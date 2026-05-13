@@ -1,6 +1,6 @@
 import { ChevronRight } from 'lucide-react';
-import play from '../../../public/icons/play.png';
-import mute from '../../../public/icons/mute.png';
+import play from '/icons/play.png';
+import mute from '/icons/mute.png';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';

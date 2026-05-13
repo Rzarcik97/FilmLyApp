@@ -33,7 +33,7 @@ export const ScrollActors = ({ title, items }: ScrollActorsProps) => {
           <h2 className="text-[24px] md:text-[36px] leading-[1.2] font-bold text-secondary-light">{title}</h2>
         </div>
 
-        <Link 
+        <Link
           to='/actors'
           className="cursor-pointer text-[16px] text-secondary-light font-nunito font-bold"
         >
@@ -61,9 +61,12 @@ export const ScrollActors = ({ title, items }: ScrollActorsProps) => {
           className="flex justify-start items-start gap-2 md:gap-5 flex-nowrap overflow-x-hidden scroll-smooth"
         >
           {items.map(item => (
-            <div className="relative z-10">
+            <div
+              key={item.id}
+              className="relative z-10"
+            >
               <ActorCard key={item.id} actor={item} />
-            </div>            
+            </div>
           ))}
         </div>
 

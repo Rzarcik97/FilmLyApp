@@ -54,7 +54,7 @@ export const YourGenres = () => {
       if (isAlreadyFav) {
         await deleteFavoriteGenre(genreName);
       } else {
-        await addFavoriteGenre(genreName, 1);
+        await addFavoriteGenre(genreName, 10);
       }
     } catch (error) {
       console.error('Sync failed:', error);
@@ -68,7 +68,6 @@ export const YourGenres = () => {
 
   const featuredNames = ['Action', 'Adventure', 'Comedy', 'Documentary', 'Kids', 'Sci-Fi & Fantasy'];
 
-  // const displayedGenres = genres.filter(genre => featuredNames.includes(genre.name));
   const displayedGenres = isExpanded ? genres : genres.filter(genre => featuredNames.includes(genre.name));
 
   return (

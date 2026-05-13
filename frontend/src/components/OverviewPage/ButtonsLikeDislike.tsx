@@ -1,7 +1,7 @@
-import thumbsUp from '../../../public/icons/likes/like.svg';
-import thumbsUpPrimary from '../../../public/icons/likes/likePrimary.svg';
-import thumbsDown from '../../../public/icons/likes/dislike.svg';
-import thumbsDownPrimary from '../../../public/icons/likes/dislikePrimary.svg';
+import thumbsUp from '/icons/likes/like.svg';
+import thumbsUpPrimary from '/icons/likes/likePrimary.svg';
+import thumbsDown from '/icons/likes/dislike.svg';
+import thumbsDownPrimary from '/icons/likes/dislikePrimary.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '../../store';
 import { toggleLike } from '../../api/movieService';

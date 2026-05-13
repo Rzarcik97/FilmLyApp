@@ -61,7 +61,7 @@ export const ScrollSectionTrending = ({ title, items, viewAllPath }: ScrollSecti
         >
           {items.map((item, index) => (
             <div 
-              key={item.id}
+              key={item.id || item.contentId}
               className="relative flex-none w-[240px] snap-start"
             >
               <span className="

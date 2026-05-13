@@ -1,7 +1,7 @@
-import imdb from '../../../public/icons/imdb.png';
-import thumbsUp from '../../../public/icons/thumbUp-primary.png';
-import play from '../../../public/icons/play.png';
-import mute from '../../../public/icons/mute.png';
+import imdb from '/icons/imdb.png';
+import thumbsUp from '/icons/thumbUp-primary.png';
+import play from '/icons/play.png';
+import mute from '/icons/mute.png';
 import type { Movie } from '../../types';
 
 interface MainOverviewProps {

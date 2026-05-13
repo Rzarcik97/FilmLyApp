@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import pic_1 from '../../../public/reviews/pic_1.png';
-import pic_2 from '../../../public/reviews/pic_2.png';
-import pic_3 from '../../../public/reviews/pic_3.png';
-import pic_4 from '../../../public/reviews/pic_4.png';
-import rating from '../../../public/reviews/rating.svg';
+import pic_1 from '/reviews/pic_1.png';
+import pic_2 from '/reviews/pic_2.png';
+import pic_3 from '/reviews/pic_3.png';
+import pic_4 from '/reviews/pic_4.png';
+import rating from '/reviews/rating.svg';
 import { Toast } from '../Profile/Toast';
 
 const MOCK_REVIEWS = [

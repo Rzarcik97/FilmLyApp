@@ -1,5 +1,5 @@
-import search from '../../../public/icons/search.svg';
-import mic from '../../../public/icons/mic.svg';
+import search from '/icons/search.svg';
+import mic from '/icons/mic.svg';
 import type { Movie } from '../../types';
 import { Loader2 } from 'lucide-react';
 import { useSearchLogic } from './useSearchLogic';

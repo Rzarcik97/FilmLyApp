@@ -1,6 +1,6 @@
 import { useParams, useSearchParams } from 'react-router-dom'
 import { GenericBrowseSection } from '../BrowsePage/GenericBrowseSection';
-import { getContentByGenre, getMoviesByRating, getPopularMovies, getRecentMovies, getSearchData, getTrendingMovies, getTrendingSeries, getUpcomingMovies } from '../../api/movieService';
+import { getContentByGenre, getMoviesByRating, getPopularMovies, getRecentMovies, getRecommendations, getSearchData, getTrendingMovies, getTrendingSeries, getUpcomingMovies } from '../../api/movieService';
 import { MovieCard } from '../MainPage/MovieCard';
 import type { Genre, Movie } from '../../types';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -36,7 +36,7 @@ export const DiscoverContent = ({ filters }: { filters: FilterState }) => {
 
   const contentType = type?.includes('series') ? 'SERIES' : 'MOVIE';
 
-  const defaultRoutes = ['trending-movies', 'trending-series', 'popular-movies', 'recent-movies', 'upcoming-movies', 'search'];
+  const defaultRoutes = ['trending-movies', 'trending-series', 'popular-movies', 'recent-movies', 'upcoming-movies', 'search', 'recommendations'];
   const isGenreRoute = type && !defaultRoutes.includes(type);
 
   const currentGenreId = useMemo(() => {
@@ -108,6 +108,10 @@ export const DiscoverContent = ({ filters }: { filters: FilterState }) => {
   };
 
   const universalFetcher = useCallback(async () => {
+    if (type === 'recommendations' && !localStorage.getItem('token')) {
+      return [];
+    }
+
     if (type === 'search') {
       const data = await getSearchData(searchQuery);
       return Array.isArray(data) ? data : ((data as any).results || (data as any).content || []);
@@ -125,11 +129,18 @@ export const DiscoverContent = ({ filters }: { filters: FilterState }) => {
       'popular-movies': getPopularMovies,
       'recent-movies': getRecentMovies,
       'upcoming-movies': getUpcomingMovies,
+      'recommendations': getRecommendations,
     };
 
     const fetcher = defaultFetchers[type || ''] || getPopularMovies;
     const res = await fetcher();
-    return Array.isArray(res) ? res : (res.results || res.content || res);
+    const rawItems = Array.isArray(res) ? res : (res.results || res.content || res);
+
+    return rawItems.map((item: Movie) => ({
+      ...item,
+      id: item.id || item.contentId, 
+      posterPath: item.posterPath || item.poster_path 
+    }));
   }, [type, searchQuery, currentGenreId, isGenreRoute, contentType]);
 
   const applyFilters = (item: Movie) => {
@@ -149,6 +160,8 @@ export const DiscoverContent = ({ filters }: { filters: FilterState }) => {
       const [min, max] = filters.imdbRange;
       if (itemRating < (min ?? 0) || itemRating > (max ?? 10)) return false;
     }
+
+    if (type === 'recommendations') return true;
 
     const matchesGenre = filters.selectedGenreIds.length === 0 ||
       item.genres?.some((g: Genre) => filters.selectedGenreIds.includes(g.id));
@@ -211,6 +224,7 @@ export const DiscoverContent = ({ filters }: { filters: FilterState }) => {
     case 'popular-movies':
     case 'recent-movies':
     case 'upcoming-movies':
+    case 'recommendations':
       return (
         <GenericBrowseSection<Movie>
           key={`${type}-${filters.isImdbActive}`}

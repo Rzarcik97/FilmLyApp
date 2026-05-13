@@ -1,4 +1,4 @@
-import reminderIcon from '../../../public/profile/reminder.svg';
+import reminderIcon from '/profile/reminder.svg';
 import { Ban } from 'lucide-react';
 import { Checkbox } from '../../assets/CheckBox';
 import { useState } from 'react';

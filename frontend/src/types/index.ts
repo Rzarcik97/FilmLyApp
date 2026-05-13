@@ -58,4 +58,18 @@ export interface User {
   firstName: string;
   lastName: string;
   avatarUrl: string;
-};
+}
+
+export interface RecommendedMovie {
+  contentId: number;
+  type: 'MOVIE' | 'SERIES';
+  title: string;
+  poster_path: string;
+  genres: {
+    id: number;
+    name: string;
+    imagePath: string;
+  }[];
+  release_date: string;
+  vote_average: number;
+}

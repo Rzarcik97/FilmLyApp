@@ -77,7 +77,10 @@ export const ScrollSection = ({ title, items, viewAllPath }: ScrollSectionProps)
           className="flex flex-nowrap w-full gap-2 md:gap-10 overflow-x-hidden scroll-smooth py-4"
         >
           {items.map((item) => (
-            <div className="relative z-10">
+            <div
+              key={item.id || item.contentId}
+              className="relative z-10"
+            >
               <MovieCard key={item.contentId} movie={item} />
             </div>
           ))}

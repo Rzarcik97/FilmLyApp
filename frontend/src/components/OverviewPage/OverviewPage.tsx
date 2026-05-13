@@ -29,7 +29,7 @@ export const OverviewPage = () => {
 
         const results = await Promise.allSettled([
           getMovieCast(id, type),
-          getSimilarContent(id, movieData.type)
+          getSimilarContent(id, movieData.type || '')
         ]);
 
         const getValue = <T,>(result: PromiseSettledResult<T>, fallback: T): T => {

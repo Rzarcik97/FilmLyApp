@@ -1,5 +1,5 @@
 import type { Actor } from '../../types';
-import empty_img from '../../../public/icons/empty-img.png';
+import empty_img from '/icons/empty-img.png';
 
 
 export const ActorCard = ({ actor }: { actor: Actor }) => {

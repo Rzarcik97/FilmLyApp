@@ -111,3 +111,8 @@ export const getUserLikes = async (type: 'MOVIE' | 'SERIES', liked: boolean) => 
 
   return response.data;
 }
+
+export const getRecommendations = async (): Promise<Movie[]> => {
+  const response = await apiClient.get<Movie[]>('/movies/recommendations');
+  return response.data;
+}

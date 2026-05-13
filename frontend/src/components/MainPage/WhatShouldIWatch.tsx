@@ -1,5 +1,5 @@
 import { ChevronRight } from 'lucide-react';
-import popcorn from '../../../public/icons/popcorn.png';
+import popcorn from '/icons/popcorn.png';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { openAuthModal } from '../../store/uiSlice';

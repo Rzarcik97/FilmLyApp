@@ -4,6 +4,7 @@ import userReducer from './userSlice';
 import uiReducer from './uiSlice';
 import filtersReducer from './filtersSlice';
 import likesReducer from './likesSlice';
+import recommendationsSlice from './recommendationSlice';
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     auth: userReducer,
     filters: filtersReducer,
     likes: likesReducer,
+    recommendations: recommendationsSlice,
   },
 });
 

@@ -1,6 +1,6 @@
 import { Star } from 'lucide-react'
 import { useState } from 'react';
-import resize from '../../../public/icons/resize.svg';
+import resize from '/icons/resize.svg';
 import { useDispatch } from 'react-redux';
 import { openAuthModal } from '../../store/uiSlice';
 import { Toast } from '../Profile/Toast';
