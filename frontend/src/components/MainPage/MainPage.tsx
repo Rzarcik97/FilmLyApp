@@ -7,6 +7,7 @@ import { WhatShouldIWatch } from './WhatShouldIWatch';
 import { getGenres, getPopularActors, getPopularMovies, getRecentMovies, getRecommendations, getTrendingMovies, getTrendingSeries, getUpcomingMovies } from '../../api/movieService';
 import { MainBrowse } from './MainBrowse';
 import { ScrollSectionTrending } from './ScrollSectionTrending';
+import { Loader } from '../Utilities/Loader';
 
 
 export const MainPage = () => {
@@ -85,6 +86,8 @@ export const MainPage = () => {
 
     fetchAllData();
   }, []);
+
+  if (loading) return <Loader />
 
   return (
     <main className="bg-main-bg">
