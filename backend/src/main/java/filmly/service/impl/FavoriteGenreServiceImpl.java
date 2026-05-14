@@ -73,7 +73,7 @@ public class FavoriteGenreServiceImpl implements FavoriteGenreService {
         User user = userRepository.findByEmail(email).orElseThrow(
                 () -> new EntityNotFoundException("User", email));
         Genre genre = genreRepository.findByName(favoriteGenreDto.genreName()).orElseThrow(
-                () -> new EntityNotFoundException("Genre", user.getId()));
+                () -> new EntityNotFoundException("Genre", favoriteGenreDto.genreName()));
         if (favoriteGenresRepository.findByUser_IdAndGenre(user.getId(), genre).isPresent()) {
             throw new EntityAlreadyExistsException("You already have "
                     + favoriteGenreDto.genreName() + " in your favorites");
@@ -94,7 +94,7 @@ public class FavoriteGenreServiceImpl implements FavoriteGenreService {
         User user = userRepository.findByEmail(email).orElseThrow(
                 () -> new EntityNotFoundException("User", email));
         Genre genre = genreRepository.findByName(favoriteGenreDto.genreName()).orElseThrow(
-                () -> new EntityNotFoundException("Genre", user.getId()));
+                () -> new EntityNotFoundException("Genre", favoriteGenreDto.genreName()));
         FavoriteGenre favoriteGenre =
                 favoriteGenresRepository.findByUser_IdAndGenre(user.getId(), genre)
                 .orElseThrow(() -> new EntityNotFoundException("FavoriteGenre", user.getId()));
@@ -112,8 +112,16 @@ public class FavoriteGenreServiceImpl implements FavoriteGenreService {
         Genre genre = genreRepository.findByName(genreName).orElseThrow(
                 () -> new EntityNotFoundException("Genre", genreName)
         );
-        favoriteGenresRepository.deleteByUserIdAndGenre(user.getId(), genre);
-        log.info("Deleted favorite genre '{}' for user {}", genre.getName(), email);
+        FavoriteGenre favoriteGenre = favoriteGenresRepository
+                .findByUser_IdAndGenre(user.getId(), genre)
+                .orElse(null);
+
+        if (favoriteGenre == null) {
+            log.info("Favorite genre '{}' not found for user {}", genreName, email);
+            return;
+        }
+
+        favoriteGenresRepository.delete(favoriteGenre);
     }
 
     @Override

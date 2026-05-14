@@ -97,7 +97,7 @@ public class RecommendationScorer {
         }
 
         double qualityScore = (voteAverage - 5.0)
-                * Math.log10(voteCount - VOTE_COUNT_THRESHOLD - 1);
+                * Math.log10(voteCount - VOTE_COUNT_THRESHOLD + 1);
 
         return Math.clamp(qualityScore, -20.0, 20.0) * VOTE_WEIGHT;
     }
