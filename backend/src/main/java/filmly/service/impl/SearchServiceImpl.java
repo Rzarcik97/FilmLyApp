@@ -70,7 +70,6 @@ public class SearchServiceImpl implements SearchService {
                         Content.ContentType.SERIES);
 
         return new PagedResponse<>(results.stream()
-                .filter(result -> !"person".equals(result.mediaType()))
                 .map(result -> {
                     if (type == Content.ContentType.SERIES || "tv".equals(result.mediaType())) {
                         ContentLikeResponseDto likes = seriesLikes.getOrDefault(
@@ -112,13 +111,17 @@ public class SearchServiceImpl implements SearchService {
 
         return new PagedResponse<>(response.results().stream()
                 .map(result -> {
-                    ContentLikeResponseDto likes = likesMap.get(result.id());
+                    ContentLikeResponseDto likes = likesMap.getOrDefault(
+                            result.id(),
+                            new ContentLikeResponseDto(0L, 0L)
+                    );
                     return request.getType() == Content.ContentType.SERIES
                             ? seriesMapper.fromContentResult(result,
                             likes.likes(), likes.dislikes())
                             : movieMapper.fromContentResult(result,
                             likes.likes(), likes.dislikes());
                 })
+                .filter(Objects::nonNull)
                 .toList(),
                 response.page(),
                 response.totalPages(),
