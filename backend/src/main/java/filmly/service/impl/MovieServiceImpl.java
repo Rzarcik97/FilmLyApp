@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
@@ -38,21 +39,25 @@ public class MovieServiceImpl implements MovieService {
     private final RecommendationScorer scorer;
 
     @Override
+    @Cacheable("popularMovies")
     public List<ContentDto> findPopular() {
         return fetch("/movie/popular");
     }
 
     @Override
+    @Cacheable("trendingMovies")
     public List<ContentDto> findTrending() {
         return fetch("/trending/movie/day");
     }
 
     @Override
+    @Cacheable("recentMovies")
     public List<ContentDto> findRecent() {
         return fetch("/movie/now_playing");
     }
 
     @Override
+    @Cacheable("upcomingMovies")
     public List<ContentDto> findUpcoming() {
         String today = LocalDate.now().toString();
         String future = LocalDate.now().plusMonths(3).toString();
