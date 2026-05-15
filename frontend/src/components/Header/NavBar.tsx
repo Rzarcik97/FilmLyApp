@@ -1,4 +1,4 @@
-import watchlist from '../../../public/icons/header_popcorn.svg';
+import watchlist from '/icons/header_popcorn.svg';
 import { Link, useNavigate } from 'react-router-dom';
 import { type LucideIcon, Power, Sun, Moon } from 'lucide-react';
 import { useDispatch } from 'react-redux';

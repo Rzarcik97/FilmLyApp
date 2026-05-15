@@ -1,5 +1,5 @@
-import search from '../../../public/icons/search.svg';
-import mic from '../../../public/icons/mic.svg';
+import search from '/icons/search.svg';
+import mic from '/icons/mic.svg';
 import type { Movie } from '../../types';
 import { Loader2 } from 'lucide-react';
 import { useSearchLogic } from './useSearchLogic';
@@ -61,7 +61,7 @@ export const SearchBar = ({ onFocusChange, isFocused }: SearchBarProps) => {
       </button>
       <input
         type="text"
-        className={`py-3 w-full border-none bg-transparent focus:outline-none text-gray-70 text-[16px] font-bold`}
+        className={`py-3 w-full border-none bg-transparent focus:outline-none text-gray-30 text-[16px] font-bold`}
         placeholder="Search for movies, TV series, actors..."
         value={query}
         onChange={handleInputChange}
@@ -86,7 +86,7 @@ export const SearchBar = ({ onFocusChange, isFocused }: SearchBarProps) => {
                   className="px-4 py-3 border-b border-secondary-dark hover:bg-gray-100 cursor-pointer text-gray-30 transition-colors"
                 >
                   <span className="font-semibold">{item.title}</span>
-                  <span className="text-gray-30 ml-2">({formatType(item.type)})</span>
+                  <span className="text-gray-30 ml-2">({formatType(item.type || '')})</span>
                 </li>
               ))
             ) : (
@@ -103,7 +103,7 @@ export const SearchBar = ({ onFocusChange, isFocused }: SearchBarProps) => {
                   onFocusChange(false);
                   setQuery('');
                 }}
-                className="cursor-pointer w-full h-[42px] border border-primary-20 py-3 bg-secondary-dark text-primary-0 rounded-[32px] font-semibold text-sm hover:bg-gray-100 transition-all"
+                className="cursor-pointer w-full h-[42px] border border-primary-20 py-3 bg-secondary-dark-button text-featured rounded-[32px] font-semibold text-sm hover:bg-gray-100 transition-all"
               >
                 View all results ({allResults})
               </button>

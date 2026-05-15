@@ -1,5 +1,5 @@
 import type { Actor } from '../../types';
-import empty_img from '../../../public/icons/empty-img.png';
+import empty_img from '/icons/empty-img.png';
 
 
 export const ActorCard = ({ actor }: { actor: Actor }) => {
@@ -30,7 +30,7 @@ export const ActorCard = ({ actor }: { actor: Actor }) => {
         )}
       </div>
       <div className="h-18">
-        <p className="text-white text-[16px] leading-[1.5] text-center font-bold font-nunito">{actor.name}</p>
+        <p className="text-gray-0 text-[16px] leading-[1.5] text-center font-bold font-nunito">{actor.name}</p>
       </div>
     </div>
   )

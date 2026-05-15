@@ -58,7 +58,7 @@ export const MobileSearch = ({ isOpen, onClose }: { isOpen: boolean, onClose: ()
                   className="px-4 py-3 border-b border-secondary-dark hover:bg-gray-100 text-gray-30 transition-colors"
                 >
                   <span className="font-semibold">{item.title}</span>
-                  <span className="text-gray-30 ml-2">({formatType(item.type)})</span>
+                  <span className="text-gray-30 ml-2">({formatType(item.type || '')})</span>
                 </li>
               ))}
             </ul>

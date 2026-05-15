@@ -14,17 +14,18 @@ export interface Movie {
   id: number;
   contentId?: number;
   title: string | null;
-  tagLine: string;
-  type: string;
-  overview: string;
-  status: string;
-  runtime: number;
-  popularity: number;
+  tagLine?: string;
+  type?: string;
+  contentType?: string;
+  overview?: string;
+  status?: string;
+  runtime?: number;
+  popularity?: number;
   release_date?: string;
   vote_average?: number;
   voteAverage?: number;
-  vote_count: number;
-  trailerKey: string;
+  vote_count?: number;
+  trailerKey?: string;
   poster_path?: string;
   posterPath?: string;
   backdrop_path: string;
@@ -57,4 +58,18 @@ export interface User {
   firstName: string;
   lastName: string;
   avatarUrl: string;
-};
+}
+
+export interface RecommendedMovie {
+  contentId: number;
+  type: 'MOVIE' | 'SERIES';
+  title: string;
+  poster_path: string;
+  genres: {
+    id: number;
+    name: string;
+    imagePath: string;
+  }[];
+  release_date: string;
+  vote_average: number;
+}

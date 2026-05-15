@@ -14,10 +14,14 @@ interface ButtonsProps {
 
 export const ButtonsWatchlistSeen = ({ contentId, contentType, variant = 'default' }: ButtonsProps) => {
   const dispatch = useDispatch<AppDispatch>();
-  const watchlistIds = useSelector((state: RootState) => state.watchlist.items);
-  const watchedIds = useSelector((state: RootState) => state.watchlist.watchedItems);
-  const isWatched = watchedIds.includes(contentId);
-  const isAdded = watchlistIds.includes(contentId);
+  const list = useSelector((state: RootState) =>
+    contentType.toUpperCase() === 'MOVIE' ? state.watchlist.movies : state.watchlist.series
+  );
+
+  const itemInList = list.find(m => m.id === contentId);
+  const isAdded = !!itemInList;
+  const isWatched = !!itemInList?.watchedAt;
+
   const isLoggedIn = !!localStorage.getItem('token');
 
   const handleRemove = async (e: React.MouseEvent) => {
@@ -26,9 +30,8 @@ export const ButtonsWatchlistSeen = ({ contentId, contentType, variant = 'defaul
 
     try {
       await dispatch(removeFromWatchlist({ contentId, contentType })).unwrap();
-
     } catch (error) {
-      console.error("Failed to remove movie:", error);
+      console.error("Failed to remove:", error);
     }
   };
 
@@ -40,8 +43,6 @@ export const ButtonsWatchlistSeen = ({ contentId, contentType, variant = 'defaul
       dispatch(openAuthModal());
       return;
     }
-
-    const payload = { contentId, contentType };
 
     if (!isAdded) {
       dispatch(addToWatchlist({ contentId, contentType }));
@@ -59,16 +60,15 @@ export const ButtonsWatchlistSeen = ({ contentId, contentType, variant = 'defaul
 
     if (isWatched) return;
 
-    const payload = { contentId, contentType };
-
     try {
       if (!isAdded) {
-        await dispatch(addToWatchlist(payload)).unwrap();
+        await dispatch(addToWatchlist({ contentId, contentType })).unwrap();
       }
 
-      await dispatch(markAsWatched(payload)).unwrap();
+      await dispatch(markAsWatched({ contentId, contentType })).unwrap();
+      console.log("Server confirmed watched status!");
     } catch (error: any) {
-      console.error('Failed to add into watched, ', error);
+      console.error('Failed to mark as watched:', error);
     }
   };
 
@@ -90,10 +90,10 @@ export const ButtonsWatchlistSeen = ({ contentId, contentType, variant = 'defaul
         <button
           onClick={handleWatchlistToggle}
           className={`cursor-pointer w-full h-10 flex justify-center items-center gap-2 border-1 rounded-[9px] transition-all
-            ${isAdded ? 'bg-primary-0 border-primary-10' : 'bg-gray-100 border-primary-0'}`}
+            ${isAdded ? 'bg-primary-0-button border-primary-10' : 'bg-gray-100-button border-primary-0-button'}`}
         >
           <img src={watchlist} alt="icon" className="w-4 h-4" />
-          <span className={`${isAdded ? 'text-black' : 'text-primary-0'} text-[11px]`}>
+          <span className={`${isAdded ? 'text-black' : 'text-primary-0-button'} text-[11px]`}>
             {isAdded ? 'Added to your Watchlist' : 'Add to Watchlist'}
           </span>
         </button>
@@ -101,10 +101,10 @@ export const ButtonsWatchlistSeen = ({ contentId, contentType, variant = 'defaul
         <button
           onClick={handleMarkWatched}
           className={`cursor-pointer w-full h-10 flex justify-center items-center gap-2 border-1 rounded-[9px] transition-all
-            ${isWatched ? 'bg-secondary-dark border-gray-80' : 'bg-gray-100 border-primary-0'}`}
+            ${isWatched ? 'bg-secondary-dark-button border-gray-80' : 'bg-gray-100-button border-primary-0-button'}`}
         >
-          {isWatched ? <Check size={10} className="text-primary-0" /> : null}
-          <span className={`${isWatched ? 'text-gray-30' : 'text-primary-0'} text-[11px]`}>
+          {isWatched ? <Check size={10} className="text-featured" /> : null}
+          <span className={`${isWatched ? 'text-gray-30-button' : 'text-primary-0-button'} text-[11px]`}>
             {isWatched ? 'Seen it' : 'Mark as watched'}
           </span>
         </button>
@@ -123,9 +123,9 @@ export const ButtonsWatchlistSeen = ({ contentId, contentType, variant = 'defaul
       >
         <img src={watchlist} alt="Add to watchlist" className="w-6 h-6" />
         {isAdded ? (
-          <span className="text-black text-[13px]">Added to your Watchlist</span>
+          <span className="text-gray-100-button text-[13px]">Added to your Watchlist</span>
         ) : (
-          <span className="text-primary-0 text-[13px]">Add to Watchlist</span>
+          <span className="text-featured text-[13px]">Add to Watchlist</span>
         )}
 
       </button>
@@ -138,11 +138,11 @@ export const ButtonsWatchlistSeen = ({ contentId, contentType, variant = 'defaul
       >
         {isWatched ? (
           <>
-            <Check size={12} className="text-primary-0" />
+            <Check size={12} className="text-featured" />
             <span className="text-gray-30 text-[13px]">Seen it</span>
           </>
         ) : (
-            <span className="text-primary-0 text-[13px]">Mark as watched</span>
+            <span className="text-featured text-[13px]">Mark as watched</span>
         )}
 
       </button>

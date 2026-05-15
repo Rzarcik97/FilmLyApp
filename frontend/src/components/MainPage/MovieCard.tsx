@@ -1,21 +1,25 @@
 import type { Movie } from '../../types';
 import { Link, useLocation } from 'react-router-dom';
-import imdb from '../../../public/icons/imdb.png';
-import thumbUp from '../../../public/icons/thumbUp.png';
-import empty_img from '../../../public/icons/empty-img.png';
+import imdb from '/icons/imdb.png';
+import thumbUp from '/icons/thumbUp.png';
+import like_light from '/icons/like_light.svg';
+import empty_img from '/icons/empty-img.png';
 import { ButtonsWatchlistSeen } from '../OverviewPage/ButtonsWatchlistSeen';
+import { useTheme } from '../../context/ThemeContext';
 
 export const MovieCard = ({ movie }: { movie: Movie }) => {
   const location = useLocation();
 
   const isProfilePage = location.pathname.includes('/profile');
 
-  const contentType = movie.type.toLowerCase();
+  const contentType = (movie.type || movie.contentType || '').toLowerCase();
   const basePath = contentType === 'movie' ? 'movies' : 'series';
 
   const posterUrl = (movie.posterPath || movie.poster_path)
     ? `https://image.tmdb.org/t/p/w500${movie.posterPath || movie.poster_path}`
     : empty_img;
+
+  const { theme } = useTheme();
 
   return (
     <div className="group w-[175px] md:w-[203px] h-auto flex flex-col shrink-0 rounded-[16px] overflow-hidden 
@@ -38,7 +42,7 @@ export const MovieCard = ({ movie }: { movie: Movie }) => {
           />
 
           <div className="absolute inset-0 z-10 
-                        bg-black/40 backdrop-blur-[2px] 
+                        bg-gray-100/40 backdrop-blur-[2px] 
                         opacity-0 transition-opacity duration-300 
                         group-hover:opacity-100"
           />
@@ -54,7 +58,11 @@ export const MovieCard = ({ movie }: { movie: Movie }) => {
               </div>
               <div className="flex gap-2 items-center">
                 <p>{movie.likes}</p>
-                <img src={thumbUp} alt="Filmly" className="w-6 h-6" />
+                <img
+                  src={theme === 'light' ? like_light : thumbUp}
+                  alt="Filmly Rating"
+                  className="w-6 h-6"
+                />
               </div>
             </div>
             <p className="pt-[13px] leading-[1.5] text-gray-0 text-[16px] font-bold truncate">
@@ -65,7 +73,7 @@ export const MovieCard = ({ movie }: { movie: Movie }) => {
           <div className="absolute inset-0 z-20 translate-y-[100%] opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 bg-gray-100 flex items-center">
             <ButtonsWatchlistSeen
               contentId={movie.id || Number(movie.contentId)}
-              contentType={movie.type}
+              contentType={movie.type || movie.contentType || 'MOVIE'}
               variant={isProfilePage ? 'remove' : 'compact'}
             />
           </div>

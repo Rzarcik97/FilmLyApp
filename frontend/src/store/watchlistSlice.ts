@@ -3,10 +3,21 @@ import { userService } from '../api/userService';
 import type { WatchlistRequest, WatchlistState } from '../types/watchlist';
 import type { Movie } from '../types';
 
+const mapToMovie = (item: any): Movie => ({
+  ...item,
+  id: item.contentId || item.id,
+  title: item.title,
+  poster_path: item.posterPath || item.poster_path || '',
+  watchedAt: item.watchedAt || item.watched_at || null,
+  release_date: item.releaseDate || item.release_date || '',
+  vote_average: item.voteAverage || item.vote_average || 0,
+  type: item.contentType || item.type || 'MOVIE'
+});
+
 export const fetchWatchList = createAsyncThunk(
   'watchlist/fetch',
-  async (showWatched?: boolean) => {
-    const data = await userService.getWatchList(showWatched);
+  async (type: 'MOVIE' | 'SERIES') => {
+    const data = await userService.getWatchList(type);
     return data;
   }
 );
@@ -22,7 +33,7 @@ export const removeFromWatchlist = createAsyncThunk(
   'watchlist/remove',
   async (payload: WatchlistRequest) => {
     await userService.removeFromWatchlist(payload);
-    return payload.contentId;
+    return { id: payload.contentId, type: payload.contentType.toUpperCase() };
   }
 );
 
@@ -34,11 +45,11 @@ export const markAsWatched = createAsyncThunk(
 )
 
 const initialState: WatchlistState = {
-  items: [],
-  watchedItems: [],
-  fullList: [],
+  movies: [],
+  series: [],
   loading: false,
   error: null,
+  watchedItems: []
 };
 
 const watchlistSlice = createSlice({
@@ -46,9 +57,8 @@ const watchlistSlice = createSlice({
   initialState,
   reducers: {
     clearWatchlist: (state) => {
-      state.items = [];
-      state.watchedItems = [];
-      state.fullList = [];
+      state.movies = [];
+      state.series = [];
       state.error = null;
     }
   },
@@ -57,75 +67,62 @@ const watchlistSlice = createSlice({
       .addCase(fetchWatchList.pending, (state) => { state.loading = true })
       .addCase(fetchWatchList.fulfilled, (state, action) => {
         state.loading = false;
+        const type = action.meta.arg;
 
-        state.fullList = action.payload.map(item => ({
-          ...item,
-          id: item.contentId,
-          type: item.contentType || 'MOVIE',
-          contentType: item.contentType || 'MOVIE',
+        const mapped = action.payload.map((item: any) => {
+          return {
+            ...item,
+            id: item.contentId || item.id || 0,
 
-          title: item.title || 'Unknown Title',
-          poster_path: item.posterPath || '',
+            watchedAt: item.watchedAt || item.watched_at || null,
 
-          overview: '',
-          release_date: item.releaseDate || '',
-          vote_average: item.voteAverage || 0,
-        })) as unknown as Movie[];
+            poster_path: item.posterPath || item.poster_path || '',
+            release_date: item.releaseDate || item.release_date || '',
+          };
+        })
 
-        state.items = action.payload.map(item => item.contentId);
+        if (type === 'MOVIE') {
+          state.movies = mapped;
+        } else {
+          state.series = mapped;
+        }
+
         state.watchedItems = action.payload
           .filter(item => item.watchedAt !== null)
           .map(item => item.contentId);
       })
       .addCase(addToWatchlist.fulfilled, (state, action) => {
-        const { contentId } = action.meta.arg;
-        if (!state.items.includes(contentId)) {
-          state.items.push(contentId);
-        }
-
-        const alreadyInList = state.fullList.some(
-          (movie: Movie) => (movie.id === contentId || movie.contentId === contentId)
-        );
-
-        if (!alreadyInList) {
-          const newMovie = {
-            ...action.payload,
-            id: action.payload.contentId,
-            type: action.payload.contentType || 'MOVIE',
-          } as unknown as Movie;
-
-          state.fullList.push(newMovie);
-        }
+        const newItem = mapToMovie(action.payload);
+        if (newItem.type === 'MOVIE') state.movies.push(newItem);
+        else state.series.push(newItem);
       })
       .addCase(removeFromWatchlist.fulfilled, (state, action) => {
-        const removedId = action.payload;
+        const { contentId, contentType } = action.meta.arg;
 
-        state.items = state.items.filter(id => id !== removedId);
-        state.watchedItems = state.watchedItems.filter(id => id !== removedId);
+        if (contentType === 'MOVIE') {
+          state.movies = state.movies.filter(m => m.contentId !== contentId);
+        } else {
+          state.series = state.series.filter(s => s.contentId !== contentId);
+        }
 
-        state.fullList = state.fullList.filter(movie =>
-          movie.id !== removedId && movie.contentId !== removedId
-        );
+        state.watchedItems = state.watchedItems.filter(id => id !== contentId);
       })
       .addCase(markAsWatched.fulfilled, (state, action) => {
-        const { contentId, watchedAt } = action.payload;
+        const updated = action.payload;
+        const { contentId, contentType } = action.meta.arg;
+
+        const list = contentType === 'MOVIE' ? state.movies : state.series;
+
+        const item = list.find(m => m.contentId === contentId);
+
+        if (item) {
+          item.watchedAt = updated.watchedAt || new Date().toISOString();
+        }
 
         if (!state.watchedItems.includes(contentId)) {
           state.watchedItems.push(contentId);
         }
-
-        if (!state.items.includes(contentId)) {
-          state.items.push(contentId);
-        }
-
-        const movie = state.fullList.find(
-          (m) => m.id === contentId || m.contentId === contentId
-        );
-
-        if (movie) {
-          movie.watchedAt = watchedAt || new Date().toISOString();
-        }
-      })
+      });
   },
 });
 

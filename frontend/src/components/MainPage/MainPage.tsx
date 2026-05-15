@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { type Genre, type Actor, type Movie } from '../../types';
-import { mockActors, mockMovies } from '../../utils/mockData';
 import { AboutUs } from './AboutUs';
 import { ScrollActors } from './ScrollActors';
 import { ScrollSection } from './ScrollSection';
 import { WhatShouldIWatch } from './WhatShouldIWatch';
-import { getGenres, getPopularActors, getPopularMovies, getRecentMovies, getTrendingMovies, getTrendingSeries, getUpcomingMovies } from '../../api/movieService';
+import { getGenres, getPopularActors, getPopularMovies, getRecentMovies, getRecommendations, getTrendingMovies, getTrendingSeries, getUpcomingMovies } from '../../api/movieService';
 import { MainBrowse } from './MainBrowse';
 import { ScrollSectionTrending } from './ScrollSectionTrending';
+import { Loader } from '../Utilities/Loader';
 
 
 export const MainPage = () => {
@@ -19,6 +19,7 @@ export const MainPage = () => {
   const [actors, setActors] = useState<Actor[]>([]);
   const [genres, setGenres] = useState<Genre[]>([]);
   const [loading, setLoading] = useState(true);
+  const [recommended, setRecommended] = useState<Movie[]>([]);
 
   const isLoggedIn = !!localStorage.getItem('token');
 
@@ -34,7 +35,8 @@ export const MainPage = () => {
           getPopularMovies(),
           getRecentMovies(),
           getPopularActors(),
-          getUpcomingMovies()
+          getUpcomingMovies(),
+          getRecommendations(),
         ]);
 
         const getValue = <T,>(result: PromiseSettledResult<T>, fallback: T): T => {
@@ -48,7 +50,8 @@ export const MainPage = () => {
           popularRes,
           recentRes,
           actorsRes,
-          upcomingRes
+          upcomingRes,
+          recommendedRes,
         ] = results;
 
         const prepareMovies = (movies: Movie[]) => {
@@ -72,6 +75,7 @@ export const MainPage = () => {
         setRecent(prepareMovies(getValue(recentRes, [])));
         setActors(prepareActors(getValue(actorsRes, [])));
         setUpcoming(prepareMovies(getValue(upcomingRes, [])));
+        setRecommended(prepareMovies(getValue(recommendedRes, [])));
 
       } catch (error) {
         console.error('Critical failure in fetchAllData', error);
@@ -83,6 +87,8 @@ export const MainPage = () => {
     fetchAllData();
   }, []);
 
+  if (loading) return <Loader />
+
   return (
     <main className="bg-main-bg">
       <AboutUs />
@@ -92,9 +98,15 @@ export const MainPage = () => {
         items={trending}
         viewAllPath='/discover/trending-movies'
       />
-      {!isLoggedIn && (
+      {!isLoggedIn ? (
         <WhatShouldIWatch />
-      )}      
+      ) : (
+        <ScrollSection
+          title="Top Picks For You"
+          items={recommended}
+          viewAllPath='/discover/recommendations'
+        />
+      )}
       <ScrollSection
         title="Critics’ Choice"
         items={popular}

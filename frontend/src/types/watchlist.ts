@@ -9,20 +9,32 @@ export interface WatchlistRequest {
 export interface WatchlistResponse {
   id: number;
   contentId: number;
-  contentType: string;
+  contentType?: 'MOVIE' | 'SERIES';
+  type?: 'MOVIE' | 'SERIES';
   title: string;
-  posterPath: string;
-  watchedAt: string;
-  addedAt: string;
+
+  posterPath?: string;
+  poster_path?: string;
+
+  watchedAt: string | null;
+  addedAt?: string;
+
   releaseDate?: string;
+  release_date?: string;
+
   voteAverage?: number;
+  vote_average?: number;
+
   voteCount?: number;
+  vote_count?: number;
+
+  overview?: string;
 }
 
 export interface WatchlistState {
-  items: number[];
-  watchedItems: number[];
-  fullList: Movie[];
+  movies: Movie[];
+  series: Movie[];
   loading: boolean;
   error: string | null;
+  watchedItems: number[];
 }

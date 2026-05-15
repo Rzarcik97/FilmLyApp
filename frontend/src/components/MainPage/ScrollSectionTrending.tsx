@@ -44,13 +44,13 @@ export const ScrollSectionTrending = ({ title, items, viewAllPath }: ScrollSecti
       <div className="flex justify-center items-center gap-2">
         <button
           onClick={() => scroll('left')}
-          className="text-primary-0 cursor-pointer
+          className="text-featured cursor-pointer
           w-12 h-12 flex justify-center items-center
-          bg-gray-80/10 backdrop-blur-[2px]
-          rounded-full border border-gray-80/10
+          bg-gray-80-button/10 backdrop-blur-[2px]
+          rounded-full border border-gray-80-button/10
           before:content-[''] before:absolute before:inset-0
-          before:rounded-full before:border before:border-gray-80/20
-          hover:bg-gray-30/10 transition-all duration-300 ease-in-out
+          before:rounded-full before:border before:border-gray-80-button/20
+          hover:bg-gray-30/20 transition-all duration-300 ease-in-out
           "
         >
           <ChevronLeft size={24} />
@@ -61,7 +61,7 @@ export const ScrollSectionTrending = ({ title, items, viewAllPath }: ScrollSecti
         >
           {items.map((item, index) => (
             <div 
-              key={item.id}
+              key={item.id || item.contentId}
               className="relative flex-none w-[240px] snap-start"
             >
               <span className="
@@ -83,13 +83,13 @@ export const ScrollSectionTrending = ({ title, items, viewAllPath }: ScrollSecti
         </div>
         <button
           onClick={() => scroll('right')}
-          className="text-primary-0 cursor-pointer
+          className="text-featured cursor-pointer
           w-12 h-12 flex justify-center items-center
-          bg-gray-80/10 backdrop-blur-[2px]
-          rounded-full border border-gray-80/10
+          bg-gray-80-button/10 backdrop-blur-[2px]
+          rounded-full border border-gray-80-button/10
           before:content-[''] before:absolute before:inset-0
-          before:rounded-full before:border before:border-gray-80/20
-          hover:bg-gray-30/10 transition-all duration-300 ease-in-out
+          before:rounded-full before:border before:border-gray-80-button/20
+          hover:bg-gray-30/20 transition-all duration-300 ease-in-out
           "
         >
           <ChevronRight size={24} />

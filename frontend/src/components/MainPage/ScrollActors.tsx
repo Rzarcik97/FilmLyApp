@@ -33,7 +33,7 @@ export const ScrollActors = ({ title, items }: ScrollActorsProps) => {
           <h2 className="text-[24px] md:text-[36px] leading-[1.2] font-bold text-secondary-light">{title}</h2>
         </div>
 
-        <Link 
+        <Link
           to='/actors'
           className="cursor-pointer text-[16px] text-secondary-light font-nunito font-bold"
         >
@@ -44,13 +44,13 @@ export const ScrollActors = ({ title, items }: ScrollActorsProps) => {
       <div className="flex justify-center items-center gap-2 pt-6">
         <button
           onClick={() => scroll('left')}
-          className="text-primary-0 cursor-pointer
+          className="text-featured cursor-pointer
           w-12 h-12 flex flex-shrink-0 justify-center items-center
-          bg-gray-80/10 backdrop-blur-[2px]
-          rounded-full border border-gray-80/10
+          bg-gray-80-button/10 backdrop-blur-[2px]
+          rounded-full border border-gray-80-button/10
           before:content-[''] before:absolute before:inset-0
-          before:rounded-full before:border before:border-gray-80/20
-          hover:bg-gray-30/10 transition-all duration-300 ease-in-out
+          before:rounded-full before:border before:border-gray-80-button/20
+          hover:bg-gray-30/20 transition-all duration-300 ease-in-out
           "
         >
           <ChevronLeft size={24} />
@@ -58,24 +58,27 @@ export const ScrollActors = ({ title, items }: ScrollActorsProps) => {
 
         <div
           ref={scrollRef}
-          className="flex justify-start items-start gap-2 md:gap-6 flex-nowrap overflow-x-hidden scroll-smooth"
+          className="flex justify-start items-start gap-2 md:gap-5 flex-nowrap overflow-x-hidden scroll-smooth"
         >
           {items.map(item => (
-            <div className="relative z-10">
+            <div
+              key={item.id}
+              className="relative z-10"
+            >
               <ActorCard key={item.id} actor={item} />
-            </div>            
+            </div>
           ))}
         </div>
 
         <button
           onClick={() => scroll('right')}
-          className="text-primary-0 cursor-pointer
+          className="text-featured cursor-pointer
           w-12 h-12 flex flex-shrink-0 justify-center items-center
-          bg-gray-80/10 backdrop-blur-[2px]
-          rounded-full border border-gray-80/10
+          bg-gray-80-button/10 backdrop-blur-[2px]
+          rounded-full border border-gray-80-button/10
           before:content-[''] before:absolute before:inset-0
-          before:rounded-full before:border before:border-gray-80/20
-          hover:bg-gray-30/10 transition-all duration-300 ease-in-out
+          before:rounded-full before:border before:border-gray-80-button/20
+          hover:bg-gray-30/20 transition-all duration-300 ease-in-out
           "
         >
           <ChevronRight size={24} />
