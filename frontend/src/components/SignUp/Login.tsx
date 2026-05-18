@@ -121,12 +121,13 @@ export const Login = () => {
                 <div className="relative">
                   <input
                     id="password"
-                    placeholder='********'
+                    placeholder='••••••••'
                     type={showPassword ? "text" : "password"}
                     className={`w-full bg-signup-input/91 border rounded-[8px] px-4 py-3 text-gray-80 transition-colors focus:outline-none
                               autofill:shadow-[inset_0_0_0_1000px_var(--color-gray-100)]
                               [-webkit-text-fill-color:var(--color-primary-0)]
                               autofill:text-fill-primary-0
+                              autofill:[border-color:transparent_!important]
                               placeholder:[-webkit-text-fill-color:var(--color-gray-80)]
                   ${errors.password ? 'border-system-error' : 'border-transparent focus:border-primary-0'}`}
                     {...register('password')}
