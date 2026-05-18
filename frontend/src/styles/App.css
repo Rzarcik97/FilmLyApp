@@ -83,6 +83,7 @@
 
 @theme {
   --color-main-bg: var(--dynamic-main-bg);
+  --color-loader-bg: var(--dynamic-loader-bg);
   --color-secondary-bg: var(--dynamic-secondary-bg);
   --color-featured: var(--dynamic-featured);
 
