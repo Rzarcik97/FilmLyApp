@@ -4,12 +4,12 @@ FilmLy is a modern, responsive web application for browsing movies and series, m
 
 ## 📚 Table of Contents
 
-* [Technologies](#-technologies)
-* [Architecture & State Management](#-architecture--state-management)
-* [Key Features & Pages](#-key-features--pages)
-* [How to Run](#-how-to-run)
-* [Testing](#-testing)
-* [CI/CD & Deployment](#-cicd--deployment)
+- [Technologies](#-technologies)
+- [Architecture & State Management](#-architecture--state-management)
+- [Key Features & Pages](#-key-features--pages)
+- [How to Run](#-how-to-run)
+- [Testing](#-testing)
+- [CI/CD & Deployment](#-cicd--deployment)
 
 ---
 
@@ -34,7 +34,7 @@ FilmLy is a modern, responsive web application for browsing movies and series, m
 
 The frontend follows a feature-based folder structure, keeping components, hooks, and API logic isolated by domain.
 
-```text
+```
                     ┌──────────────────────────────┐
                     │          User Device         │
                     │      (Browser Viewport)      │
@@ -64,58 +64,84 @@ The frontend follows a feature-based folder structure, keeping components, hooks
                    │        FilmLy Spring Boot       │
                    │            Backend API          │
                    └─────────────────────────────────┘
+```
 
-```markdown
+---
+
 ## 📘 Key Features & Pages
 
 ### 🌐 Public Access (Anonymous Users)
-* **Landing / Home Dashboard:** Highlights trending, popular, and upcoming movies/series via interactive sliders.
-* **Advanced Search & Discover:** Multi-attribute filtering system (by title, genre, or rating).
-* **Detail Pages:** Rich presentation of movie/series meta-data, cast profiles, and "Similar Content" lists.
+
+- **Landing / Home Dashboard:** Highlights trending, popular, and upcoming movies/series via interactive sliders.
+- **Advanced Search & Discover:** Multi-attribute filtering system (by title, genre, or rating).
+- **Detail Pages:** Rich presentation of movie/series meta-data, cast profiles, and "Similar Content" lists.
 
 ### 🔐 Protected Access (Requires Login)
-* **Personalized Dashboard:** Displays tailored recommendations computed by the backend algorithm.
-* **Interactive Watchlist:** Add/remove items, and toggle a visual "Watched" status.
-* **Likes System:** Immediate feedback loops for liking and disliking content cards.
-* **Secure Profile Settings:** Dedicated workspace for email and password updates featuring a verification status tracker.
+
+- **Personalized Dashboard:** Displays tailored recommendations computed by the backend algorithm.
+- **Interactive Watchlist:** Add/remove items, and toggle a visual "Watched" status.
+- **Likes System:** Immediate feedback loops for liking and disliking content cards.
+- **Secure Profile Settings:** Dedicated workspace for email and password updates featuring a verification status tracker.
 
 ---
 
 ## 🚀 How to Run
 
 ### ✅ Prerequisites
-* Node.js (v18.x or higher)
-* npm / yarn
+
+- Node.js (v18.x or higher)
+- npm / yarn
 
 ### 🔐 Environment Variables
+
 Create a `.env` file in the project root:
 
 ```bash
 cp .env.example .env
+```
 
 Fill in your configuration variables:
+
+```env
 # API URL of your FilmLy Backend
 VITE_API_BASE_URL=http://localhost:8081/api/v1
+```
 
-▶️ Run Locally
+### ▶️ Run Locally
+
+```bash
 # Install dependencies
 npm install
 
 # Run the development server
 npm run dev
+```
 
-The application will start locally at http://localhost:5173.
+The application will start locally at `http://localhost:5173`.
 
-```markdown
+---
+
 ## 🧪 Testing
 
 We ensure robustness by testing the UI at multiple levels:
 
-* **Unit & Component Testing (Vitest + React Testing Library):** Verifies standalone reusable UI elements (buttons, input fields, cards) render correctly based on varying props.
-* **Integration Testing:** Mocks the backend REST API responses to test how pages handle loading, error, and data states.
+- **Unit & Component Testing (Vitest + React Testing Library):** Verifies standalone reusable UI elements (buttons, input fields, cards) render correctly based on varying props.
+- **Integration Testing:** Mocks the backend REST API responses to test how pages handle loading, error, and data states.
 
 Run the test runner:
+
 ```bash
 npm run test
+```
 
+---
 
+## 🚀 CI/CD & Deployment
+
+The frontend project uses GitHub Actions to automate quality checks on every push and pull request.
+
+### Pipeline Actions (`.github/workflows/frontend-ci.yml`)
+
+- **Linter Check:** Runs syntax analysis to enforce code formatting guidelines.
+- **Type Check:** Runs TypeScript compilation (`tsc --noEmit`) to prevent static type errors.
+- **Test Suite:** Executes all unit and component tests automatically before merging code.
