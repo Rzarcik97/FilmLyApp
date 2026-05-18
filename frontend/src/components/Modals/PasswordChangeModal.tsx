@@ -41,7 +41,7 @@ export const PasswordChangeModal = ({ isOpen, onClose }: { isOpen: boolean, onCl
           <input
             {...register('oldPassword')}
             type="password"
-            placeholder="********"
+            placeholder="••••••••••••"
             className={`w-full bg-gray-90 border rounded-xl p-3 text-white outline-none focus:border-primary-0 ${errors.oldPassword ? 'border-system-error' : 'border-gray-80'}`}
           />
           {errors.oldPassword && (
@@ -53,7 +53,7 @@ export const PasswordChangeModal = ({ isOpen, onClose }: { isOpen: boolean, onCl
           <input
             {...register('newPassword')}
             type="password"
-            placeholder="********"
+            placeholder="••••••••••••"
             className={`w-full bg-gray-90 border rounded-xl p-3 text-white outline-none focus:border-primary-0 ${errors.newPassword ? 'border-system-error' : 'border-gray-80'}`}
           />
           {errors.newPassword && (
@@ -65,7 +65,7 @@ export const PasswordChangeModal = ({ isOpen, onClose }: { isOpen: boolean, onCl
           <input
             {...register('confirmNewPassword')}
             type="password"
-            placeholder="********"
+            placeholder="••••••••••••"
             className={`w-full bg-gray-90 border rounded-xl p-3 text-white outline-none focus:border-primary-0 ${errors.confirmNewPassword ? 'border-system-error' : 'border-gray-80'}`}
           />
           {errors.confirmNewPassword && (
