@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
@@ -37,16 +38,19 @@ public class SeriesServiceImpl implements TmdbContentService<ContentDto, SeriesD
     private final RecommendationScorer scorer;
 
     @Override
+    @Cacheable("popularSeries")
     public List<ContentDto> findPopular() {
         return fetch("/tv/popular");
     }
 
     @Override
+    @Cacheable("trendingSeries")
     public List<ContentDto> findTrending() {
         return fetch("/trending/tv/day");
     }
 
     @Override
+    @Cacheable("recentSeries")
     public List<ContentDto> findRecent() {
         return fetch("/tv/on_the_air");
     }
