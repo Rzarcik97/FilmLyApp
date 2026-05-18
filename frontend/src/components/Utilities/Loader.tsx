@@ -19,7 +19,7 @@ export const Loader = () => {
   ];
 
   return (
-    <div className="fixed inset-0 w-screen h-screen bg-black flex flex-col items-center justify-center z-[9999] overflow-hidden">
+    <div className="fixed inset-0 w-screen h-screen bg-loader-bg flex flex-col items-center justify-center z-[9999] overflow-hidden">
 
       <div className="absolute w-64 h-64 bg-[#BBD727]/10 rounded-full blur-[100px]" />
 
