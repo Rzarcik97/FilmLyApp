@@ -1,5 +1,5 @@
 import { Plus } from 'lucide-react';
-import profile from '../../../public/profile/profile.png';
+import profile from '/profile/profile.png';
 import { Reminder } from './Reminder';
 import { Preferences } from './Preferences';
 import { AccountSecurity } from './AccountSecurity';

@@ -1,12 +1,22 @@
 import { Link, useLocation } from 'react-router-dom';
-import telegram from '../../../public/icons/telegram.png';
-import youtube from '../../../public/icons/youtube.png';
-import fb from '../../../public/icons/facebook.png';
+import telegram from '/icons/telegram.png';
+import telegram_light from '/icons/tele_light.svg';
+import youtube from '/icons/youtube.png';
+import youtube_light from '/icons/youtube_light.svg';
+import fb from '/icons/facebook.png';
+import fb_light from '/icons/fb_light.svg';
 import { useTheme } from '../../context/ThemeContext';
 
 export const Footer = () => {
   const { theme } = useTheme();
-  const baseColor = theme === 'light' ? 'rgba(255, 255, 255, 1)' : 'rgba(17, 17, 16, 1)';
+  const isLight = theme === 'light';
+
+  const r = isLight ? 239 : 17;
+  const g = isLight ? 239 : 17;
+  const b = isLight ? 239 : 16;
+
+  const color = (alpha: number) => `rgba(${r}, ${g}, ${b}, ${alpha})`;
+
   const location = useLocation();
 
   const handleScrollToTop = (e: React.MouseEvent) => {
@@ -29,13 +39,13 @@ export const Footer = () => {
         className="absolute inset-0 z-10"
         style={{
           background: `linear-gradient(
-            to bottom, 
-            ${baseColor} 0%, 
-            ${baseColor} 12%,
-            rgba(17, 17, 16, 0.6) 30%, 
-            rgba(17, 17, 16, 0.2) 60%, 
-            rgba(17, 17, 16, 0.8) 100%
-          )`
+                      to bottom, 
+                      ${color(1)} 0%, 
+                      ${color(1)} 12%,
+                      ${color(0.6)} 30%, 
+                      ${color(0.2)} 60%, 
+                      ${color(0.8)} 100%
+                    )`
         }}
       />
 
@@ -58,39 +68,51 @@ export const Footer = () => {
                 onClick={handleScrollToTop}
                 className="h-[66px] flex flex-col items-start justify-center"
               >
-                <span className="text-[48px] text-secondary-light font-bold">Filmly</span>
+                <span className="text-[48px] text-secondary-light-footer font-bold">Filmly</span>
               </Link>
-              <p className="text-gray-80 text-[20px] leading-[1.45]">@ 2026 All rights  reserved</p>
+              <p className="text-gray-80-footer text-[20px] leading-[1.45]">@ 2026 All rights  reserved</p>
               <div className="flex gap-2">
-                <img src={telegram} alt="Telegram Icon" className="w-6 h-6" />
-                <img src={youtube} alt="Youtube Icon" className="w-6 h-6" />
-                <img src={fb} alt="Facebook Icon" className="w-6 h-6" />
+                <img
+                  src={theme === 'light' ? telegram_light : telegram}
+                  alt="Telegram Icon"
+                  className="w-6 h-6"
+                />
+                <img
+                  src={theme === 'light' ? youtube_light : youtube}
+                  alt="Youtube Icon"
+                  className="w-6 h-6"
+                />
+                <img
+                  src={theme === 'light' ? fb_light : fb}
+                  alt="Facebook Icon"
+                  className="w-6 h-6"
+                />
               </div>
             </div>
 
             <div className="flex flex-col gap-[5px] text-[20px] leading-[1.45] w-51 font-nunito">
-              <p className="text-primary-20">Navigation</p>
+              <p className="text-primary-20 font-bold">Navigation</p>
               <Link to="/profile">
-                <p className="text-gray-70">Watchlist</p>
+                <p className="text-gray-80-footer">Watchlist</p>
               </Link>
               <Link to="/reminder">
-                <p className="text-gray-70">Reminder</p>
+                <p className="text-gray-80-footer">Reminder</p>
               </Link>
               <Link to="/sign-in">
-                <p className="text-gray-70">Sign in</p>
+                <p className="text-gray-80-footer">Sign in</p>
               </Link>
               <Link to="/language">
-                <p className="text-gray-70">Language</p>
+                <p className="text-gray-80-footer">Language</p>
               </Link>
             </div>
 
             <div className="flex flex-col gap-[5px] text-[20px] leading-[1.45] w-61 font-nunito">
-              <p className="text-primary-20">Information</p>
-              <p className="text-gray-70">Privacy Policy</p>
-              <p className="text-gray-70">FAQ</p>
-              <p className="text-gray-70">Cookie Policy</p>
+              <p className="text-primary-20 font-bold">Information</p>
+              <p className="text-gray-80-footer">Privacy Policy</p>
+              <p className="text-gray-80-footer">FAQ</p>
+              <p className="text-gray-80-footer">Cookie Policy</p>
               <Link to="/">
-                <p className="text-gray-70">About us</p>
+                <p className="text-gray-80-footer">About us</p>
               </Link>
             </div>
           </div>

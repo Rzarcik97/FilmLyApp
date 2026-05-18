@@ -1,5 +1,5 @@
-import google_btn from '../../../public/icons/google.svg';
-import apple_btn from '../../../public/icons/apple.svg';
+import google_btn from '/icons/google.svg';
+import apple_btn from '/icons/apple.svg';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -43,7 +43,7 @@ export const Login = () => {
 
       if (token) {
         localStorage.setItem('token', token);
-        await dispatch(fetchWatchList());
+        await dispatch(fetchWatchList('MOVIE'));
         navigate(from, { replace: true });
       } else {
         setServerError('No token received from the server');
@@ -121,12 +121,13 @@ export const Login = () => {
                 <div className="relative">
                   <input
                     id="password"
-                    placeholder='********'
+                    placeholder='••••••••'
                     type={showPassword ? "text" : "password"}
                     className={`w-full bg-signup-input/91 border rounded-[8px] px-4 py-3 text-gray-80 transition-colors focus:outline-none
                               autofill:shadow-[inset_0_0_0_1000px_var(--color-gray-100)]
                               [-webkit-text-fill-color:var(--color-primary-0)]
                               autofill:text-fill-primary-0
+                              autofill:[border-color:transparent_!important]
                               placeholder:[-webkit-text-fill-color:var(--color-gray-80)]
                   ${errors.password ? 'border-system-error' : 'border-transparent focus:border-primary-0'}`}
                     {...register('password')}

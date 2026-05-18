@@ -6,18 +6,15 @@ import { type AppDispatch, type RootState } from '../../store';
 import { fetchCurrentUser } from '../../store/userSlice';
 import { ProfileSettings } from './ProfileSettings';
 import { Loader } from '../Utilities/Loader';
-import type { Movie } from '../../types';
+import { YourGenres } from './YourGenres';
 
 export const Profile = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { user } = useSelector((state: RootState) => state.auth);
-  const { fullList, loading } = useSelector((state: RootState) => state.watchlist);
+  const { user, loading } = useSelector((state: RootState) => state.auth);
+  const movies = useSelector((state: RootState) => state.watchlist.movies);
 
-  const toWatch = (fullList as (Movie & { watchedAt?: string | null })[])
-    .filter(item => !item.watchedAt);
-
-  const alreadyWatched = (fullList as (Movie & { watchedAt?: string | null })[])
-    .filter(item => item.watchedAt);
+  const toWatch = movies.filter(m => !m.watchedAt);
+  const alreadyWatched = movies.filter(m => m.watchedAt);
 
   useEffect(() => {
     if (!user) {
@@ -72,9 +69,10 @@ export const Profile = () => {
       <div>
         {activeTab === 'watchlist' && (
           <div className="animate-in fade-in duration-300">
+            <YourGenres />
             <ScrollSection title="To watch" items={toWatch} viewAllPath='' />
-            <ScrollSection title="Top Picks for You" items={[]} viewAllPath='' />
-            <ScrollSection title="Your Favorites" items={[]} viewAllPath='' />
+            {/* <ScrollSection title="Top Picks for You" items={[]} viewAllPath='' /> */}
+            {/* <ScrollSection title="Your Favorites" items={[]} viewAllPath='' /> */}
             <ScrollSection title="Already Discovered" items={alreadyWatched} viewAllPath='' />
           </div>
         )}

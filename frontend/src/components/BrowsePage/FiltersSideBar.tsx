@@ -10,6 +10,7 @@ import X from '/icons/mobile/x.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import { type AppDispatch, type RootState } from '../../store';
 import { setDateSort, setHideWatched, setImdbRange, setTitleSort, toggleCountry, toggleGenre, toggleImdbActive } from '../../store/filtersSlice';
+import { Toast } from '../Profile/Toast';
 
 interface FiltersSideBarProps {
   title: string;
@@ -323,7 +324,7 @@ export const FiltersSideBar = ({
               label="Vote Rating"
               range={voteRange}
               setRange={setVoteRange}
-            />
+            />            
           </div>
         )}
       </div>

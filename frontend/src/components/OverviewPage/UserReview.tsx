@@ -1,6 +1,9 @@
 import { Star } from 'lucide-react'
 import { useState } from 'react';
-import resize from '../../../public/icons/resize.svg';
+import resize from '/icons/resize.svg';
+import { useDispatch } from 'react-redux';
+import { openAuthModal } from '../../store/uiSlice';
+import { Toast } from '../Profile/Toast';
 
 export const UserReview = ({ title }: { title: string | null }) => {
   const [rating, setRating] = useState(0);
@@ -8,18 +11,27 @@ export const UserReview = ({ title }: { title: string | null }) => {
 
   const isInteracting = rating > 0 || comment.trim().length > 0;
 
+  const dispatch = useDispatch();
+  const isLoggedIn = !!localStorage.getItem('token');
+  const [showToast, setShowToast] = useState(false);
+
+  const handleAddReview = () => {
+    if (!isLoggedIn) {
+      dispatch(openAuthModal());
+      return;
+    } else {
+      setShowToast(true);
+      setTimeout(() => setShowToast(false), 2000);
+    }
+  }
+
   return (
     <section className="py-10 px-4 md:px-12">
       <div className="flex justify-between items-center pb-3 md:pb-6">
         <div className="flex gap-2 items-center">
-          <div className="w-1 h-[35px] bg-primary-0 rounded-full" />
+          <div className="w-1 h-14 md:h-[35px] bg-primary-0 rounded-full" />
           <h2 className="text-[24px] md:text-[36px] leading-[1.2] font-bold text-secondary-light">Your review of the movie: {title}</h2>
         </div>
-
-        <button
-          className="cursor-pointer text-[16px] text-secondary-light font-nunito font-bold">
-          View all
-        </button>
       </div>
 
       <div className="bg-gray-90 rounded-[16px] p-4">
@@ -51,9 +63,13 @@ export const UserReview = ({ title }: { title: string | null }) => {
 
         {isInteracting && (
           <div className="flex justify-start animate-fade-in">
-            <button className="bg-primary-0 text-secondary-dark font-bold px-8 py-2 rounded-[9px] cursor-pointer hover:opacity-90 transition-all w-full md:w-78 h-10 md:h-14">
+            <button
+              onClick={handleAddReview}
+              className="bg-featured text-secondary-dark font-bold px-8 py-2 rounded-[9px] cursor-pointer hover:opacity-90 transition-all w-full md:w-78 h-10 md:h-14"
+            >
               Add
             </button>
+            <Toast isVisible={showToast} />
           </div>
         )}
       </div>

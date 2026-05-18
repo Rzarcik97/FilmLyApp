@@ -21,10 +21,28 @@ const likesSlice = createSlice({
       reaction: 'LIKE' | 'DISLIKE' | null;
     }>) => {
       const { id, likes, dislikes, reaction } = action.payload;
-      state.items[id] = { likes, dislikes, userReaction: reaction };
+
+      const existingReaction = state.items[id]?.userReaction;
+      const finalReaction = (reaction === null && existingReaction) ? existingReaction : reaction;
+
+      state.items[id] = {
+        likes,
+        dislikes,
+        userReaction: finalReaction
+      };
+    },
+
+    setInitialReactions: (state, action: PayloadAction<{ id: string; reaction: 'LIKE' | 'DISLIKE' }[]>) => {
+      action.payload.forEach(({ id, reaction }) => {
+        if (!state.items[id]) {
+          state.items[id] = { likes: 0, dislikes: 0, userReaction: reaction };
+        } else {
+          state.items[id].userReaction = reaction;
+        }
+      });
     },
   },
 });
 
-export const { updateStats } = likesSlice.actions;
+export const { updateStats, setInitialReactions } = likesSlice.actions;
 export default likesSlice.reducer;

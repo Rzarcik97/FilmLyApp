@@ -1,7 +1,7 @@
-import privacy from '../../../public/profile/privacy.svg';
-import faq from '../../../public/profile/faq.svg';
-import help from '../../../public/profile/help.svg';
-import about from '../../../public/profile/about.svg';
+import privacy from '/profile/privacy.svg';
+import faq from '/profile/faq.svg';
+import help from '/profile/help.svg';
+import about from '/profile/about.svg';
 import { ChevronRight } from 'lucide-react';
 import { useState } from 'react';
 import { Toast } from './Toast';

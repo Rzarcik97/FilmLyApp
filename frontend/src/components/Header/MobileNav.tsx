@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
-import popcorn from '../../../public/icons/mobile/popcorn.svg';
-import popcorn_focus from '../../../public/icons/mobile/popcorn_focus.svg';
+import popcorn from '/icons/mobile/popcorn.svg';
+import popcorn_focus from '/icons/mobile/popcorn_focus.svg';
 import { Power, UserRound, Sun, Moon } from 'lucide-react';
 import { useDispatch } from 'react-redux';
 import { openAuthModal } from '../../store/uiSlice';

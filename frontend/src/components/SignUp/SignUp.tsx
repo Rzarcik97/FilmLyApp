@@ -1,5 +1,5 @@
-import google_btn from '../../../public/icons/google.svg';
-import apple_btn from '../../../public/icons/apple.svg';
+import google_btn from '/icons/google.svg';
+import apple_btn from '/icons/apple.svg';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';

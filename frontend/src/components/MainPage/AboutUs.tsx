@@ -1,6 +1,6 @@
 import { ChevronRight } from 'lucide-react';
-import play from '../../../public/icons/play.png';
-import mute from '../../../public/icons/mute.png';
+import play from '/icons/play.png';
+import mute from '/icons/mute.png';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
@@ -69,6 +69,7 @@ export const AboutUs = () => {
   const lightGradient = `var(--hero-gradient-light)`;
 
   const { theme } = useTheme();
+  const activeGradient = theme === 'light' ? lightGradient : heavyGradient;
 
   const bgImage = theme === 'light' ? currentMovie?.bgLight : currentMovie?.bg;
   
@@ -82,7 +83,7 @@ export const AboutUs = () => {
         key={currentIndex}
         className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat animate-fade-in"
         style={{
-          backgroundImage: `${currentIndex === 0 ? lightGradient : heavyGradient}, url(${bgImage})`
+          backgroundImage: `${activeGradient}, url(${bgImage})`
         }}
       />
 
@@ -106,13 +107,13 @@ export const AboutUs = () => {
 
         <div className="flex-1 flex flex-col justify-end lg:justify-between items-end md:pt-[296px] pb-10 lg:pb-8 min-h-full order-1 md:order-2">
           <button
-            className="text-primary-0 cursor-pointer 
+            className="text-featured cursor-pointer 
             w-12 h-12 hidden lg:flex justify-center items-center
-            bg-gray-80/10 backdrop-blur-[2px]
-            rounded-full border border-gray-80/10
+            bg-gray-80-button/10 backdrop-blur-[2px]
+            rounded-full border border-gray-80-button/10
             before:content-[''] before:absolute before:inset-0
             before:rounded-full before:border before:border-white/20
-            hover:bg-gray-30/10 transition-all duration-300 ease-in-out"
+            hover:bg-gray-30/20 transition-all duration-300 ease-in-out"
             onClick={handleNext}
           >
             <ChevronRight size={24} />

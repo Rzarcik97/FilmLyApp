@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
-import logo from '../../../public/icons/logo.svg';
-import logo_light from '../../../public/icons/Logo.png';
+import logo from '/icons/logo_dark.png';
+import logo_light from '/icons/Logo.png';
 import { useTheme } from '../../context/ThemeContext';
 
 export const Logo = () => {
