@@ -17,6 +17,7 @@
 
 :root {
   --dynamic-main-bg: #111110;
+  --dynamic-loader-bg: black;
   --dynamic-secondary-bg: #111110;
   --dynamic-featured: #D3F138;
 
@@ -49,6 +50,7 @@
 
 .light {
   --dynamic-main-bg: #EFEFEF;
+  --dynamic-loader-bg: #EFEFEF;
   --dynamic-secondary-bg: #D3F138;
   --dynamic-featured: #5E5E5E;
 
@@ -81,6 +83,7 @@
 
 @theme {
   --color-main-bg: var(--dynamic-main-bg);
+  --color-loader-bg: var(--dynamic-loader-bg);
   --color-secondary-bg: var(--dynamic-secondary-bg);
   --color-featured: var(--dynamic-featured);
 

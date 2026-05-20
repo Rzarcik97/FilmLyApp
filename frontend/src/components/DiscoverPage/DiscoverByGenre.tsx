@@ -44,6 +44,8 @@ export const DiscoverByGenre = ({
     return pages;
   };
 
+  if (isLoading && items.length === 0) return <Loader />;
+
   return (
     <div className="flex flex-col items-center w-full">
       <div className="grid grid-cols-[repeat(auto-fill,minmax(204px,1fr))] gap-x-4 gap-y-8 w-full justify-items-center">
@@ -51,8 +53,6 @@ export const DiscoverByGenre = ({
           <MovieCard key={`${movie.id}-${movie.contentId}`} movie={movie} />
         ))}
       </div>
-
-      {isLoading && <Loader />}
 
       {hasMore && !isLoading && items.length > 0 && (
         <button

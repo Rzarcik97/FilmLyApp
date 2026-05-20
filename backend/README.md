@@ -16,7 +16,7 @@ Key features include:
 1. [Technologies](#technologies)
 2. [Architecture](#architecture)
 3. [Features & API Overview](#features)
-4. [How to Run](#how-to-run)
+4. [How to Run](#-how-to-run)
 5. [Database & Liquibase](#database)
 6. [Testing](#testing)
 7. [CI/CD](#cicd)
@@ -196,9 +196,11 @@ FilmLy is built as a layered Spring Boot backend. Most endpoints are publicly ac
 | Update favorite genre       | PATCH  | `/users/favorite-genres`          |
 | Delete favorite genre       | DELETE | `/users/favorite-genres`          |
 
+> 📖 For a detailed breakdown of the recommendation algorithm, scoring weights and examples see [RECOMMENDATION_SYSTEM.md](RECOMMENDATION_SYSTEM.md)
+
 ---
 
-# <h1 id="how-to-run">🚀 How to Run</h1>
+# 🚀 How to Run
 
 ## ✅ Prerequisites
 

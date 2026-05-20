@@ -8,6 +8,7 @@ import sort from '/icons/filter.png';
 import { useDispatch, useSelector } from 'react-redux';
 import { type AppDispatch, type RootState } from '../../store';
 import { resetFilters, toggleGenre } from '../../store/filtersSlice';
+import { Loader } from '../Utilities/Loader';
 
 export const DiscoverPage = () => {
   const [allGenres, setAllGenres] = useState<Genre[]>([]);
@@ -20,11 +21,11 @@ export const DiscoverPage = () => {
   const pageTitle = type ? type.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase()) : 'Discover';
 
   useEffect(() => {
+    dispatch(resetFilters());
+
     const initPage = async () => {
       const genres = await getGenres();
       setAllGenres(genres);
-
-      dispatch(resetFilters());
 
       if (type && genres.length > 0) {
         const matchedGenre = genres.find(
@@ -43,6 +44,8 @@ export const DiscoverPage = () => {
       dispatch(resetFilters());
     };
   }, [type, dispatch]);
+
+  if (allGenres.length === 0) return <Loader />
 
   return (
     <div className="bg-gray-100 pt-35 flex min-h-screen relative z-50">

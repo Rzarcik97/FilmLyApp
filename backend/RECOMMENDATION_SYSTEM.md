@@ -1,4 +1,4 @@
-## Overview
+    ## Overview
 Score-based recommendation system that combines user preferences with content quality.
 Runs on-the-fly without storing results in the database — can be optimized later with caching (Redis) or a `recommendation_scores` table.
 
