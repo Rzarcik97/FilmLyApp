@@ -1,5 +1,6 @@
 package filmly.config;
 
+import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +14,13 @@ public class TmdbClientConfig {
 
     @Bean
     public RestClient tmdbRestClient() {
+
+        HttpClients.custom()
+                .disableContentCompression()
+                .build();
+
         String baseUrl = "https://api.themoviedb.org/3";
+
         return RestClient.builder()
                 .baseUrl(baseUrl)
                 .defaultHeader("Authorization", "Bearer " + token)
