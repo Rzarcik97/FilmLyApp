@@ -1,18 +1,18 @@
 package filmly.service;
 
-import filmly.model.ContentRating;
+import filmly.dto.contentrating.ContentRatingRequestDto;
+import filmly.dto.contentrating.ContentRatingResponseDto;
+import filmly.dto.contentrating.ContentRatingUpdateRequestDto;
+import filmly.model.Content;
 import java.util.List;
 
 public interface ContentRatingService {
-    ContentRating getRatingById(Long id);
 
-    List<ContentRating> getAllByUserId(Long userId);
+    List<ContentRatingResponseDto> getByContentId(Long contentId, Content.ContentType contentType);
 
-    List<ContentRating> getAllByContentId(Long contentId);
+    ContentRatingResponseDto addRating(String email, ContentRatingRequestDto dto);
 
-    ContentRating createRating(ContentRating contentRating);
+    ContentRatingResponseDto updateRating(String email, ContentRatingUpdateRequestDto dto);
 
-    ContentRating updateRating(Long id, ContentRating contentRating);
-
-    void deleteRating(Long id);
+    void deleteRating(String email, Long id);
 }

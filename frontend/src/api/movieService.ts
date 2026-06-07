@@ -1,0 +1,118 @@
+import type { Actor, Genre, Movie } from '../types';
+import apiClient from './apiClient';
+
+export const getMovieDetails = async (id: string | number, type: string): Promise<Movie> => {
+  const endpoint = type.toLowerCase() === 'movies' ? 'movies' : 'series';
+
+  const response = await apiClient.get<Movie>(`/${endpoint}/${id}`);
+  return response.data;
+}
+
+export const getTrendingMovies = async (): Promise<Movie[]> => {
+  const response = await apiClient.get<Movie[]>('/movies/trending');
+  return response.data;
+}
+
+export const getTrendingSeries = async (): Promise<Movie[]> => {
+  const response = await apiClient.get<Movie[]>('/series/trending');
+  return response.data;
+}
+
+export const getRecentMovies = async (): Promise<Movie[]> => {
+  const response = await apiClient.get<Movie[]>('/movies/recent');
+  return response.data;
+}
+
+export const getPopularMovies = async (): Promise<Movie[]> => {
+  const response = await apiClient.get<Movie[]>('/movies/popular');
+  return response.data;
+}
+
+export const getUpcomingMovies = async (): Promise<Movie[]> => {
+  const response = await apiClient.get<Movie[]>('/movies/upcoming');
+  return response.data;
+}
+
+export const getSearchData = async (title: string, type?: string): Promise<Movie[]> => {
+  const response = await apiClient.get<any>('/search', {
+    params: { title }
+  });
+
+  const movies = response.data.results || [];
+  return movies;
+}
+
+export const getGenres = async (): Promise<Genre[]> => {
+  const response = await apiClient.get<Genre[]>('/genres');
+  return response.data;
+}
+
+export const getMovieCast = async (id: string, type: string): Promise<Actor[]> => {
+  const endpoint = type.toLowerCase() === 'movies' ? 'movies' : 'series';
+
+  const response = await apiClient.get<Actor[]>(`/${endpoint}/${id}/cast`);
+  return response.data;
+}
+
+export const getSimilarContent = async (id: string, type: string): Promise<Movie[]> => {
+  const endpoint = type.toLowerCase() === 'movie' ? 'movies' : 'series';
+  const response = await apiClient.get<Movie[]>(`/${endpoint}/${id}/similar`);
+  return response.data;
+}
+
+export const getPopularActors = async (): Promise<Actor[]> => {
+  const response = await apiClient.get<Actor[]>('/actors/popular');
+  return response.data;
+}
+
+export const getMoviesByRating = async (min: number, max: number, contentType: 'MOVIE' | 'SERIES' = 'MOVIE') => {
+  const response = await apiClient.get('/search/discover', {
+    params: {
+      ratingMin: min,
+      ratingMax: max,
+      type: contentType,
+      page: 1
+    }
+  });
+
+  return response.data;
+}
+
+export const getContentByGenre = async (genreId: number, type: 'MOVIE' | 'SERIES' = 'MOVIE', pageNum = 1) => {
+  const response = await apiClient.get('/search/discover', {
+    params: {
+      genreIds: genreId,
+      type: type,
+      sortBy: 'POPULARITY_DESC',
+      page: pageNum
+    }
+  });
+
+  return response.data;
+}
+
+export const toggleLike = async (contentId: number | string, contentType: string, isLike: boolean) => {
+  const response = await apiClient.post('/likes', {
+    contentId: Number(contentId),
+    contentType: contentType,
+    isLike: isLike
+  });
+
+  return response.data;
+}
+
+export const getUserLikes = async (type: 'MOVIE' | 'SERIES', liked: boolean) => {
+  const response = await apiClient.get('/likes', {
+    params: {
+      type,
+      liked,
+    }
+  });
+
+  return response.data;
+}
+
+export const getRecommendations = async (): Promise<Movie[]> => {
+  const response = await apiClient.get<Movie[]>('/movies/recommendations');
+  return response.data;
+}

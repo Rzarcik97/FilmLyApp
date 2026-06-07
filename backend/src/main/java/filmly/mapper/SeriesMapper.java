@@ -1,0 +1,78 @@
+package filmly.mapper;
+
+import filmly.config.MapperConfig;
+import filmly.dto.content.ContentDto;
+import filmly.dto.content.SeriesDetailDto;
+import filmly.dto.genre.GenreDto;
+import filmly.dto.tmdb.TmdbContentResult;
+import filmly.dto.tmdb.TmdbGenreDto;
+import filmly.dto.tmdb.TmdbSeriesDetailResponse;
+import filmly.dto.tmdb.TmdbVideoResult;
+import filmly.dto.tmdb.TmdbVideosResponse;
+import filmly.service.GenreService;
+import java.util.ArrayList;
+import java.util.List;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.springframework.beans.factory.annotation.Autowired;
+
+@Mapper(config = MapperConfig.class)
+public abstract class SeriesMapper {
+    @Autowired
+    protected GenreService genreService;
+
+    @Mapping(target = "type", constant = "SERIES")
+    @Mapping(source = "result.id", target = "contentId")
+    @Mapping(source = "result.genreIds", target = "genres")
+    @Mapping(source = "result.name", target = "title")
+    @Mapping(source = "result.firstAirDate", target = "releaseDate")
+    public abstract ContentDto toDto(TmdbContentResult result, Long likes, Long dislikes);
+
+    @Mapping(target = "type", constant = "SERIES")
+    @Mapping(source = "result.id", target = "contentId")
+    @Mapping(source = "result.name", target = "title")
+    @Mapping(source = "result.genreIds", target = "genres")
+    @Mapping(source = "result.firstAirDate", target = "releaseDate")
+    public abstract ContentDto fromContentResult(TmdbContentResult result,
+                                                 Long likes, Long dislikes);
+
+    @Mapping(target = "type", constant = "SERIES")
+    @Mapping(source = "response.name", target = "title")
+    @Mapping(source = "response.firstAirDate",target = "releaseDate")
+    @Mapping(source = "response.videos", target = "trailerKey")
+    public abstract SeriesDetailDto toDetailDto(TmdbSeriesDetailResponse response,
+                                                Long likes,
+                                                Long dislikes,
+                                                Boolean isLiked);
+
+    protected String extractTrailerKey(TmdbVideosResponse videos) {
+        if (videos == null || videos.results() == null) {
+            return null;
+        }
+        return videos.results().stream()
+                .filter(v -> "YouTube".equals(v.site())
+                        && "Trailer".equals(v.type())
+                        && v.official())
+                .map(TmdbVideoResult::key)
+                .findFirst()
+                .orElse(null);
+    }
+
+    protected List<GenreDto> longListToGenreDtoList(List<Long> genreIds) {
+        if (genreIds == null) {
+            return List.of();
+        }
+        List<GenreDto> result = new ArrayList<>();
+        genreIds.forEach(id -> result.add(genreService.getGenreById(id)));
+        return result;
+    }
+
+    protected List<GenreDto> tmdbGenresToGenreDtos(List<TmdbGenreDto> genres) {
+        if (genres == null) {
+            return List.of();
+        }
+        return genres.stream()
+                .map(g -> genreService.getGenreById(g.id()))
+                .toList();
+    }
+}

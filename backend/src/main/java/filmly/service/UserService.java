@@ -1,18 +1,18 @@
 package filmly.service;
 
-import filmly.model.User;
-import java.util.List;
+import filmly.dto.user.UserPatchRequestDto;
+import filmly.dto.user.UserResponseDto;
 
 public interface UserService {
 
-    User getUserById(Long userId);
+    UserResponseDto getMyProfile(String email);
 
-    List<User> getAllUsers();
+    UserResponseDto updateMyProfile(String email, UserPatchRequestDto request);
 
-    User createUser(User user);
+    String changeEmail(String email, String newEmail, String currentPassword);
 
-    User updateUser(Long userId, User updatedUser);
+    String changePassword(String email, String oldPassword, String newPassword);
 
-    void deleteUser(Long userId);
+    UserResponseDto verifyChange(String email, String rawCode);
 
 }

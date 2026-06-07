@@ -1,6 +1,11 @@
 package filmly.dto.genre;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import filmly.enums.GenreType;
+
 public record GenreDto(
-        Long GenreId,
-        String name
+        @JsonProperty("id") Long genreId,
+        String name,
+        GenreType type,
+        String imagePath
 ) {}

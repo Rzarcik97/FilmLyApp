@@ -1,62 +1,110 @@
 package filmly.controller;
 
+import filmly.dto.content.CastDto;
+import filmly.dto.content.ContentDto;
+import filmly.dto.content.SeriesDetailDto;
+import filmly.exception.ErrorResponse;
+import filmly.service.TmdbContentService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/series")
+@CrossOrigin(origins = "http://localhost:5173") // Added for working with frontend as well
 @RequiredArgsConstructor
 public class SeriesController {
 
+    private final TmdbContentService<ContentDto, SeriesDetailDto> seriesService;
+
     @GetMapping("/popular")
-    public ResponseEntity<?> getPopularSeries() {
-        // TODO: implement
-        return ResponseEntity.ok().build();
+    @Operation(summary = "Get popular series, source TMDB")
+    public List<ContentDto> getPopularSeries() {
+        return seriesService.findPopular();
     }
 
     @GetMapping("/trending")
-    public ResponseEntity<?> getTrendingSeries() {
-        // TODO: implement
-        return ResponseEntity.ok().build();
+    @Operation(summary = "Get trending series, source TMDB")
+    public List<ContentDto> getTrendingSeries() {
+        return seriesService.findTrending();
     }
 
     @GetMapping("/recent")
-    public ResponseEntity<?> getRecentSeries() {
-        // TODO: implement
-        return ResponseEntity.ok().build();
+    @Operation(summary = "Get recent series, source TMDB")
+    public List<ContentDto> getRecentSeries() {
+        return seriesService.findRecent();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getSeriesById(@PathVariable Long id) {
-        // TODO: implement
-        return ResponseEntity.ok().build();
+    @Operation(summary = "Get series by ID, source TMDB")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK",
+                    content = @Content(schema = @Schema(implementation = SeriesDetailDto.class))),
+            @ApiResponse(responseCode = "404", description = "Series not found",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "429", description = "Too many requests to TMDB",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    public SeriesDetailDto getSeriesById(@PathVariable Long id,
+                                         Authentication authentication) {
+        String email = authentication != null ? authentication.getName() : null;
+        return seriesService.findById(id, email);
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<?> searchSeries(
-            @RequestParam(required = false) String title,
-            @RequestParam(required = false) String productionDateFrom,
-            @RequestParam(required = false) String productionDateTo,
-            @RequestParam(required = false) Double ratingMin,
-            @RequestParam(required = false) Double ratingMax,
-            @RequestParam(required = false) String genre,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "20") int size
-    ) {
-        // TODO: implement
-        return ResponseEntity.ok().build();
+    @GetMapping("/{id}/similar")
+    @Operation(summary = "Get similar series, source TMDB")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK",
+                    content = @Content(array = @ArraySchema(
+                            schema = @Schema(implementation = ContentDto.class)))),
+            @ApiResponse(responseCode = "404", description = "Series not found",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "429", description = "Too many requests to TMDB",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    public List<ContentDto> getSeriesSimilar(@PathVariable Long id) {
+        return seriesService.findSimilar(id);
     }
 
-    @GetMapping("/recommendation")
-    public ResponseEntity<?> getRecommendations() {
-        // TODO: resolve current user from SecurityContext
-        // TODO: implement
-        return ResponseEntity.ok().build();
+    @GetMapping("/{id}/cast")
+    @Operation(summary = "Get series by ID, source TMDB")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK",
+                    content = @Content(array = @ArraySchema(
+                            schema = @Schema(implementation = CastDto.class)))),
+            @ApiResponse(responseCode = "404", description = "Series not found",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "429", description = "Too many requests to TMDB",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    public List<CastDto> getSeriesCast(@PathVariable Long id) {
+        return seriesService.findCast(id);
+    }
+
+    @GetMapping("/recommendations")
+    @Operation(summary = "Get personalized movie recommendations",
+            description = "Returns top 20 series scored by genre preferences, vote rating "
+                    + "and popularity. Works for both authenticated "
+                    + "and anonymous users. Anonymous users get recommendations based "
+                    + "on popularity and vote rating.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK",
+                    content = @Content(schema = @Schema(implementation = ContentDto.class)))
+    })
+    public List<ContentDto> getRecommendations(Authentication authentication) {
+        String email = authentication != null ? authentication.getName() : null;
+        return seriesService.findRecommendations(email);
     }
 
 }

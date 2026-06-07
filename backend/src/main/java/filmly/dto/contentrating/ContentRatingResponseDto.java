@@ -1,11 +1,15 @@
 package filmly.dto.contentrating;
 
+import filmly.model.Content;
 import java.time.LocalDateTime;
 
 public record ContentRatingResponseDto(
-        Long contentRatingId,
+        Long id,
         Long contentId,
-        Long userId,
+        Content.ContentType contentType,
         Float rating,
+        String review,
+        String username,
+        String avatarUrl,
         LocalDateTime createdAt
 ) {}

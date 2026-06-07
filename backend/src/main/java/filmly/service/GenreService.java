@@ -1,15 +1,13 @@
 package filmly.service;
 
-import filmly.model.Genre;
+import filmly.dto.genre.GenreDto;
 import java.util.List;
 
 public interface GenreService {
 
-    Genre getGenreById(Long id);
+    GenreDto getGenreById(Long id);
 
-    List<Genre> getAllGenres();
+    List<GenreDto> getAllGenres();
 
-    Genre createGenre(Genre genre);
-
-    void deleteGenre(Long id);
+    void syncGenres();
 }
